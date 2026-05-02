@@ -1,0 +1,195 @@
+import { NavItem } from "@/ui";
+import {
+  CheckmarkSquare03Icon,
+  DashboardSquare02Icon,
+  DistributeVerticalBottomIcon,
+  IdentityCardIcon,
+  Layers01Icon,
+  Mortarboard02Icon,
+  UserGroupIcon,
+  UserMultipleIcon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+
+export const itemsNavigation: NavItem[] = [
+  {
+    label: "Dashboard",
+    href: "/dashboard",
+    action: "dashboard",
+    subject: "home",
+    icon: <HugeiconsIcon icon={DashboardSquare02Icon} />,
+  },
+  {
+    label: "Disciplinas",
+    href: "/disciplines",
+    action: "disciplines",
+    subject: "home",
+    icon: <HugeiconsIcon icon={Layers01Icon} />,
+  },
+  {
+    label: "Categorias",
+    href: "/categories",
+    action: "categories",
+    subject: "home",
+    icon: <HugeiconsIcon icon={DistributeVerticalBottomIcon} />,
+  },
+  {
+    label: "Escuelas",
+    href: "/schools",
+    action: "schools",
+    subject: "home",
+    icon: <HugeiconsIcon icon={Mortarboard02Icon} />,
+  },
+  {
+    label: "Equipos",
+    href: "/teams",
+    action: "teams",
+    subject: "home",
+    icon: <HugeiconsIcon icon={UserGroupIcon} />,
+  },
+  {
+    label: "Miembros",
+    href: "/members",
+    action: "members",
+    subject: "home",
+    icon: <HugeiconsIcon icon={UserMultipleIcon} />,
+  },
+  {
+    label: "Asistencia",
+    href: "/attendance",
+    action: "attendance",
+    subject: "home",
+    icon: <HugeiconsIcon icon={CheckmarkSquare03Icon} />,
+  },
+  // {
+  //   title: "Acceso",
+  //   items: [
+  //     {
+  //       label: "Roles y Permisos",
+  //       href: "/roles",
+  //       action: "list_role",
+  //       subject: "app",
+  //       icon: <LockPasswordIcon strokeWidth={2} size={25} />,
+  //     },
+  //     {
+  //       label: "Usuarios",
+  //       href: "/users",
+  //       action: "list_user",
+  //       subject: "app",
+  //       icon: <UserMultiple02Icon strokeWidth={2} size={25} />,
+  //     },
+  //     {
+  //       label: "Configuraciones",
+  //       // href: '/dashboard/warehouses',
+  //       action: "settings",
+  //       subject: "app",
+  //       icon: <RepairIcon strokeWidth={2} size={25} />,
+  //       children: [
+  //         {
+  //           label: "Sucursales",
+  //           href: "/branches",
+  //           icon: <Store01Icon strokeWidth={2} size={25} />,
+  //           action: "settings",
+  //           subject: "app",
+  //         },
+  //         {
+  //           label: "Almacenes",
+  //           href: "/warehouses",
+  //           icon: <WarehouseIcon strokeWidth={2} size={25} />,
+  //           action: "settings",
+  //           subject: "app",
+  //         },
+  //         {
+  //           label: "Categorías",
+  //           href: "/categories",
+  //           icon: <Tag01Icon strokeWidth={2} size={25} />,
+  //           action: "settings",
+  //           subject: "app",
+  //         },
+  //         {
+  //           label: "Proveedores",
+  //           href: "/suppliers",
+  //           icon: <Store01Icon strokeWidth={2} size={25} />,
+  //           action: "settings",
+  //           subject: "app",
+  //         },
+  //         {
+  //           label: "Unidades",
+  //           href: "/units",
+  //           icon: <WeightScaleIcon strokeWidth={2} size={25} />,
+  //           action: "settings",
+  //           subject: "app",
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
+  // {
+  //   title: "Comercial",
+  //   items: [
+  //     // {
+  //     //   label: 'Roles y Permisos',
+  //     //   href: '/roles-permissions',
+  //     //   action: 'read',
+  //     //   subject: 'app',
+  //     //   icon: <LockPasswordIcon strokeWidth={2} size={25} />,
+  //     // },
+  //     // {
+  //     //   label: 'Usuarios',
+  //     //   href: '/users',
+  //     //   action: 'list_user',
+  //     //   subject: 'app',
+  //     //   icon: <UserMultiple02Icon strokeWidth={2} size={25} />,
+  //     // },
+  //     {
+  //       label: "Productos",
+  //       // href: '/dashboard/warehouses',
+  //       action: "settings",
+  //       subject: "app",
+  //       icon: <ProductLoadingIcon strokeWidth={2} size={25} />,
+  //       children: [
+  //         {
+  //           label: "Registrar",
+  //           href: "/products/add",
+  //           action: "settings",
+  //           subject: "app",
+  //         },
+  //         {
+  //           label: "Listar",
+  //           href: "/products",
+  //           action: "settings",
+  //           subject: "app",
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       label: "Clientes",
+  //       href: "/clients",
+  //       action: "manage",
+  //       subject: "clients",
+  //       icon: <UserGroupIcon strokeWidth={2} size={25} />,
+  //     },
+  //     {
+  //       label: "Ventas",
+  //       // href: '/dashboard/warehouses',
+  //       action: "settings",
+  //       subject: "app",
+  //       icon: <Tag01Icon strokeWidth={2} size={25} />,
+  //       children: [
+  //         {
+  //           label: "Registrar",
+  //           href: "/sales/add?type=sale ",
+  //           action: "settings",
+  //           subject: "app",
+  //         },
+  //         {
+  //           label: "Listar",
+  //           href: "/sales",
+  //           action: "settings",
+  //           subject: "app",
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
+];
