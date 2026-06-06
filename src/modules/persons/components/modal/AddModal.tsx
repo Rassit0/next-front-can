@@ -32,7 +32,7 @@ export const AddModal = () => {
   return (
     <Modal key={"cover"}>
       <Button
-        className="hidden md:flex"
+        className="hidden lg:flex"
         variant="primary"
         onPress={() => state.open()}
       >

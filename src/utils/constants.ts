@@ -208,3 +208,11 @@ export const PERMISSIONS = [
     ],
   },
 ];
+
+export const formatCurrency = (amount: number) => {
+  return new Intl.NumberFormat("es-BO", {
+    style: "currency",
+    currency: "BOB",
+    minimumFractionDigits: 2,
+  }).format(amount);
+};

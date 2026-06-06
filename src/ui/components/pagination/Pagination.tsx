@@ -60,7 +60,7 @@ export const PaginationSection = ({
       <Pagination.Content>
         <Pagination.Item>
           <Pagination.Previous
-            isDisabled={page === 1}
+            isDisabled={page === 1 || totalItems === 0 || totalPages === 0}
             onPress={() => handlePageChange(page - 1)}
           >
             <Pagination.PreviousIcon />
@@ -85,7 +85,9 @@ export const PaginationSection = ({
         )}
         <Pagination.Item>
           <Pagination.Next
-            isDisabled={page === totalPages}
+            isDisabled={
+              page === totalPages || totalItems === 0 || totalPages === 0
+            }
             onPress={() => handlePageChange(page + 1)}
           >
             <span>Siguiente</span>

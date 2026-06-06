@@ -11,22 +11,34 @@ interface Props {
     icon?: React.ReactNode;
   };
   index: number;
+  urlBase?: string;
 }
-export const Item = ({ item, index }: Props) => {
+export const Item = ({ item, index, urlBase }: Props) => {
   const pathname = usePathname();
+
+  // Obtener el path despues de la urlBase si existe
+  const currentPath = pathname.replace(urlBase ?? "", "");
+
+  // Obtener el primer segmento del path
+  const currentSegment = currentPath.split("/").filter(Boolean)[0] ?? "/";
+
+  // Obtener el primer segmento del item
+  const itemSegment = item.href.split("/").filter(Boolean)[0] ?? "/";
+
+  // Si el primer segmento del path es igual al primer segmento del item, entonces el item esta activo
+  const isActive = currentSegment === itemSegment;
   return (
     <Link
       key={index}
       className={clsx(
         "flex items-center justify-center lg:justify-start gap-3 px-3 py-3 rounded-xl transition-all duration-150",
         {
-          " hover:bg-background-tertiary":
-            pathname !== item.href && !pathname.startsWith(item.href),
+          " hover:bg-background-tertiary": !isActive,
           "text-sky-700 dark:text-sky-400 font-bold border-l-4 border-sky-600 bg-background-tertiary":
-            pathname === item.href || pathname.startsWith(item.href),
+            isActive,
         },
       )}
-      href={item.href}
+      href={urlBase ? `${urlBase}/${item.href}` : item.href}
     >
       {item.icon && (
         <span

@@ -1,6 +1,6 @@
 "use server";
 import { api } from "@/utils/api";
-import { ServiceResponse } from "@/types/apit";
+import { ServiceResponse } from "@/types/api";
 import { ApiError } from "@/utils/errors/ApiError";
 import { updateTag } from "next/cache";
 import { Gender, ICategory } from "../interfaces/category.interface";

@@ -131,11 +131,9 @@ export const TablePersons = ({ persons }: Props) => {
                     </div>
                   </div>
                 </Table.Cell>
-                <Table.Cell className="min-w-52">{person.ci}</Table.Cell>
-                <Table.Cell className="min-w-52">Jugador</Table.Cell>
-                <Table.Cell className="min-w-52">
-                  {person.phone || "-"}
-                </Table.Cell>
+                <Table.Cell>{person.ci}</Table.Cell>
+                <Table.Cell>Jugador</Table.Cell>
+                <Table.Cell>{person.phone || "-"}</Table.Cell>
                 <Table.Cell className="min-w-25">
                   <Chip
                     color={statusColorMap["Active"]}

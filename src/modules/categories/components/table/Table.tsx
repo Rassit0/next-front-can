@@ -14,6 +14,7 @@ import { ButtonGestion } from "./ButtonGestion";
 import { EditModal } from "../modal/EditModal";
 import { ICategory } from "../../interfaces/category.interface";
 import { SortableColumnHeader } from "@/ui";
+import { DeleteModal } from "../modal/DeleteModal";
 
 interface Props {
   categories: ICategory[];
@@ -133,9 +134,7 @@ export const TableCategories = ({ categories }: Props) => {
                       <HugeiconsIcon icon={EyeIcon} />
                     </Button>
                     <EditModal category={category} isIcon={true} />
-                    <Button isIconOnly size="sm" variant="danger-soft">
-                      <HugeiconsIcon icon={Delete01Icon} />
-                    </Button>
+                    <DeleteModal category={category} isIcon={true} />
                   </div>
                 </Table.Cell>
               </Table.Row>

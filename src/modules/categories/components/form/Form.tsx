@@ -61,9 +61,6 @@ export const FormCategory = ({
     if (!maxAge) {
       newErrors.maxAge = "Debe ingresar una edad máxima";
     }
-    if (!description) {
-      newErrors.description = "Debe ingresar una descripción";
-    }
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) {
       return;

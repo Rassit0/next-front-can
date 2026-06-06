@@ -36,7 +36,7 @@ export const BottonNavBar = () => {
         animate={hidden ? "hidden" : "visible"}
         transition={{ duration: 0.3, ease: "easeInOut" }}
         // className="md:hidden fixed bottom-0 left-0 w-full z-50"
-        className="md:hidden fixed bottom-0 left-0 w-full z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border-t border-slate-100 dark:border-slate-800/50 shadow-[0_-12px_32px_rgba(25,28,29,0.06)] rounded-t-2xl flex justify-start items-center px-4 py-4 pb-safe space-x-2 overflow-x-auto "
+        className="lg:hidden fixed bottom-0 left-0 w-full z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border-t border-slate-100 dark:border-slate-800/50 shadow-[0_-12px_32px_rgba(25,28,29,0.06)] rounded-t-2xl flex justify-start items-center px-4 py-4 pb-safe space-x-2 overflow-x-auto "
       >
         {items.map((item, index) => (
           <Item key={index} item={item} index={index} />

@@ -7,7 +7,7 @@ interface SectionFiltersProps {
 
 export const SectionFilters = ({ actions, children }: SectionFiltersProps) => {
   return (
-    <div className="flex justify-between items-center w-full">
+    <div className="flex flex-col md:flex-row gap-2 justify-between items-center w-full">
       {/* Contenedor izquierdo: Search + Filtros */}
       <div className="flex flex-1 gap-2 items-center">
         <Filters>{children}</Filters>

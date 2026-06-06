@@ -1,7 +1,7 @@
 "use server";
 import { IDiscipline } from "@/modules/disciplines";
 import { api } from "@/utils/api";
-import { ServiceResponse } from "@/types/apit";
+import { ServiceResponse } from "@/types/api";
 import { ApiError } from "@/utils/errors/ApiError";
 import { updateTag } from "next/cache";
 
@@ -33,6 +33,9 @@ export const editDiscipline = async ({
     // 1. Manejo de Errores Controlados (API)
     if (error instanceof ApiError) {
       console.warn(`[ApiError ${error.statusCode}]: ${error.message}`);
+      console.warn(
+        `[ApiError ${error.statusCode}]: ${JSON.stringify(error.errors)}`,
+      );
 
       // Devolvemos el error en un formato que el frontend pueda procesar fácilmente
       return {

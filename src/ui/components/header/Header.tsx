@@ -6,11 +6,15 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ThemeButton } from "./ThemeButton";
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { Button } from "@heroui/react";
 
-export const Header = () => {
+interface HeaderProps {
+  title?: React.ReactNode;
+  actions?: React.ReactNode;
+}
+export const Header = ({ title, actions }: HeaderProps) => {
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
 
@@ -57,15 +61,16 @@ export const Header = () => {
         </div>
       </div> */}
       <div className="flex items-center gap-4">
-        <Button isIconOnly variant="ghost">
+        {/* <Button isIconOnly variant="ghost">
           <HugeiconsIcon icon={SidebarLeftIcon} />
-        </Button>
+        </Button> */}
         <span className="text-3xl font-semibold text-on-surface font-headline leading-tight">
-          Buen día, Mauricio
+          {title || "Buen día, Mauricio"}
         </span>
         <span className="text-sm text-muted"></span>
       </div>
       <div className="flex items-center gap-2 md:gap-6">
+        <div>{actions}</div>
         <div className="flex items-center gap-1 md:gap-2">
           <button className="hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full p-2 relative">
             <HugeiconsIcon icon={Notification01Icon} />

@@ -1,6 +1,6 @@
 import { ICategoriesResponse } from "@/modules/categories";
 import { api } from "@/utils/api";
-import { ServiceResponse } from "@/types/apit";
+import { ServiceResponse } from "@/types/api";
 import { ApiError } from "@/utils/errors/ApiError";
 
 interface SearchParams {

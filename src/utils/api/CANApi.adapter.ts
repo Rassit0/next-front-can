@@ -14,6 +14,23 @@ export class CANApiAdapter implements HttpAdapter {
   constructor() {
     this.baseUrl = process.env.NEXT_PUBLIC_CAN_API_URL || "";
   }
+  // MÉTODO CENTRALIZADOR: Aquí controlas la conexión
+  private async request<T>(endpoint: string, options: RequestInit): Promise<T> {
+    try {
+      const res = await fetch(`${this.baseUrl}${endpoint}`, options);
+      return await this.handleResponse<T>(res, endpoint);
+    } catch (error) {
+      // Si el error ya es una instancia de ApiError, lo relanzamos
+      if (error instanceof ApiError) throw error;
+
+      // Si llegamos aquí, es un fallo de conexión o red
+      throw new ApiError(
+        503,
+        "No se pudo establecer conexión con el servidor. Verifica si el backend está activo.",
+        { originalError: error instanceof Error ? error.message : error },
+      );
+    }
+  }
 
   private async handleResponse<T>(res: Response, endpoint: string): Promise<T> {
     const contentType = res.headers.get("content-type");
@@ -53,20 +70,27 @@ export class CANApiAdapter implements HttpAdapter {
       errorMap[res.status] ||
       `Error ${res.status}: ${res.statusText}`;
 
+    // console.log("errorData", errorData);
+    // console.log("message", message);
+
     throw new ApiError(res.status, message, errorData.errors || errorData);
   }
 
   async get<T>(endpoint: string, options?: RequestInit): Promise<T> {
-    const res = await fetch(`${this.baseUrl}${endpoint}`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        ...options?.headers,
-      },
-      ...options,
-    });
+    try {
+      const res = await fetch(`${this.baseUrl}${endpoint}`, options);
+      return await this.handleResponse<T>(res, endpoint);
+    } catch (error) {
+      // Si el error ya es una instancia de ApiError, lo relanzamos
+      if (error instanceof ApiError) throw error;
 
-    return this.handleResponse<T>(res, endpoint);
+      // Si llegamos aquí, es un fallo de conexión o red
+      throw new ApiError(
+        503,
+        "No se pudo establecer conexión con el servidor.",
+        { originalError: error instanceof Error ? error.message : error },
+      );
+    }
   }
 
   async post<T>(
@@ -76,19 +100,16 @@ export class CANApiAdapter implements HttpAdapter {
   ): Promise<T> {
     console.log("URL de petición:", `${this.baseUrl}${endpoint}`);
     const isFormData = data instanceof FormData;
-    const res = await fetch(`${this.baseUrl}${endpoint}`, {
+    return this.request<T>(endpoint, {
       method: "POST",
       headers: {
         Accept: "application/json",
         ...(isFormData ? {} : { "Content-Type": "application/json" }),
         ...options?.headers,
       },
-
       body: isFormData ? data : JSON.stringify(data),
       ...options,
     });
-
-    return this.handleResponse<T>(res, endpoint);
   }
 
   async patch<T>(
@@ -97,7 +118,7 @@ export class CANApiAdapter implements HttpAdapter {
     options?: RequestInit,
   ): Promise<T> {
     const isFormData = data instanceof FormData;
-    const res = await fetch(`${this.baseUrl}${endpoint}`, {
+    return this.request<T>(endpoint, {
       method: "PATCH",
       headers: {
         Accept: "application/json",
@@ -107,8 +128,6 @@ export class CANApiAdapter implements HttpAdapter {
       body: isFormData ? data : JSON.stringify(data),
       ...options,
     });
-
-    return this.handleResponse<T>(res, endpoint);
   }
 
   async put<T>(
@@ -117,7 +136,7 @@ export class CANApiAdapter implements HttpAdapter {
     options?: RequestInit,
   ): Promise<T> {
     const isFormData = data instanceof FormData;
-    const res = await fetch(`${this.baseUrl}${endpoint}`, {
+    return this.request<T>(endpoint, {
       method: "PUT",
       headers: {
         Accept: "application/json",
@@ -127,12 +146,10 @@ export class CANApiAdapter implements HttpAdapter {
       body: isFormData ? data : JSON.stringify(data),
       ...options,
     });
-
-    return this.handleResponse<T>(res, endpoint);
   }
 
   async delete<T>(endpoint: string, options?: RequestInit): Promise<T> {
-    const res = await fetch(`${this.baseUrl}${endpoint}`, {
+    return this.request<T>(endpoint, {
       method: "DELETE",
       headers: {
         Accept: "application/json",
@@ -140,7 +157,5 @@ export class CANApiAdapter implements HttpAdapter {
       },
       ...options,
     });
-
-    return this.handleResponse<T>(res, endpoint);
   }
 }

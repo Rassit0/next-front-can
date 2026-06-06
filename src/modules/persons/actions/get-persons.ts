@@ -1,5 +1,5 @@
 import { api } from "@/utils/api";
-import { ServiceResponse } from "@/types/apit";
+import { ServiceResponse } from "@/types/api";
 import { ApiError } from "@/utils/errors/ApiError";
 import { IPersonsResponse } from "@/modules/persons";
 

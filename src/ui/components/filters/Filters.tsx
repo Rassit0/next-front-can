@@ -1,7 +1,7 @@
 "use client";
 import { Label, SearchField } from "@heroui/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState, memo, useCallback } from "react";
+import { useState, memo, useCallback, useEffect } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 interface FiltersProps {
@@ -21,6 +21,10 @@ export const Filters = ({
   const searchParams = useSearchParams();
 
   const [search, setSearch] = useState(searchParams.get("search") || "");
+
+  useEffect(() => {
+    setSearch(searchParams.get("search") || "");
+  }, [searchParams]);
 
   const handleUrlUpdate = useDebouncedCallback((value: string) => {
     const params = new URLSearchParams(searchParams);

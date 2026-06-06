@@ -1,9 +1,9 @@
 "use server";
-import { IDiscipline } from "@/modules/disciplines";
 import { api } from "@/utils/api";
-import { ServiceResponse } from "@/types/apit";
+import { ServiceResponse } from "@/types/api";
 import { ApiError } from "@/utils/errors/ApiError";
 import { updateTag } from "next/cache";
+import { ICategory } from "../interfaces/category.interface";
 
 interface Props {
   id: number;
@@ -11,17 +11,17 @@ interface Props {
 
 export const deleteCategory = async ({
   id,
-}: Props): Promise<ServiceResponse<IDiscipline>> => {
+}: Props): Promise<ServiceResponse<ICategory>> => {
   try {
-    const res = await api.delete<{ message: string; data: IDiscipline }>(
-      `disciplines/${id}`,
+    const res = await api.delete<{ message: string; data: ICategory }>(
+      `categories/${id}`,
     );
 
-    updateTag("disciplines");
+    updateTag("categories");
     return {
       error: false,
       data: res.data,
-      message: res.message || "Disciplina eliminada exitosamente",
+      message: res.message || "Categoría eliminada exitosamente",
     };
   } catch (error: any) {
     // 1. Manejo de Errores Controlados (API)

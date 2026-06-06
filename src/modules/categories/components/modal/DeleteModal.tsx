@@ -7,19 +7,20 @@ import {
   useOverlayState,
 } from "@heroui/react";
 import React, { useState } from "react";
-import { deleteDiscipline, IDiscipline } from "@/modules/disciplines";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Delete01Icon } from "@hugeicons/core-free-icons";
+import { deleteCategory } from "../../actions/delete-category";
+import { ICategory } from "../../interfaces/category.interface";
 
 interface Props {
-  discipline: IDiscipline;
+  category: ICategory;
   isIcon?: boolean;
   showButton?: boolean;
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
 export const DeleteModal = ({
-  discipline,
+  category,
   isIcon = false,
   showButton = true,
   isOpen,
@@ -30,7 +31,7 @@ export const DeleteModal = ({
 
   const handleDelete = async () => {
     setIsLoading(true);
-    const res = await deleteDiscipline({ id: discipline.id });
+    const res = await deleteCategory({ id: category.id });
     if (res.error) {
       toast.danger(res.message);
     } else {
@@ -46,7 +47,7 @@ export const DeleteModal = ({
       {showButton && (
         <Button
           isIconOnly={isIcon}
-          variant={!isIcon ? "primary" : "ghost"}
+          variant="danger-soft"
           onPress={() => state.open()}
         >
           <HugeiconsIcon icon={Delete01Icon} />
@@ -55,16 +56,16 @@ export const DeleteModal = ({
       )}
       <AlertDialog.Backdrop isOpen={state.isOpen} onOpenChange={state.setOpen}>
         <AlertDialog.Container>
-          <AlertDialog.Dialog className="sm:max-w-[400px]">
+          <AlertDialog.Dialog className="sm:max-w-100">
             <AlertDialog.CloseTrigger />
             <AlertDialog.Header>
               <AlertDialog.Icon status="danger" />
-              <AlertDialog.Heading>¿Eliminar disciplina?</AlertDialog.Heading>
+              <AlertDialog.Heading>¿Eliminar categoría?</AlertDialog.Heading>
             </AlertDialog.Header>
             <AlertDialog.Body>
               <p>
-                Se eliminará permanentemente la disciplina{" "}
-                <strong>{discipline.name}</strong> si no tiene datos asociados a
+                Se eliminará permanentemente la categoría{" "}
+                <strong>{category.name}</strong> si no tiene datos asociados a
                 ella. Esta acción no se puede deshacer.
               </p>
             </AlertDialog.Body>
