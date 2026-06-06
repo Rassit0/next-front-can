@@ -4,7 +4,7 @@ import { IActivity } from "../interfaces/activity.interface";
 import { handleServerAction } from "@/utils";
 
 interface SearchParams {
-  id: number;
+  id: string;
   callbackUrl?: string;
 }
 

@@ -27,7 +27,9 @@ export default async function AddActivityPage() {
           { label: "Nueva Actividad" },
         ]}
       />
-      <FormActivity formId="form-add-activity" locations={result.data.data} />
+      {/* <FormActivity formId="form-add-activity"
+       locations={result.data.data} 
+      /> */}
     </>
   );
 }

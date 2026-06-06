@@ -17,7 +17,7 @@ export default async function EditActivityPage({
     return <ErrorPage message="ID de actividad inválido" />;
   }
 
-  const response = await getActivityById({ id: Number(id) });
+  const response = await getActivityById({ id });
 
   const locationsResponse = await getLocationsOptions();
 

@@ -22,8 +22,8 @@ export default async function AddActivityPage({
   }
 
   const [organizationResponse, activityParentResponse] = await Promise.all([
-    getOrganizationById({ id: Number(organizationId) }),
-    getActivityById({ id: Number(activityId) }),
+    getOrganizationById({ id: organizationId }),
+    getActivityById({ id: activityId }),
   ]);
 
   // 1. Manejo de error específico (Ej: 401 no autorizado)

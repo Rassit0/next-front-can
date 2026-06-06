@@ -25,12 +25,6 @@ const tipeActivities: {
     description: "Encuentros oficioales o amistosos programados.",
   },
   {
-    value: "TOURNAMENT",
-    icon: iconMap["TOURNAMENT"],
-    label: "Torneo",
-    description: "Competencias multijugador y series eliminatorias.",
-  },
-  {
     value: "EDUCATIONAL",
     icon: iconMap["EDUCATIONAL"],
     label: "Educativo",

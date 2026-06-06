@@ -16,7 +16,7 @@ import { CardPayments } from "./CardPayments";
 import { CardAssignments } from "./CardAssignments";
 import { CardDateRange } from "./CardDateRange";
 import { useRouter } from "next/navigation";
-import { IOrganization, OrganizationType } from "@/modules/organizations";
+import { IOrganization } from "@/modules/organizations";
 
 interface Props {
   activityParent?: IActivity;
@@ -40,8 +40,9 @@ export const FormActivity = ({
 
   const [name, setName] = useState(activity?.name || "");
   const [type, setType] = useState<ActivityType>(
-    activity?.type ||
-      (organization.type === "ACADEMY" ? "EDUCATIONAL" : "TRAINING"),
+    // activity?.type ||
+    //   (organization.type === "ACADEMY" ? "EDUCATIONAL" : "TRAINING"),
+    "EDUCATIONAL",
   );
   const [level, setLevel] = useState<ActivitySkillLevel>(
     activity?.level || "NA",
@@ -127,7 +128,7 @@ export const FormActivity = ({
     let res;
     const data: AddActivityProps = {
       name,
-      organizationId: activityParent ? undefined : organization.id,
+      // organizationId: activityParent ? undefined : organization.id,
       type,
       startDate: startDate!,
       endDate: endDate!,
@@ -200,7 +201,7 @@ export const FormActivity = ({
           />
 
           {/* <!-- Datos Básicos Card --> */}
-          <InfoBasic
+          {/* <InfoBasic
             organizationId={organization.id}
             name={name}
             setName={setName}
@@ -214,7 +215,7 @@ export const FormActivity = ({
             setStaffRequired={setStaffRequired}
             errors={errors}
             handleRemoveError={handleRemoveError}
-          />
+          /> */}
           {/* <!-- Lógica Financiera Card --> */}
           <CardPayments
             registrationFee={registrationFee}
