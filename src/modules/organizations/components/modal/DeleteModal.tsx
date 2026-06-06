@@ -9,11 +9,11 @@ import {
 import React, { useState } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Delete01Icon } from "@hugeicons/core-free-icons";
-import { ISchool } from "../../interfaces/organization.interface";
+import { IOrganization } from "../../interfaces/organization.interface";
 import { deleteSchool } from "../../actions/delete";
 
 interface Props {
-  school: ISchool;
+  school: IOrganization;
   isIcon?: boolean;
   showButton?: boolean;
   isOpen?: boolean;

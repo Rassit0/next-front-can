@@ -34,19 +34,9 @@ export const CardOrganization = ({ organization }: Props) => {
           className="object-cover group-hover:scale-105 transition-transform duration-500"
         /> */}
         <div className="absolute top-4 left-4">
-          <Chip
-            variant="secondary"
-            color={organization.isActive ? "success" : "danger"}
-          >
-            <span
-              className={clsx("w-2 h-2 rounded-full", {
-                "bg-success": organization.isActive,
-                "bg-danger": !organization.isActive,
-              })}
-            ></span>
-            <Chip.Label className="text-foreground">
-              {organization.isActive ? "Activa" : "Inactiva"}
-            </Chip.Label>
+          <Chip variant="secondary" color={"success"}>
+            <span className={clsx("w-2 h-2 rounded-full bg-success")}></span>
+            <Chip.Label className="text-foreground">Activa</Chip.Label>
           </Chip>
         </div>
       </Card.Header>

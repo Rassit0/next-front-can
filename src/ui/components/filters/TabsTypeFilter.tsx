@@ -2,7 +2,6 @@
 import { Tabs } from "@heroui/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useTransition } from "react";
-import { textTypeGroup } from "@/modules/groups/constants/map-activity";
 
 interface Path {
   href: string;

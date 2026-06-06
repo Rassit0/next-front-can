@@ -39,7 +39,6 @@ export const textTypeActivity: Record<ActivityType, string> = {
   TEAM: "Equipo",
   TRAINING: "Entrenamiento",
   MATCH: "Partido",
-  TOURNAMENT: "Torneo",
   EDUCATIONAL: "Educativo",
   EVENT: "Evento",
 };

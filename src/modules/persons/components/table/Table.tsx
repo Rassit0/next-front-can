@@ -41,7 +41,7 @@ export const TablePersons = ({ persons }: Props) => {
           className="min-w-200"
           //   selectedKeys={selectedKeys}
           //   selectionMode="multiple"
-          sortDescriptor={sortDescriptor}
+
           //   onSelectionChange={setSelectedKeys}
           onSortChange={(sd) =>
             setSortDescriptor({
@@ -57,39 +57,27 @@ export const TablePersons = ({ persons }: Props) => {
               className="after:hidden"
               id="id"
             >
-              <SortableColumnHeader id="id" sortDescriptor={sortDescriptor}>
-                ID
-              </SortableColumnHeader>
+              <SortableColumnHeader id="id">ID</SortableColumnHeader>
             </Table.Column>
 
             <Table.Column allowsSorting id="name">
-              <SortableColumnHeader id="name" sortDescriptor={sortDescriptor}>
-                PERSONA
-              </SortableColumnHeader>
+              <SortableColumnHeader id="name">PERSONA</SortableColumnHeader>
             </Table.Column>
 
             <Table.Column allowsSorting id="ci">
-              <SortableColumnHeader id="ci" sortDescriptor={sortDescriptor}>
-                CI
-              </SortableColumnHeader>
+              <SortableColumnHeader id="ci">CI</SortableColumnHeader>
             </Table.Column>
 
             <Table.Column allowsSorting id="role">
-              <SortableColumnHeader id="role" sortDescriptor={sortDescriptor}>
-                DISCIPLINA
-              </SortableColumnHeader>
+              <SortableColumnHeader id="role">DISCIPLINA</SortableColumnHeader>
             </Table.Column>
 
             <Table.Column allowsSorting id="phone">
-              <SortableColumnHeader id="phone" sortDescriptor={sortDescriptor}>
-                TELÉFONO
-              </SortableColumnHeader>
+              <SortableColumnHeader id="phone">TELÉFONO</SortableColumnHeader>
             </Table.Column>
 
             <Table.Column allowsSorting id="status">
-              <SortableColumnHeader id="status" sortDescriptor={sortDescriptor}>
-                ESTADO
-              </SortableColumnHeader>
+              <SortableColumnHeader id="status">ESTADO</SortableColumnHeader>
             </Table.Column>
             <Table.Column className="text-center">ACCIONES</Table.Column>
           </Table.Header>

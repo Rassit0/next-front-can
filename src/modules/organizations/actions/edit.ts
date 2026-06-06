@@ -6,7 +6,7 @@ import { IOrganization } from "../interfaces/organization.interface";
 import { handleServerAction } from "@/utils";
 
 interface Props {
-  id: number;
+  id: string;
   data: {
     name: string;
     imageUrl?: string;

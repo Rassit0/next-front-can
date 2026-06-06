@@ -42,21 +42,13 @@ export const FormOrganization = ({
   const [address, setAddress] = useState(organization?.address || "");
   const [email, setEmail] = useState(organization?.email || "");
   const [phone, setPhone] = useState(organization?.phone || "");
-  const [logoUrl, setLogoUrl] = useState(organization?.logoUrl || "");
-  const [description, setDescription] = useState(
-    organization?.description || "",
-  );
-  const [isActive, setIsActive] = useState<boolean>(
-    organization?.isActive === false ? false : true,
-  );
-  const [disciplineIds, setDisciplineIds] = useState<number[]>(
-    organization?.organizationDisciplines.map((d) => d.discipline.id) || [],
-  );
+  const [logoUrl, setLogoUrl] = useState(organization?.imageUrl || "");
+  const [description, setDescription] = useState("");
+  const [isActive, setIsActive] = useState<boolean>(true);
+  const [disciplineIds, setDisciplineIds] = useState<number[]>([]);
   // fin Form
 
-  const [allDisciplines, setAllDisciplines] = useState(
-    organization?.organizationDisciplines.length === 0,
-  );
+  const [allDisciplines, setAllDisciplines] = useState(false);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 

@@ -52,7 +52,7 @@ export const TableLocations = ({ locations }: Props) => {
           className="min-w-200"
           //   selectedKeys={selectedKeys}
           //   selectionMode="multiple"
-          sortDescriptor={sortDescriptor}
+
           //   onSelectionChange={setSelectedKeys}
           onSortChange={(sd) =>
             setSortDescriptor({
@@ -68,55 +68,39 @@ export const TableLocations = ({ locations }: Props) => {
               className="after:hidden"
               id="id"
             >
-              <SortableColumnHeader id="id" sortDescriptor={sortDescriptor}>
-                ID
-              </SortableColumnHeader>
+              <SortableColumnHeader id="id">ID</SortableColumnHeader>
             </Table.Column>
 
             <Table.Column allowsSorting id="name">
-              <SortableColumnHeader id="name" sortDescriptor={sortDescriptor}>
-                INSTALACIÓN
-              </SortableColumnHeader>
+              <SortableColumnHeader id="name">INSTALACIÓN</SortableColumnHeader>
             </Table.Column>
 
             <Table.Column allowsSorting id="address">
-              <SortableColumnHeader
-                id="address"
-                sortDescriptor={sortDescriptor}
-              >
+              <SortableColumnHeader id="address">
                 DIRECCIÓN
               </SortableColumnHeader>
             </Table.Column>
 
             <Table.Column allowsSorting id="description">
-              <SortableColumnHeader
-                id="description"
-                sortDescriptor={sortDescriptor}
-              >
+              <SortableColumnHeader id="description">
                 DESCRIPCIÓN
               </SortableColumnHeader>
             </Table.Column>
 
             {/* <Table.Column allowsSorting id="status">
-              <SortableColumnHeader id="status" sortDescriptor={sortDescriptor}>
+              <SortableColumnHeader id="status" >
                 ESTADO
               </SortableColumnHeader>
             </Table.Column> */}
 
             <Table.Column allowsSorting id="isInternal">
-              <SortableColumnHeader
-                id="isInternal"
-                sortDescriptor={sortDescriptor}
-              >
+              <SortableColumnHeader id="isInternal">
                 ¿ES INTERNO?
               </SortableColumnHeader>
             </Table.Column>
 
             <Table.Column allowsSorting id="isRentable">
-              <SortableColumnHeader
-                id="isRentable"
-                sortDescriptor={sortDescriptor}
-              >
+              <SortableColumnHeader id="isRentable">
                 ¿SE PUEDE ALQUILAR?
               </SortableColumnHeader>
             </Table.Column>

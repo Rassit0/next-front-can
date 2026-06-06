@@ -60,12 +60,12 @@ export const AddModal = () => {
               </p>
             </Modal.Header>
             <Modal.Body className="p-6">
-              <FormActivity
+              {/* <FormActivity
                 formId="add-location-form"
                 onSubmited={() => state.close()}
                 isLoading={loading}
                 setIsLoading={setLoading}
-              />
+              /> */}
             </Modal.Body>
             <Modal.Footer>
               <Button

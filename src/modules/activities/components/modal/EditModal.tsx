@@ -56,13 +56,13 @@ export const EditModal = ({
               </p>
             </Modal.Header>
             <Modal.Body className="p-6">
-              <FormActivity
+              {/* <FormActivity
                 formId="edit-activity-form"
                 activity={activity}
                 onSubmited={() => state.close()}
-                isLoading={isLoading}
-                setIsLoading={setIsLoading}
-              />
+                // isLoading={isLoading}
+                // setIsLoading={setIsLoading}
+              /> */}
             </Modal.Body>
             <Modal.Footer>
               <Button

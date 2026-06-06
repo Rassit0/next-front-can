@@ -1,4 +1,3 @@
-import { FiltersBar, GridCards, MetricsPanel } from "@/modules/clubs";
 import { AddModal, getOrganizations } from "@/modules/organizations";
 import { ErrorPage, HeaderPage, PaginationSection } from "@/ui";
 import { redirect } from "next/navigation";
@@ -37,11 +36,9 @@ export default async function TeamsPage({ searchParams }: Props) {
         action={<AddModal />}
       />
       {/* <!-- Metrics Panel: Asymmetric Bento Grid --> */}
-      <MetricsPanel />
-      {/* <!-- Filters Bar --> */}
-      <FiltersBar />
-      {/* <!-- Grid --> */}
-      <GridCards organizations={result.data.data} />
+      {/* <MetricsPanel />
+      <FiltersBar />\
+      <GridCards organizations={result.data.data} /> */}
       <PaginationSection totalPages={10} itemsPerPage={10} totalItems={100} />
     </>
   );

@@ -1,5 +1,8 @@
-import { ActivityStatus, ActivityType } from "./activity.interface";
-import { SkillLevel } from "../../../../../nest-gestion360/src/generated/prisma/enums";
+import {
+  ActivitySkillLevel,
+  ActivityStatus,
+  ActivityType,
+} from "./activity.interface";
 
 export interface AddScheduleProps {
   id: string | number;
@@ -26,7 +29,7 @@ export interface AddEducationalActivityProps {
 
 export interface AddActivityProps {
   name: string;
-  level?: SkillLevel;
+  level?: ActivitySkillLevel;
   organizationId?: number;
   type: ActivityType;
   startDate: Date;

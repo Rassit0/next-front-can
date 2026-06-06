@@ -40,7 +40,6 @@ interface Props {
 const typeMap: Record<ActivityType, string> = {
   TRAINING: "Entrenamiento",
   MATCH: "Partido",
-  TOURNAMENT: "Torneo",
   EDUCATIONAL: "Educativo",
   EVENT: "Evento",
   TEAM: "Equipo",
@@ -99,58 +98,41 @@ export const TableActivities = ({ activities }: Props) => {
               className="after:hidden"
               id="name"
             >
-              <SortableColumnHeader id="name" sortDescriptor={sortDescriptor}>
+              <SortableColumnHeader id="name">
                 NOMBRE DE ACTIVIDAD
               </SortableColumnHeader>
             </Table.Column>
 
             <Table.Column allowsSorting id="type">
-              <SortableColumnHeader id="type" sortDescriptor={sortDescriptor}>
-                TIPO
-              </SortableColumnHeader>
+              <SortableColumnHeader id="type">TIPO</SortableColumnHeader>
             </Table.Column>
 
             <Table.Column allowsSorting id="category">
-              <SortableColumnHeader
-                id="category"
-                sortDescriptor={sortDescriptor}
-              >
+              <SortableColumnHeader id="category">
                 CATEGORÍA
               </SortableColumnHeader>
             </Table.Column>
 
             <Table.Column allowsSorting id="description">
-              <SortableColumnHeader
-                id="description"
-                sortDescriptor={sortDescriptor}
-              >
+              <SortableColumnHeader id="description">
                 VIGENCIA
               </SortableColumnHeader>
             </Table.Column>
 
             <Table.Column allowsSorting id="registrationFee">
-              <SortableColumnHeader
-                id="registrationFee"
-                sortDescriptor={sortDescriptor}
-              >
+              <SortableColumnHeader id="registrationFee">
                 MATRÍCULA
               </SortableColumnHeader>
             </Table.Column>
 
             <Table.Column allowsSorting id="monthlyPrice">
-              <SortableColumnHeader
-                id="monthlyPrice"
-                sortDescriptor={sortDescriptor}
-              >
+              <SortableColumnHeader id="monthlyPrice">
                 MENSUALIDAD
               </SortableColumnHeader>
             </Table.Column>
 
             <Table.Column allowsSorting id="totalPrice">
-              <SortableColumnHeader
-                id="totalPrice"
-                sortDescriptor={sortDescriptor}
-              >
+              <SortableColumnHeader id="totalPrice">
                 PRECIO TOTAL
               </SortableColumnHeader>
             </Table.Column>

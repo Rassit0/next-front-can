@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { ActivityType } from "@/modules/activities";
 
 interface Props {
-  id: number;
+  id: string;
   text: string;
 }
 

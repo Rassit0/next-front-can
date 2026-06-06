@@ -6,7 +6,7 @@ import { handleServerAction } from "@/utils";
 import { IOrganization } from "../interfaces/organization.interface";
 
 export const deleteSchool = async (
-  id: number,
+  id: string,
 ): Promise<ServiceResponse<IOrganization>> => {
   return handleServerAction(async () => {
     const response = await api.delete<{ message: string; data: IOrganization }>(

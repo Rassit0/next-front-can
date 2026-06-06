@@ -15,7 +15,7 @@ export default async function AdminLayout({
   return (
     <>
       {/* <!-- SideNavBar --> */}
-      <Sidebar organization={organization} />
+      <Sidebar organization={organization} items={[]} />
       {/* <!-- Main Content Area --> */}
       <div className="md:ml-20 lg:ml-64 min-h-screen transition-all duration-300 pb-24 lg:pb-2">
         <div className="max-w-400 mx-auto">
