@@ -9,7 +9,7 @@ import {
   VolleyballIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 
 interface Props {
   searchParams: Promise<{

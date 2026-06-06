@@ -2,6 +2,7 @@ import { api } from "@/utils/api";
 import { ServiceResponse } from "@/types/api";
 import { ApiError } from "@/utils/errors/ApiError";
 import { ILocationsResponse } from "../interfaces/location.interface";
+import { handleServerAction } from "@/utils";
 
 interface SearchParams {
   search?: string;
@@ -15,7 +16,7 @@ export const getLocations = async ({
   per_page = "5",
   page = "1",
 }: SearchParams): Promise<ServiceResponse<ILocationsResponse>> => {
-  try {
+  return handleServerAction(async () => {
     const params = new URLSearchParams();
     if (search) params.set("search", search);
     if (per_page) params.set("per_page", per_page);
@@ -36,27 +37,5 @@ export const getLocations = async ({
       data: res,
       message: "Instalaciones obtenidas exitosamente",
     };
-  } catch (error: any) {
-    // 1. Manejo de Errores Controlados (API)
-    if (error instanceof ApiError) {
-      console.warn(`[ApiError ${error.statusCode}]: ${error.message}`);
-
-      // Devolvemos el error en un formato que el frontend pueda procesar fácilmente
-      return {
-        error: true,
-        message: error.message,
-        errors: error.errors, // Aquí vienen los errores de validación (ej: campos requeridos)
-        statusCode: error.statusCode,
-      };
-    }
-
-    // 2. Manejo de Errores Inesperados (System Error)
-    console.error("[System Error]:", error); // Loguear para el backend (ej: Sentry, Winston)
-
-    return {
-      error: true,
-      message: "Ocurrió un error inesperado. Por favor, intenta más tarde.",
-      statusCode: 500,
-    };
-  }
+  });
 };
