@@ -17,7 +17,18 @@ export class CANApiAdapter implements HttpAdapter {
   // MÉTODO CENTRALIZADOR: Aquí controlas la conexión
   private async request<T>(endpoint: string, options: RequestInit): Promise<T> {
     if (!this.baseUrl) {
-      throw new ApiError(500, "NEXT_PUBLIC_CAN_API_URL no está configurada");
+      if (!this.baseUrl) {
+        // Registra el error real en la consola para ti (desarrollador)
+        console.error(
+          "CRITICAL: NEXT_PUBLIC_CAN_API_URL is missing in environment variables",
+        );
+
+        // Lanza un error genérico para el usuario
+        throw new ApiError(
+          500,
+          "El servicio no está disponible en este momento.",
+        );
+      }
     }
     const timeoutController = new AbortController();
 

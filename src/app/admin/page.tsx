@@ -8,17 +8,10 @@ import { getOrganizationById, getOrganizations } from "@/modules/organizations";
 import { BottonNavBar, ErrorPage, Header, Sidebar } from "@/ui";
 
 export default async function AdminPage() {
-  const [organizationsResponse, clubsOptionsResponse] = await Promise.all([
-    getOrganizations({}),
-    getClubsOptions(),
-  ]);
+  const [organizationsResponse] = await Promise.all([getOrganizations({})]);
 
   if (organizationsResponse.error || !organizationsResponse.data) {
     return <ErrorPage message={organizationsResponse.message} />;
-  }
-
-  if (clubsOptionsResponse.error || !clubsOptionsResponse.data) {
-    return <ErrorPage message={clubsOptionsResponse.message} />;
   }
   const organization = organizationsResponse.data.data[0];
 
@@ -34,18 +27,9 @@ export default async function AdminPage() {
         {/* <!-- Dashboard Canvas --> */}
         <main className="p-4 md:px-8 md:py-3 space-y-6 md:space-y-8">
           {/* <!-- Header Section --> */}
-          {clubsOptionsResponse.data.data.length > 0 ? (
-            <>
-              <HeaderPageLouncher />
-              <ModuleGrid />
-              <Footer />
-            </>
-          ) : (
-            <ErrorPage
-              message="No hay clubes registrados"
-              path={{ href: "/admin", label: "Volver al inicio" }}
-            />
-          )}
+          <HeaderPageLouncher />
+          <ModuleGrid />
+          <Footer />
         </main>
       </div>
     </>
