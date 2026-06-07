@@ -30,7 +30,7 @@ export default async function AdminLayout({
           </main>
         </div>
         {/* <!-- Mobile BottomNavBar --> */}
-        <BottonNavBar />
+        <BottonNavBar items={itemsNavigation} urlBase={`/admin/settings`} />
       </div>
     </>
   );
