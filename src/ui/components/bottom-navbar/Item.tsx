@@ -7,10 +7,22 @@ import { usePathname } from "next/navigation";
 interface Props {
   item: NavItem;
   index: number;
+  urlBase?: string;
 }
-export const Item = ({ item, index }: Props) => {
+export const Item = ({ item, index, urlBase }: Props) => {
   const pathname = usePathname();
-  const isActive = pathname === item.href || pathname.startsWith(item.href);
+
+  // Obtener el path despues de la urlBase si existe
+  const currentPath = pathname.replace(urlBase ?? "", "");
+
+  // Obtener el primer segmento del path
+  const currentSegment = currentPath.split("/").filter(Boolean)[0] ?? "/";
+
+  // Obtener el primer segmento del item
+  const itemSegment = item.href.split("/").filter(Boolean)[0] ?? "/";
+
+  // Si el primer segmento del path es igual al primer segmento del item, entonces el item esta activo
+  const isActive = currentSegment === itemSegment;
   return (
     <Link
       key={index}
@@ -20,7 +32,7 @@ export const Item = ({ item, index }: Props) => {
           ? "bg-sky-500 text-white shadow-lg shadow-sky-500/20"
           : "bg-sky-50 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300",
       )}
-      href={item.href}
+      href={urlBase ? `${urlBase}/${item.href}` : item.href}
     >
       {item.icon}
       <span className="font-inter text-[11px] font-bold tracking-tighter uppercase mt-1">
