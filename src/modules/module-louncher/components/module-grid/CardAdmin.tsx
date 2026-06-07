@@ -10,14 +10,6 @@ import Link from "next/link";
 import React from "react";
 
 export const CardAdmin = async () => {
-  const clubsOptionsResponse = await getClubsOptions();
-  if (clubsOptionsResponse.error || !clubsOptionsResponse.data) {
-    return null;
-  }
-
-  if (clubsOptionsResponse.data.data.length === 0) {
-    return null;
-  }
   return (
     <Link href={`/admin/dashboard`}>
       <Card
