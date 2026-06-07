@@ -30,15 +30,7 @@ export default async function AdminLayout({
         <div className="max-w-400 mx-auto">
           {/* Container for ultra-wide screens */}
           {/* <!-- TopNavBar --> */}
-          <Header
-            title={
-              <div className="flex items-center gap-2 pl-2">
-                <HugeiconsIcon icon={iconMap["basketball"]} />
-                <span>Basquetbol</span>
-              </div>
-            }
-            // actions={<SelectClub clubs={clubsOptionsResponse.data.data} />}
-          />
+          <Header />
           {/* <!-- Dashboard Canvas --> */}
           <main className="p-4 md:px-8 md:py-3 space-y-4 md:space-y-6">
             {/* <!-- Header Section --> */}

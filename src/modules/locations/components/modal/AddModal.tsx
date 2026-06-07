@@ -54,7 +54,7 @@ export const AddModal = () => {
               <Modal.Icon className="bg-accent-soft text-accent-soft-foreground">
                 <HugeiconsIcon icon={Layers01Icon} />
               </Modal.Icon>
-              <Modal.Heading>Agregar Disciplina</Modal.Heading>
+              <Modal.Heading>Agregar Instalación</Modal.Heading>
               <p className="mt-1.5 text-sm leading-5 text-muted">
                 Agrega una nueva instalación al sistema.
               </p>
