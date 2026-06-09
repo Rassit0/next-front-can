@@ -1,4 +1,4 @@
-import { TypeOriginPass } from "./TypeOriginPass";
+import { TTypeOriginPass, TypeOriginPass } from "./TypeOriginPass";
 import {
   IClubOptionsByDiscipline,
   IDisciplineOptions,
@@ -24,6 +24,11 @@ import { SelectCurrentPass } from "./SelectCurrentPass";
 import { SelectDiscipline } from "./SelectDiscipline";
 import { SelectClub } from "./SelectClub";
 import { SelectTeam } from "./SelectTeam";
+import {
+  ArrowDataTransferDiagonalIcon,
+  ArrowDataTransferHorizontalIcon,
+  UserCircleIcon,
+} from "@hugeicons/core-free-icons";
 
 interface Props {
   activePassesOptions: IPlayerPassActiveOptions[];
@@ -69,15 +74,39 @@ export const Origin = ({
   errors,
   handleRemoveError,
 }: Props) => {
+  const freeAgentOption = {
+    value: "FREE_AGENT",
+    icon: UserCircleIcon,
+    label: "Agente Libre",
+    description: "El jugador no pertenece a ningún club.",
+  } satisfies TTypeOriginPass;
+
+  const typeActivities: TTypeOriginPass[] = [
+    {
+      value: "INTERNAL",
+      icon: ArrowDataTransferHorizontalIcon,
+      label: "Interno",
+      description: "El jugador viene de un club interno.",
+    },
+    {
+      value: "EXTERNAL",
+      icon: ArrowDataTransferDiagonalIcon,
+      label: "Externo",
+      description: "El jugador viene de un club externo.",
+    },
+    ...(activePassesOptions.length === 0 ? [freeAgentOption] : []),
+  ];
+
   return (
     <div className="flex flex-col gap-6 p-2">
       <TypeOriginPass
+        tipeActivities={typeActivities}
         originType={originType}
         setOriginType={setOriginType}
         errors={errors}
         handleRemoveError={handleRemoveError}
       />
-      {originType === "EXTERNAL" && (
+      {originType === "EXTERNAL" && activePassesOptions.length === 0 && (
         <RadioPreviousTeamSource
           previousTeamSource={previousTeamSource}
           setPreviousTeamSource={setPreviousTeamSource}

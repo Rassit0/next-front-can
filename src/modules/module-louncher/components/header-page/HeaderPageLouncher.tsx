@@ -6,8 +6,8 @@ export const HeaderPageLouncher = () => {
   return (
     <section className="mb-12 relative overflow-hidden rounded-[2rem] bg-linear-to-bl from-accent dark:from-accent  to-background-inverse dark:to-background p-12 text-white">
       <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] bg-accent rounded-full blur-[100px]"></div>
-        <div className="absolute bottom-[-10%] left-[-5%] w-[300px] h-[300px] bg-accent-container rounded-full blur-[80px]"></div>
+        <div className="absolute top-[-20%] right-[-10%] w-125 h-125 bg-accent rounded-full blur-[100px]"></div>
+        <div className="absolute bottom-[-10%] left-[-5%] w-75 h-75 bg-accent-container rounded-full blur-[80px]"></div>
       </div>
       <div className="relative z-10 max-w-2xl">
         <h2 className="text-4xl md:text-5xl font-headline font-extrabold tracking-tight mb-4">

@@ -10,11 +10,12 @@ import React, { useState, useRef, useEffect } from "react";
 const FLOATING_MARGIN_BOTTOM = 16;
 
 interface Props {
+  className?: string;
   icon?: React.ReactNode;
   onPress: () => void;
   text?: string;
 }
-export const ButtonFloating = ({ icon, onPress, text }: Props) => {
+export const ButtonFloating = ({ className, icon, onPress, text }: Props) => {
   const [hidden, setHidden] = useState(false);
   const { scrollY } = useScroll();
 
@@ -85,7 +86,7 @@ export const ButtonFloating = ({ icon, onPress, text }: Props) => {
       initial="visible"
       animate={hidden ? "hidden" : "visible"}
       // Mantenemos tu posicionamiento original
-      className="lg:hidden fixed bottom-26.25 right-6 z-40 overflow-visible"
+      className={`fixed bottom-26.25 right-4 z-40 overflow-visible ${className}`}
     >
       <Button
         isIconOnly={text ? false : true}

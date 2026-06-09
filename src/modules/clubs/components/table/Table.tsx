@@ -10,6 +10,7 @@ import { DeleteModal } from "../modal/DeleteModal";
 import { IClub } from "../../interfaces/club.interface";
 import { IDisciplineOptions } from "../../interfaces/options.club.interface";
 import { iconMap } from "@/utils";
+import { EditModalActionTable } from "./EditModalActionTable";
 
 interface Props {
   clubs: IClub[];
@@ -83,10 +84,9 @@ export const TableClubs = ({ clubs, disciplinesOptions }: Props) => {
                     <Button isIconOnly size="sm" variant="tertiary">
                       <HugeiconsIcon icon={EyeIcon} />
                     </Button>
-                    <EditModal
+                    <EditModalActionTable
                       club={club}
                       disciplinesOptions={disciplinesOptions}
-                      isIcon={true}
                     />
                     <DeleteModal club={club} isIcon={true} />
                   </div>

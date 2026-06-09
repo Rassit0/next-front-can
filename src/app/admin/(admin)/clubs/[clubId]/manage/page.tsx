@@ -3,6 +3,7 @@ import { AddModal, FiltersBar, MetricsPanel, GridCards } from "@/modules/teams";
 import { getTeams } from "@/modules/teams";
 import { TableTeams } from "@/modules/teams/components/table/Table";
 import { ErrorPage, HeaderPage, PaginationSection, SectionFilters } from "@/ui";
+import { Separator, Surface } from "@heroui/react";
 import { redirect } from "next/navigation";
 
 interface Props {
@@ -80,7 +81,7 @@ export default async function ClubPage({ searchParams, params }: Props) {
     <>
       {/* <!-- Breadcrumbs & Header --> */}
       <HeaderPage
-        title="Gestión de Equipos"
+        title={clubResponse.data.name}
         description={`Gestión integral de los equipos del club.`}
         action={
           <EditModal
@@ -96,15 +97,26 @@ export default async function ClubPage({ searchParams, params }: Props) {
       />
       {/* <!-- Metrics Panel: Asymmetric Bento Grid --> */}
       <MetricsPanel />
-      {/* <!-- Search and Filter Bar (Tonal Architecture) --> */}
-      <SectionFilters actions={<AddModal clubId={clubId} />} />
-      {/* <!-- Grid --> */}
-      <TableTeams teams={teamsResponse.data.data} />
-      <PaginationSection
-        totalPages={teamsResponse.data.meta.totalPages}
-        itemsPerPage={teamsResponse.data.meta.itemsPerPage}
-        totalItems={teamsResponse.data.meta.totalItems}
-      />
+
+      {/* <Separator className="md:hidden my-4" /> */}
+
+      <Surface className="mt-6 rounded-xl p-2">
+        <HeaderPage
+          title="Equipos"
+          // description={`Gestión integral de los equipos del club.`}
+        />
+        <div className="flex flex-col gap-2">
+          {/* <!-- Search and Filter Bar (Tonal Architecture) --> */}
+          <SectionFilters actions={<AddModal clubId={clubId} />} />
+          {/* <!-- Grid --> */}
+          <TableTeams teams={teamsResponse.data.data} />
+          <PaginationSection
+            totalPages={teamsResponse.data.meta.totalPages}
+            itemsPerPage={teamsResponse.data.meta.itemsPerPage}
+            totalItems={teamsResponse.data.meta.totalItems}
+          />
+        </div>
+      </Surface>
     </>
   );
 }

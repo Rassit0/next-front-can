@@ -26,13 +26,13 @@ export default async function AdminLayout({
         urlBase={`/admin`}
       />
       {/* <!-- Main Content Area --> */}
-      <div className="md:ml-20 lg:ml-64 min-h-screen transition-all duration-300 pb-24 lg:pb-2">
+      <div className="lg:ml-64 min-h-screen transition-all duration-300 pb-24 md:pb-24 lg:pb-2">
         <div className="max-w-400 mx-auto">
           {/* Container for ultra-wide screens */}
           {/* <!-- TopNavBar --> */}
           <Header />
           {/* <!-- Dashboard Canvas --> */}
-          <main className="p-4 md:px-8 md:py-3 space-y-4 md:space-y-6">
+          <main className="p-1 md:px-4 lg:px-8 md:py-1 lg:py-3 space-y-4 md:space-y-6">
             {/* <!-- Header Section --> */}
             {children}
           </main>

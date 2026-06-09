@@ -22,30 +22,32 @@ export const TablePlayerPasses = ({ playerPasses }: Props) => {
     "On Leave": "warning",
   };
 
-  const originTypeMap: Record<PlayerPassOriginType, string> = {
+  const originTypeTextMap: Record<PlayerPassOriginType, string> = {
     INTERNAL: "Interno",
     EXTERNAL: "Externo",
     FREE_AGENT: "Agente Libre",
   };
 
   const originTypeClassMap: Record<PlayerPassOriginType, string> = {
-    INTERNAL: "bg-accent text-accent-soft",
-    EXTERNAL: "bg-default text-default-soft",
-    FREE_AGENT: "bg-success text-success-soft",
+    INTERNAL: "bg-accent-soft text-accent",
+    EXTERNAL: "bg-default-soft text-default",
+    FREE_AGENT: "bg-success-soft text-success",
   };
 
   const playerPassStatusMap: Record<PlayerPassStatus, string> = {
     ACTIVE: "Activo",
     INACTIVE: "Anterior",
+    CATEGORY_EXPIRED: "Categoría Expirada",
     PENDING: "Pendiente",
     REJECTED: "Rechazado",
   };
 
   const playerPassStatusClassMap: Record<PlayerPassStatus, string> = {
-    ACTIVE: "bg-success text-success-soft",
-    INACTIVE: "bg-default text-default-soft",
-    PENDING: "bg-warning text-warning-soft",
-    REJECTED: "bg-danger text-danger-soft",
+    ACTIVE: "bg-success-soft text-success",
+    INACTIVE: "bg-default-soft text-default",
+    CATEGORY_EXPIRED: "bg-warning-soft text-warning",
+    PENDING: "bg-warning-soft text-warning",
+    REJECTED: "bg-danger-soft text-danger",
   };
 
   return (
@@ -161,7 +163,7 @@ export const TablePlayerPasses = ({ playerPasses }: Props) => {
                       variant="soft"
                       className={originTypeClassMap[playerPass.originType]}
                     >
-                      {originTypeMap[playerPass.originType]}
+                      {originTypeTextMap[playerPass.originType]}
                     </Chip>
                   </Table.Cell>
                   <Table.Cell>

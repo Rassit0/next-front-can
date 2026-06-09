@@ -2,7 +2,7 @@
 import { Avatar, Button, Chip, Table } from "@heroui/react";
 import { Copy01Icon, Delete01Icon, EyeIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { ButtonManage } from "@/modules/players";
+import { ButtonManage, EditModal } from "@/modules/players";
 import { SortableColumnHeader } from "@/ui";
 import { Gender, IPlayer } from "@/modules/players";
 import { ButtonManagePasses } from "./ButtonManagePasses";
@@ -136,7 +136,7 @@ export const TablePlayers = ({ players }: Props) => {
                     <Button isIconOnly size="sm" variant="tertiary">
                       <HugeiconsIcon icon={EyeIcon} />
                     </Button>
-                    {/* <EditModal player={player} isIcon={true} /> */}
+                    <EditModal player={player} isIcon={true} />
                     <Button isIconOnly size="sm" variant="danger-soft">
                       <HugeiconsIcon icon={Delete01Icon} />
                     </Button>

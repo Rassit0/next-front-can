@@ -18,7 +18,7 @@ import { CameraAdd01Icon, UserIcon } from "@hugeicons/core-free-icons";
 import {
   addPlayer,
   DocumentType,
-  editPerson,
+  editPlayer,
   Gender,
   PostPlayerInterface,
 } from "@/modules/players";
@@ -127,8 +127,7 @@ export const FormPlayer = ({
       isActive,
     };
     if (player) {
-      // res = await editPerson({ id: player.id, data });
-      return;
+      res = await editPlayer({ id: player.id, data });
     } else {
       res = await addPlayer({
         data,
@@ -334,6 +333,7 @@ export const FormPlayer = ({
 
               {/* Tipos de documento */}
               <Select
+                isRequired
                 className="w-full"
                 name="documentType"
                 placeholder="SelecdocumentNumberone una talla"
@@ -392,6 +392,7 @@ export const FormPlayer = ({
 
               {/* Genero */}
               <Select
+                isRequired
                 className="w-full"
                 name="gender"
                 placeholder="SelecdocumentNumberone una talla"

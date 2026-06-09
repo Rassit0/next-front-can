@@ -19,6 +19,7 @@ import {
   Button,
   Separator,
   cn,
+  ProgressCircle,
 } from "@heroui/react";
 import { CameraAdd01Icon, UserIcon } from "@hugeicons/core-free-icons";
 import type { DateValue } from "@internationalized/date";
@@ -70,6 +71,7 @@ export const FormPlayerPass = ({
   isLoading,
   setIsLoading,
 }: Props) => {
+  const [isOptionsLoading, setIsOptionsLoading] = useState(false);
   //========== FORM ==============
   // Solo si es pase INTERNO
   const [previousTeamId, setPreviousTeamId] = useState(
@@ -131,10 +133,12 @@ export const FormPlayerPass = ({
     if (!disciplineId) {
       return;
     }
+    setIsOptionsLoading(true);
     const res = await getActivePassesByPlayerByDisciplineOptions(
       player.id,
       disciplineId,
     );
+    setIsOptionsLoading(false);
 
     if (res.error) {
       toast.danger(res.message);
@@ -149,8 +153,9 @@ export const FormPlayerPass = ({
     if (!disciplineId) {
       return;
     }
+    setIsOptionsLoading(true);
     const res = await getClubOptionsByDisciplineOptions(disciplineId);
-
+    setIsOptionsLoading(false);
     if (res.error) {
       toast.danger(res.message);
       return;
@@ -164,7 +169,12 @@ export const FormPlayerPass = ({
     if (!previousClubId) {
       return;
     }
-    const res = await getTeamsByClubOptions(previousClubId);
+    setIsOptionsLoading(true);
+    const res = await getTeamsByClubOptions(
+      previousClubId,
+      player.person.gender,
+    );
+    setIsOptionsLoading(false);
 
     if (res.error) {
       toast.danger(res.message);
@@ -179,7 +189,12 @@ export const FormPlayerPass = ({
     if (!currentClubId) {
       return;
     }
-    const res = await getTeamsByClubOptions(currentClubId);
+    setIsOptionsLoading(true);
+    const res = await getTeamsByClubOptions(
+      currentClubId,
+      player.person.gender,
+    );
+    setIsOptionsLoading(false);
 
     if (res.error) {
       toast.danger(res.message);
@@ -228,7 +243,7 @@ export const FormPlayerPass = ({
   }, [expandedKeys, previousTeamSource]);
 
   useEffect(() => {
-    setCurrentPassId(null);
+    // setCurrentPassId(null);
     setPreviousClubId(null);
     setPreviousTeamId(null);
   }, [originType]);
@@ -251,11 +266,10 @@ export const FormPlayerPass = ({
     if (originType === "FREE_AGENT") {
       setPreviousTeamSource("FREE_AGENT");
     }
-    if (originType === "INTERNAL") {
-      setPreviousTeamId(playerPass?.previousTeam?.id || null);
-    } else {
-      setExternalPreviousTeamName(playerPass?.externalPreviousTeamName || null);
-    }
+    setCurrentClubId(null);
+    setCurrentTeamId(null);
+    setPreviousTeamId(null);
+    setExternalPreviousTeamName(null);
   }, [originType]);
 
   useEffect(() => {
@@ -429,8 +443,9 @@ export const FormPlayerPass = ({
                 </div>
               )}
 
-              {((previousTeamId && originType !== "FREE_AGENT") ||
-                (previousTeamId === null && originType !== "INTERNAL")) && (
+              {(previousTeamId !== null ||
+                externalPreviousTeamName !== null ||
+                originType === "FREE_AGENT") && (
                 <div className="col-span-full gap-y-2">
                   <div className="flex items-center justify-between">
                     <h2 className="text-xl font-bold">
@@ -438,29 +453,29 @@ export const FormPlayerPass = ({
                     </h2>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 p-2">
-                    {currentTeamsOptions.filter(
-                      (team) =>
-                        (originType !== "FREE_AGENT" &&
-                          team.id !== previousTeamId) ||
-                        originType === "FREE_AGENT",
-                    ).length > 0 ? (
-                      <>
-                        <SelectClub
-                          label="CLUB DESTINO"
-                          isDisabled={originType === "INTERNAL"}
-                          clubOptions={clubsOptions.filter(
-                            (club) =>
-                              (originType === "INTERNAL" &&
-                                club.id === previousClubId) ||
-                              (originType === "EXTERNAL" &&
-                                club.id !== previousClubId) ||
-                              originType === "FREE_AGENT",
-                          )}
-                          clubId={currentClubId}
-                          setClubId={setCurrentClubId}
-                          errors={errors}
-                          handleRemoveError={handleRemoveError}
-                        />
+                    <>
+                      <SelectClub
+                        label="CLUB DESTINO"
+                        isDisabled={originType === "INTERNAL"}
+                        clubOptions={clubsOptions.filter(
+                          (club) =>
+                            (originType === "INTERNAL" &&
+                              club.id === previousClubId) ||
+                            (originType === "EXTERNAL" &&
+                              club.id !== previousClubId) ||
+                            originType === "FREE_AGENT",
+                        )}
+                        clubId={currentClubId}
+                        setClubId={setCurrentClubId}
+                        errors={errors}
+                        handleRemoveError={handleRemoveError}
+                      />
+                      {currentTeamsOptions.filter(
+                        (team) =>
+                          (originType !== "FREE_AGENT" &&
+                            team.id !== previousTeamId) ||
+                          originType === "FREE_AGENT",
+                      ).length > 0 ? (
                         <SelectTeam
                           label="EQUIPO DESTINO"
                           teamsOptions={currentTeamsOptions.filter(
@@ -474,13 +489,23 @@ export const FormPlayerPass = ({
                           errors={errors}
                           handleRemoveError={handleRemoveError}
                         />
-                      </>
-                    ) : (
-                      <span className="text-red-500 col-span-full">
-                        No se encontraron equipos disponibles para el club
-                        seleccionado
-                      </span>
-                    )}
+                      ) : (
+                        currentClubId &&
+                        (isOptionsLoading ? (
+                          <ProgressCircle isIndeterminate aria-label="Loading">
+                            <ProgressCircle.Track>
+                              <ProgressCircle.TrackCircle />
+                              <ProgressCircle.FillCircle />
+                            </ProgressCircle.Track>
+                          </ProgressCircle>
+                        ) : (
+                          <span className="text-red-500 col-span-full">
+                            No se encontraron equipos disponibles para el club
+                            seleccionado
+                          </span>
+                        ))
+                      )}
+                    </>
 
                     {/* Fecha de NadocumentNumbermiento */}
                     <DatePicker

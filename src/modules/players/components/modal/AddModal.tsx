@@ -45,6 +45,7 @@ export const AddModal = ({ label, isIcon = false }: Props) => {
         {label || "Agregar Jugador"}
       </Button>
       <ButtonFloating
+        className="lg:hidden"
         icon={
           <HugeiconsIcon icon={Add01Icon} className="h-6 w-6 text-background" />
         }

@@ -24,13 +24,13 @@ export const HeaderPage = ({
   breadcrumb,
 }: Props) => {
   return (
-    <section className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+    <section className="flex flex-wrap flex-row justify-between items-center gap-4">
       <div className="flex flex-wrap">
         <div>
           <div className="flex flex-col">
-            <div className="flex items-center gap-2 text-outline text-[10px] mb-2 font-semibold tracking-wide uppercase">
+            <div className="flex items-center md:gap-2 text-outline text-[10px] md:mb-2 font-semibold tracking-wide uppercase">
               {breadcrumb?.map((item, index) => (
-                <div key={index} className="flex items-center gap-2">
+                <div key={index} className="flex items-center md:gap-2">
                   <Breadcrumb
                     key={index}
                     breadcrumb={item}

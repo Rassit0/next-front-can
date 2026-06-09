@@ -9,6 +9,8 @@ export type Gender = "MALE" | "FEMALE" | "MIXED";
 export interface ITeam {
   id: string;
   name: string;
+  minAge: number;
+  maxAge: number;
   club: Club;
   gender: Gender;
   createdAt: Date;

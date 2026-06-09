@@ -53,7 +53,7 @@ export default async function AddBidManagementPage({ params }: Props) {
         description="Configuración de la nueva oferta para el equipo."
         action={
           <ButtonsSubmit
-            cancelHref={`/admin/clubs/${clubId}/${teamId}/bid-management`}
+            cancelHref={`/admin/clubs/${clubId}/manage/${teamId}/bid-management`}
           />
         }
         urlBase="/admin/clubs"

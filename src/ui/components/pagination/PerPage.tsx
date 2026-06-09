@@ -19,7 +19,7 @@ export const PerPage = () => {
   return (
     <Select
       variant="secondary"
-      className="w-20"
+      className="md:w-20"
       placeholder="Ver"
       value={currentPerPage as Key}
       onChange={(value) => handlePerPageChange(value?.toString() || "5")}

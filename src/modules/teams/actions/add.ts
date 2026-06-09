@@ -7,6 +7,8 @@ import { handleServerAction } from "@/utils";
 
 export const addTeam = async (data: {
   name: string;
+  minAge: number;
+  maxAge: number;
   imageUrl?: string;
   clubId: string;
   gender: Gender;

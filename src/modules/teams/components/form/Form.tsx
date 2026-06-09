@@ -12,7 +12,7 @@ import {
   Select,
   ListBox,
 } from "@heroui/react";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { addTeam, editTeam, Gender, ITeam } from "@/modules/teams";
 
 interface Props {
@@ -32,9 +32,17 @@ export const FormTeam = ({
   setIsLoading,
 }: Props) => {
   const [name, setName] = useState(team?.name || "");
+  const [maxAge, setMaxAge] = useState<number | null>(team?.maxAge || null);
+  const [minAge, setMinAge] = useState<number | null>(team?.minAge || null);
   const [gender, setGender] = useState<Gender | null>(team?.gender || null);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const handleRemoveError = useCallback((fieldName: string) => {
+    setErrors((prev) => {
+      const { [fieldName]: _, ...rest } = prev;
+      return rest;
+    });
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,6 +50,15 @@ export const FormTeam = ({
     const newErrors: Record<string, string> = {};
     if (!name) {
       newErrors.name = "Debe ingresar un nombre";
+    }
+    if (!minAge) {
+      newErrors.minAge = "Debe ingresar un año minimo";
+    }
+    if (!maxAge) {
+      newErrors.maxAge = "Debe ingresar un año maximo";
+    }
+    if (minAge && maxAge && minAge > maxAge) {
+      newErrors.maxAge = "El año maximo debe ser mayor al año minimo";
     }
     if (!gender) {
       newErrors.gender = "Debe ingresar un genero";
@@ -54,6 +71,8 @@ export const FormTeam = ({
     let res;
     const data = {
       name,
+      minAge: minAge!,
+      maxAge: maxAge!,
       clubId,
       gender: gender!,
     };
@@ -92,6 +111,7 @@ export const FormTeam = ({
     });
     onSubmited?.();
   };
+
   return (
     <Surface variant="transparent">
       <Form id={formId} onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -108,11 +128,54 @@ export const FormTeam = ({
             value={name}
             onChange={(e) => {
               setName(e.target.value);
-              setErrors({});
+              handleRemoveError("name");
             }}
             placeholder="Ingrese el nombre del rol"
           />
           <FieldError children={errors.name && <> {errors.name}</>} />
+        </TextField>
+
+        <TextField
+          isRequired
+          className="w-full"
+          name="maxAge"
+          type="text"
+          isInvalid={!!errors.maxAge || undefined}
+        >
+          <Label>Edad Max.</Label>
+          <Input
+            variant="secondary"
+            min={2}
+            placeholder="12"
+            type="number"
+            value={maxAge || ""}
+            onChange={(e) => {
+              setMaxAge(Number(e.target.value));
+              handleRemoveError("maxAge");
+            }}
+          />
+          <FieldError children={errors.maxAge && <> {errors.maxAge}</>} />
+        </TextField>
+        <TextField
+          isRequired
+          className="w-full"
+          name="minAge"
+          type="text"
+          isInvalid={!!errors.minAge || undefined}
+        >
+          <Label>Edad Min.</Label>
+          <Input
+            variant="secondary"
+            min={2}
+            placeholder="12"
+            type="number"
+            value={minAge || ""}
+            onChange={(e) => {
+              setMinAge(Number(e.target.value));
+              handleRemoveError("minAge");
+            }}
+          />
+          <FieldError children={errors.minAge && <> {errors.minAge}</>} />
         </TextField>
 
         <Select
@@ -124,7 +187,7 @@ export const FormTeam = ({
           value={gender}
           onChange={(e) => {
             setGender((e?.toString() as Gender) || null);
-            setErrors({});
+            handleRemoveError("gender");
           }}
         >
           <Label>Genero</Label>

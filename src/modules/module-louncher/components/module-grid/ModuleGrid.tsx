@@ -14,17 +14,17 @@ export const ModuleGrid = () => {
       {/* <!-- Administración --> */}
       <CardAdmin />
       {/* <!-- Escuelas --> */}
-      <SchoolsCard />
+      {/* <SchoolsCard /> */}
       {/* <!-- Clubes --> */}
-      <ClubsCard />
+      {/* <ClubsCard /> */}
       {/* <!-- Finanzas --> */}
-      <FinanceCard />
+      {/* <FinanceCard /> */}
       {/* <!-- Administración Web --> */}
-      <AdminWebCard />
+      {/* <AdminWebCard /> */}
       {/* <!-- Configuraciones --> */}
-      <SettingsCard />
+      {/* <SettingsCard /> */}
       {/* <!-- Support Integration --> */}
-      <SupportContactCard />
+      {/* <SupportContactCard /> */}
     </div>
   );
 };

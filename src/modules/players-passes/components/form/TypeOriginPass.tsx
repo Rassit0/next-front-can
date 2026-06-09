@@ -18,12 +18,14 @@ import clsx from "clsx";
 import { PlayerPassOriginType } from "@/modules/players-passes";
 import { Dispatch, SetStateAction } from "react";
 
-const tipeActivities: {
+export type TTypeOriginPass = {
   value: PlayerPassOriginType;
   icon: any;
   label: string;
   description: string;
-}[] = [
+};
+
+const defaultTipeActivities: TTypeOriginPass[] = [
   {
     value: "INTERNAL",
     icon: ArrowDataTransferHorizontalIcon,
@@ -45,6 +47,7 @@ const tipeActivities: {
 ];
 
 interface Props {
+  tipeActivities?: TTypeOriginPass[];
   originType: PlayerPassOriginType;
   setOriginType: Dispatch<SetStateAction<PlayerPassOriginType>>;
   errors: Record<string, string>;
@@ -52,6 +55,7 @@ interface Props {
 }
 
 export const TypeOriginPass = ({
+  tipeActivities = defaultTipeActivities,
   originType,
   setOriginType,
   errors,

@@ -2,14 +2,20 @@
 import { api } from "@/utils/api";
 import { ServiceResponse } from "@/types/api";
 import { handleServerAction } from "@/utils";
-import { ITeamsByClubOptionsResponse } from "@/modules/players-passes";
+import {
+  ITeamsByClubOptionsResponse,
+  TeamOptionsGender,
+} from "@/modules/players-passes";
 
 export const getTeamsByClubOptions = async (
   clubId: string,
+  gender: TeamOptionsGender,
 ): Promise<ServiceResponse<ITeamsByClubOptionsResponse>> => {
+  const query = new URLSearchParams();
+  query.append("gender", gender);
   return handleServerAction(async () => {
     const res = await api.get<ITeamsByClubOptionsResponse>(
-      `player-passes/teams/options/${clubId}`,
+      `player-passes/teams/options/${clubId}?${query.toString()}`,
       {
         next: {
           tags: ["teams"],

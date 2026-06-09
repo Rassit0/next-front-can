@@ -5,7 +5,12 @@ import {
   getPlayerPasses,
   TablePlayerPasses,
 } from "@/modules/players-passes";
-import { getPlayerById, getPlayers, TablePlayers } from "@/modules/players";
+import {
+  Gender,
+  getPlayerById,
+  getPlayers,
+  TablePlayers,
+} from "@/modules/players";
 import { ErrorPage, HeaderPage, PaginationSection, SectionFilters } from "@/ui";
 import {
   Alert01Icon,
@@ -18,6 +23,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { notFound, redirect } from "next/navigation";
+import { Badge, Chip } from "@heroui/react";
 
 interface Props {
   searchParams: Promise<{
@@ -67,23 +73,43 @@ export default async function PassesPage({ searchParams, params }: Props) {
   if (disciplineOptionsResponse.error) {
     return <ErrorPage message={disciplineOptionsResponse.message} />;
   }
+
+  const genderMap: Record<Gender, string> = {
+    MALE: "Masculino",
+    FEMALE: "Femenino",
+  };
+
+  const genderClassMap: Record<Gender, string> = {
+    MALE: "bg-blue-400 text-blue-50",
+    FEMALE: "bg-pink-400 text-pink-50",
+  };
   return (
     <>
       {/* <!-- Hero Stats / Filters Section --> */}
       <div className="space-y-8">
         <HeaderPage
           title={
-            <div className="flex items-center gap-2">
+            <Badge.Anchor className="flex items-center gap-2">
               <HugeiconsIcon icon={LicenseIcon} className="text-accent" />
-              <p className="text-3xl font-black font-headline text-default-foreground">
-                Kardex -{" "}
-                <span className="text-accent">
-                  {playerResponse.data.person.name}{" "}
-                  {playerResponse.data.person.lastName}{" "}
-                  {playerResponse.data.person.secondLastName}
-                </span>
-              </p>
-            </div>
+              <div className="flex gap-1">
+                <p className="text-3xl font-black font-headline text-default-foreground">
+                  Kardex -{" "}
+                  <span className="text-accent">
+                    {playerResponse.data.person.name}{" "}
+                    {playerResponse.data.person.lastName}{" "}
+                    {playerResponse.data.person.secondLastName}
+                  </span>
+                </p>
+                <Badge
+                  size="sm"
+                  variant="soft"
+                  className={genderClassMap[playerResponse.data.person.gender]}
+                  placement="bottom-right"
+                >
+                  {genderMap[playerResponse.data.person.gender]}
+                </Badge>
+              </div>
+            </Badge.Anchor>
           }
           description="Historial de pases del jugador."
           action={
@@ -93,7 +119,7 @@ export default async function PassesPage({ searchParams, params }: Props) {
               disciplineOptions={disciplineOptionsResponse.data.data}
             />
           }
-          urlBase="/admin/clubs"
+          urlBase="/admin"
           breadcrumb={[
             { label: "Directorio de Jugadores", href: "players" },
             {

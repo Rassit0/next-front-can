@@ -8,6 +8,7 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { FormClub, IClub, IDisciplineOptions } from "@/modules/clubs";
 import { useState } from "react";
+import { ButtonFloating } from "@/ui";
 
 interface Props {
   club: IClub;
@@ -36,11 +37,24 @@ export const EditModal = ({
           isIconOnly={isIcon}
           variant={!isIcon ? "primary" : "ghost"}
           onPress={() => state.open()}
+          className="hidden lg:flex"
         >
           <HugeiconsIcon icon={Edit03Icon} />
-          {!isIcon && "Editar Disciplina"}
+          {!isIcon && "Editar Club"}
         </Button>
       )}
+
+      <ButtonFloating
+        className="lg:hidden"
+        icon={
+          <HugeiconsIcon
+            icon={Edit03Icon}
+            className="h-6 w-6 text-background"
+          />
+        }
+        onPress={() => state.open()}
+        text="Editar Club"
+      />
       <Modal.Backdrop isOpen={state.isOpen} onOpenChange={state.setOpen}>
         <Modal.Container placement="auto" scroll="outside">
           <Modal.Dialog className="sm:max-w-md bg-background-tertiary">
@@ -50,10 +64,10 @@ export const EditModal = ({
                 <Modal.Icon className="bg-accent-soft text-accent-soft-foreground">
                   <HugeiconsIcon icon={Layers01Icon} />
                 </Modal.Icon>
-                <Modal.Heading>Agregar Disciplina</Modal.Heading>
+                <Modal.Heading>Editar Club</Modal.Heading>
               </div>
               <p className="mt-1.5 text-sm leading-5 text-muted">
-                Agrega una nueva disciplina al sistema.
+                Editar información del club.
               </p>
             </Modal.Header>
             <Modal.Body className="p-6">

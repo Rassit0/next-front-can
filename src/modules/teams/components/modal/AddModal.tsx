@@ -24,13 +24,21 @@ export const AddModal = ({ clubId }: Props) => {
         <HugeiconsIcon icon={Add01Icon} />
         Agregar Equipo
       </Button>
-      <ButtonFloating
+      <Button
+        className="flex md:hidden"
+        isIconOnly
+        variant="primary"
+        onPress={() => state.open()}
+      >
+        <HugeiconsIcon icon={Add01Icon} />
+      </Button>
+      {/* <ButtonFloating
         icon={
           <HugeiconsIcon icon={Add01Icon} className="h-6 w-6 text-background" />
         }
         onPress={() => state.open()}
         // text="Agregar Disciplina"
-      />
+      /> */}
       <Modal.Backdrop isOpen={state.isOpen} onOpenChange={state.setOpen}>
         <Modal.Container placement="auto" scroll="outside">
           <Modal.Dialog className="sm:max-w-md bg-background-tertiary">

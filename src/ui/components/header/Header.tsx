@@ -45,7 +45,7 @@ export const Header = ({ title, actions }: HeaderProps) => {
       }}
       animate={hidden ? "hidden" : "visible"}
       transition={{ duration: 0.35, ease: "easeInOut" }}
-      className="sticky top-0 z-40 w-full flex justify-between items-center px-4 md:px-8 md:pl-2 py-4  backdrop-blur-xl"
+      className="sticky top-0 z-40 w-full flex justify-between items-center px-1 md:px-4 lg:px-8 md:pl-2 py-0 md:py-2 lg:py-4 backdrop-blur-xl"
     >
       {/* <div className="flex items-center gap-4 flex-1">
         <div className="relative w-full max-w-md">
@@ -61,10 +61,10 @@ export const Header = ({ title, actions }: HeaderProps) => {
         </div>
       </div> */}
       <div className="flex items-center gap-4">
-        {/* <Button isIconOnly variant="ghost">
+        <Button className="md:hidden" isIconOnly variant="ghost">
           <HugeiconsIcon icon={SidebarLeftIcon} />
-        </Button> */}
-        <span className="text-3xl font-semibold text-on-surface font-headline leading-tight">
+        </Button>
+        <span className="hidden md:block text-3xl font-semibold text-on-surface font-headline leading-tight">
           {title || "Buen día, Mauricio"}
         </span>
         <span className="text-sm text-muted"></span>

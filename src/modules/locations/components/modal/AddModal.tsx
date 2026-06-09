@@ -32,7 +32,7 @@ export const AddModal = () => {
   return (
     <Modal>
       <Button
-        className="hidden md:flex"
+        className="hidden lg:flex"
         variant="primary"
         onPress={() => state.open()}
       >
@@ -40,6 +40,7 @@ export const AddModal = () => {
         Agregar Instalación
       </Button>
       <ButtonFloating
+        className="lg:hidden"
         icon={
           <HugeiconsIcon icon={Add01Icon} className="h-6 w-6 text-background" />
         }

@@ -9,6 +9,8 @@ interface Props {
   id: string;
   data: {
     name: string;
+    minAge: number;
+    maxAge: number;
     imageUrl?: string;
     clubId: string;
     gender: Gender;

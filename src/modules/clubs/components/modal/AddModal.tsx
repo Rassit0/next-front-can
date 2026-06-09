@@ -16,7 +16,7 @@ export const AddModal = ({ disciplinesOptions }: Props) => {
   return (
     <Modal>
       <Button
-        className="hidden md:flex"
+        className="hidden lg:flex"
         variant="primary"
         onPress={() => state.open()}
       >
@@ -24,6 +24,7 @@ export const AddModal = ({ disciplinesOptions }: Props) => {
         Agregar Club
       </Button>
       <ButtonFloating
+        className="lg:hidden"
         icon={
           <HugeiconsIcon icon={Add01Icon} className="h-6 w-6 text-background" />
         }

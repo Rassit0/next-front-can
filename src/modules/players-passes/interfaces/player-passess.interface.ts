@@ -3,7 +3,12 @@ export interface IPlayersPassesResponse {
   meta: Meta;
 }
 
-export type PlayerPassStatus = "PENDING" | "ACTIVE" | "INACTIVE" | "REJECTED";
+export type PlayerPassStatus =
+  | "PENDING"
+  | "ACTIVE"
+  | "INACTIVE"
+  | "CATEGORY_EXPIRED"
+  | "REJECTED";
 export type PlayerPassOriginType = "INTERNAL" | "EXTERNAL" | "FREE_AGENT";
 export type PlayerPassPreviousTeamSourceType =
   | "SYSTEM"

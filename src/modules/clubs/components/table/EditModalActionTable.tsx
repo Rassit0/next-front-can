@@ -6,23 +6,26 @@ import {
   Layers01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { FormClub, IClub, IDisciplineOptions } from "@/modules/clubs";
 import { useState } from "react";
-import { FormPlayer, IPlayer } from "@/modules/players";
+import { ButtonFloating } from "@/ui";
 
 interface Props {
-  player: IPlayer;
+  club: IClub;
+  disciplinesOptions: IDisciplineOptions[];
   isIcon?: boolean;
   showButton?: boolean;
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
 
-export const EditModal = ({
-  player,
+export const EditModalActionTable = ({
+  club,
   isIcon = false,
   showButton = true,
   isOpen,
   onOpenChange,
+  disciplinesOptions,
 }: Props) => {
   const state = useOverlayState({ isOpen, onOpenChange });
   const [isLoading, setIsLoading] = useState(false);
@@ -30,34 +33,30 @@ export const EditModal = ({
   return (
     <>
       {showButton && (
-        <Button
-          isIconOnly={isIcon}
-          variant={!isIcon ? "primary" : "ghost"}
-          onPress={() => state.open()}
-        >
+        <Button isIconOnly variant="ghost" onPress={() => state.open()}>
           <HugeiconsIcon icon={Edit03Icon} />
-          {!isIcon && "Editar Disciplina"}
         </Button>
       )}
       <Modal.Backdrop isOpen={state.isOpen} onOpenChange={state.setOpen}>
         <Modal.Container placement="auto" scroll="outside">
-          <Modal.Dialog className="sm:max-w-2xl bg-background-tertiary">
+          <Modal.Dialog className="sm:max-w-md bg-background-tertiary">
             <Modal.CloseTrigger />
             <Modal.Header>
               <div className="flex gap-2 items-center ">
                 <Modal.Icon className="bg-accent-soft text-accent-soft-foreground">
                   <HugeiconsIcon icon={Layers01Icon} />
                 </Modal.Icon>
-                <Modal.Heading>Agregar Disciplina</Modal.Heading>
+                <Modal.Heading>Editar Club</Modal.Heading>
               </div>
               <p className="mt-1.5 text-sm leading-5 text-muted">
-                Agrega una nueva disciplina al sistema.
+                Editar información del club.
               </p>
             </Modal.Header>
             <Modal.Body className="p-6">
-              <FormPlayer
-                formId="edit-player-form"
-                player={player}
+              <FormClub
+                formId="edit-category-form"
+                club={club}
+                disciplinesOptions={disciplinesOptions}
                 onSubmited={() => state.close()}
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
@@ -73,7 +72,7 @@ export const EditModal = ({
               </Button>
               <Button
                 type="submit"
-                form="edit-player-form"
+                form="edit-category-form"
                 isPending={isLoading}
               >
                 {isLoading && (
