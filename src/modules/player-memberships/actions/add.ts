@@ -2,26 +2,30 @@
 import { api } from "@/utils/api";
 import { ServiceResponse } from "@/types/api";
 import { updateTag } from "next/cache";
-import { IPaymentPlan } from "@/modules/payment-plans";
 import { handleServerAction } from "@/utils";
+import { IPlayerMembership } from "@/modules/player-memberships";
 
-export const addPaymentPlan = async (data: {
+export interface AddPlayerMembershipData {
+  playerId: string;
   teamSeasonId: string;
-  name: string;
-  registrationDiscountPercent: string;
-  monthlyDiscountPercent: string;
-}): Promise<ServiceResponse<IPaymentPlan>> => {
-  return handleServerAction(async () => {
-    const response = await api.post<{ message: string; data: IPaymentPlan }>(
-      `payment-plans`,
-      data,
-    );
+  paymentPlanId: string;
+  startedAt: string;
+}
 
-    updateTag("payment-plans");
+export const addPlayerMembership = async (
+  data: AddPlayerMembershipData,
+): Promise<ServiceResponse<IPlayerMembership>> => {
+  return handleServerAction(async () => {
+    const response = await api.post<{
+      message: string;
+      data: IPlayerMembership;
+    }>(`player-memberships`, data);
+
+    updateTag("player-memberships");
     return {
       error: false,
       data: response.data,
-      message: response.message || "Plan de pago agregado exitosamente",
+      message: response.message || "Atleta inscrito exitosamente",
     };
   });
 };

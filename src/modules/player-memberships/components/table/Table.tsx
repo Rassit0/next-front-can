@@ -1,112 +1,122 @@
 "use client";
-import { Avatar, Button, Checkbox, Chip, Table } from "@heroui/react";
-import { EyeIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
+import { Avatar, Table } from "@heroui/react";
 import { useEffect, useState } from "react";
-import { ButtonGestion } from "./ButtonGestion";
-import { EditModal } from "../modal/EditModal";
 import { SortableColumnHeader } from "@/ui";
-import { DeleteModal } from "../modal/DeleteModal";
-import { iconMap } from "@/utils";
-import { IPaymentPlan } from "@/modules/payment-plans";
+import { ITeamSeason } from "@/modules/team-seasons";
+import { IPlayerMembership } from "@/modules/player-memberships";
+import { StatusChip } from "@/modules/player-memberships/components/status/StatusChip";
+import { MembershipActions } from "@/modules/player-memberships/components/actions/MembershipActions";
+import {
+  calculateInitialCharges,
+  formatCurrency,
+} from "@/modules/player-memberships/helpers/initial-charges";
 
 interface Props {
-  paymentPlans: IPaymentPlan[];
-  teamSeasonId: string;
+  memberships: IPlayerMembership[];
+  teamSeason: ITeamSeason;
 }
 
-export const TablePaymentPlans = ({ paymentPlans, teamSeasonId }: Props) => {
+const initials = (name: string, lastName: string) =>
+  `${name?.[0] ?? ""}${lastName?.[0] ?? ""}`.toUpperCase();
+
+export const TableMemberships = ({ memberships, teamSeason }: Props) => {
   const [isClient, setIsClient] = useState(false);
 
-  // Evitamos la hidratación fallida
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   if (!isClient) {
-    return null; // O un esqueleto de carga (Skeleton)
+    return null;
   }
 
   return (
     <Table>
       <Table.ScrollContainer>
-        <Table.Content
-          aria-label="Table with custom cells"
-          className="min-w-200"
-        >
+        <Table.Content aria-label="Membresías de atletas" className="min-w-200">
           <Table.Header>
-            {/* <Table.Column
-              allowsSorting
-              isRowHeader
-              className="after:hidden"
-              id="id"
-            >
-              ID
-            </Table.Column> */}
-
-            <Table.Column isRowHeader allowsSorting id="name">
-              <SortableColumnHeader id="name">
+            <Table.Column isRowHeader allowsSorting id="player">
+              <SortableColumnHeader id="player">ATLETA</SortableColumnHeader>
+            </Table.Column>
+            <Table.Column allowsSorting id="paymentPlan">
+              <SortableColumnHeader id="paymentPlan">
                 PLAN DE PAGO
               </SortableColumnHeader>
             </Table.Column>
-
-            <Table.Column allowsSorting id="registrationDiscountPercent">
-              <SortableColumnHeader id="registrationDiscountPercent">
-                DESCUENTO REGISTRO
-              </SortableColumnHeader>
+            <Table.Column id="initialCharges" className="text-right">
+              CARGOS INICIALES
             </Table.Column>
-
-            <Table.Column allowsSorting id="monthlyDiscountPercent">
-              <SortableColumnHeader id="monthlyDiscountPercent">
-                DESCUENTO MENSUAL
-              </SortableColumnHeader>
+            <Table.Column allowsSorting id="startedAt">
+              <SortableColumnHeader id="startedAt">INICIO</SortableColumnHeader>
             </Table.Column>
-
-            <Table.Column allowsSorting id="createdAt">
-              <SortableColumnHeader id="createdAt">
-                CREADO EN
-              </SortableColumnHeader>
+            <Table.Column allowsSorting id="status">
+              <SortableColumnHeader id="status">ESTADO</SortableColumnHeader>
             </Table.Column>
-
-            <Table.Column allowsSorting id="updatedAt">
-              <SortableColumnHeader id="updatedAt">
-                ACTUALIZADO EN
-              </SortableColumnHeader>
-            </Table.Column>
-
             <Table.Column className="text-center">ACCIONES</Table.Column>
           </Table.Header>
-          <Table.Body>
-            {paymentPlans.map((paymentPlan) => (
-              <Table.Row key={paymentPlan.id} id={paymentPlan.id}>
-                {/* <Table.Cell>{category.id}</Table.Cell> */}
-                <Table.Cell>{paymentPlan.name}</Table.Cell>
-                <Table.Cell>
-                  {paymentPlan.registrationDiscountPercent} %
-                </Table.Cell>
-                <Table.Cell>{paymentPlan.monthlyDiscountPercent} %</Table.Cell>
-                <Table.Cell>
-                  {paymentPlan.createdAt.toLocaleDateString()}
-                </Table.Cell>
-                <Table.Cell>
-                  {paymentPlan.updatedAt.toLocaleDateString()}
-                </Table.Cell>
-
-                <Table.Cell>
-                  <div className="flex items-center justify-center gap-1">
-                    <Button isIconOnly size="sm" variant="tertiary">
-                      <HugeiconsIcon icon={EyeIcon} />
-                    </Button>
-                    <EditModal
-                      paymentPlan={paymentPlan}
-                      teamSeasonId={teamSeasonId}
-                      isIcon={true}
-                    />
-                    {/* <DeleteModal paymentPlan={paymentPlan} isIcon={true} /> */}
-                  </div>
-                </Table.Cell>
-              </Table.Row>
-            ))}
+          <Table.Body
+            renderEmptyState={() => (
+              <div className="py-10 text-center text-sm text-muted">
+                Aún no hay atletas inscritos en esta temporada.
+              </div>
+            )}
+          >
+            {memberships.map((membership) => {
+              const person = membership.player?.person;
+              const charges = calculateInitialCharges(
+                teamSeason,
+                membership.paymentPlan,
+              );
+              return (
+                <Table.Row key={membership.id} id={membership.id}>
+                  <Table.Cell>
+                    <div className="flex items-center gap-3">
+                      <Avatar size="sm">
+                        <Avatar.Image
+                          alt={person?.name ?? "Atleta"}
+                          src={person?.imageUrl ?? undefined}
+                          loading="lazy"
+                        />
+                        <Avatar.Fallback>
+                          {person
+                            ? initials(person.name, person.lastName)
+                            : "AT"}
+                        </Avatar.Fallback>
+                      </Avatar>
+                      <div className="flex flex-col">
+                        <span className="font-semibold text-foreground">
+                          {person
+                            ? `${person.name} ${person.lastName}`
+                            : "Atleta"}
+                        </span>
+                        {person ? (
+                          <span className="text-[11px] text-muted">
+                            {person.documentType} {person.documentNumber}
+                          </span>
+                        ) : null}
+                      </div>
+                    </div>
+                  </Table.Cell>
+                  <Table.Cell>
+                    {membership.paymentPlan?.name ?? "—"}
+                  </Table.Cell>
+                  <Table.Cell className="text-right font-semibold tabular-nums">
+                    {formatCurrency(charges.total, charges.currency)}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {membership.startedAt.toLocaleDateString("es-BO")}
+                  </Table.Cell>
+                  <Table.Cell>
+                    <StatusChip status={membership.status} />
+                  </Table.Cell>
+                  <Table.Cell>
+                    <div className="flex items-center justify-center">
+                      <MembershipActions membership={membership} />
+                    </div>
+                  </Table.Cell>
+                </Table.Row>
+              );
+            })}
           </Table.Body>
         </Table.Content>
       </Table.ScrollContainer>

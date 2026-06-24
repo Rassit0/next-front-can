@@ -1,52 +1,64 @@
 import { api } from "@/utils/api";
 import { ServiceResponse } from "@/types/api";
 import { handleServerAction } from "@/utils";
-import { IPaymentPlanResponse } from "@/modules/payment-plans";
+import {
+  IPlayerMembership,
+  IPlayerMembershipResponse,
+} from "@/modules/player-memberships";
 
 interface SearchParams {
   search?: string;
   per_page?: string;
   page?: string;
-  clubId?: string;
-  callbackUrl?: string;
+  teamSeasonId: string;
+  status?: string;
+  playerId?: string;
+  paymentPlanId?: string;
 }
 
-export const getPaymentPlans = async ({
+const parseMembership = (membership: IPlayerMembership): IPlayerMembership => ({
+  ...membership,
+  startedAt: membership.startedAt ? new Date(membership.startedAt) : new Date(),
+  finishedAt: membership.finishedAt ? new Date(membership.finishedAt) : null,
+  createdAt: membership.createdAt ? new Date(membership.createdAt) : new Date(),
+  updatedAt: membership.updatedAt ? new Date(membership.updatedAt) : new Date(),
+});
+
+export const getPlayerMemberships = async ({
   search,
-  per_page = "5",
+  per_page = "10",
   page = "1",
-  clubId,
-}: SearchParams): Promise<ServiceResponse<IPaymentPlanResponse>> => {
+  teamSeasonId,
+  status,
+  playerId,
+  paymentPlanId,
+}: SearchParams): Promise<ServiceResponse<IPlayerMembershipResponse>> => {
   return handleServerAction(async () => {
     const params = new URLSearchParams();
     if (search) params.set("search", search);
     if (per_page) params.set("per_page", per_page);
     if (page) params.set("page", page);
-    if (clubId) params.set("clubId", clubId);
+    if (status) params.set("status", status);
+    if (playerId) params.set("playerId", playerId);
+    if (paymentPlanId) params.set("paymentPlanId", paymentPlanId);
+    params.set("teamSeasonId", teamSeasonId);
 
-    const res = await api.get<IPaymentPlanResponse>(
-      `payment-plans?${params.toString()}`,
+    const res = await api.get<IPlayerMembershipResponse>(
+      `player-memberships?${params.toString()}`,
       {
         next: {
-          tags: ["payment-plans"],
+          tags: ["player-memberships"],
           revalidate: 3600,
         },
       },
     );
 
-    const data = res.data.map((category) => ({
-      ...category,
-      createdAt: new Date(category.createdAt),
-      updatedAt: new Date(category.updatedAt),
-    }));
+    const data = (res.data ?? []).map(parseMembership);
 
     return {
       error: false,
-      data: {
-        ...res,
-        data,
-      },
-      message: res.message || "Planes de pago obtenidos exitosamente",
+      data: { ...res, data },
+      message: res.message || "Membresías obtenidas exitosamente",
     };
   });
 };
