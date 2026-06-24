@@ -78,8 +78,8 @@ export const FinalizeModal = ({ isOpen, onOpenChange, teamSeason }: Props) => {
             <AlertDialog.Heading className="flex flex-col">
               <span>Finalizar Temporada Anticipadamente</span>
               <span className="text-muted">
-                Estás por cerrar el ciclo de {teamSeason.name}: Esta acción es
-                irreversible
+                Estás por cerrar el ciclo de {teamSeason.season.name}: Esta
+                acción es irreversible
               </span>
             </AlertDialog.Heading>
           </AlertDialog.Header>

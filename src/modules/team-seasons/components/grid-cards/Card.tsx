@@ -36,7 +36,7 @@ export const CardTeamOffering = ({ teamSeason }: Props) => {
             {STATUS_TITLE_MAP[teamSeason.status]}
           </span>
           <h3 className="text-2xl font-headline font-extrabold text-on-surface group-hover:text-primary transition-colors">
-            {teamSeason.name}
+            {teamSeason.season.name}
           </h3>
         </div>
         <div className="flex items-center gap-2">
@@ -68,13 +68,13 @@ export const CardTeamOffering = ({ teamSeason }: Props) => {
         <div className="flex items-center gap-3 text-sm text-on-surface-variant">
           <HugeiconsIcon icon={Calendar03Icon} className="text-accent" />
           <span>
-            {teamSeason.startDate.toLocaleDateString("es-BO", {
+            {teamSeason.season.startDate.toLocaleDateString("es-BO", {
               day: "2-digit",
               month: "short",
               year: "numeric",
             })}{" "}
             -{" "}
-            {teamSeason.endDate.toLocaleDateString("es-BO", {
+            {teamSeason.season.endDate.toLocaleDateString("es-BO", {
               day: "2-digit",
               month: "short",
               year: "numeric",
@@ -87,7 +87,7 @@ export const CardTeamOffering = ({ teamSeason }: Props) => {
         </div>
       </div>
       <div className="flex gap-2 justify-between">
-        {teamSeason.status === "DRAFT" && (
+        {/* {teamSeason.status === "DRAFT" && (
           <ButtonEdit
             href={`/admin/clubs/${teamSeason.team.club.id}/manage/${teamSeason.team.id}/bid-management/${teamSeason.id}/edit`}
           />
@@ -102,7 +102,7 @@ export const CardTeamOffering = ({ teamSeason }: Props) => {
           <ButtonHistory
             href={`/admin/clubs/${teamSeason.team.club.id}/manage/${teamSeason.team.id}/bid-management/${teamSeason.id}/history`}
           />
-        )}
+        )} */}
       </div>
     </Card>
   );

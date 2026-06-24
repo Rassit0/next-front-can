@@ -1,22 +1,17 @@
 import { TTypeOriginPass, TypeOriginPass } from "./TypeOriginPass";
 import {
   IClubOptionsByDiscipline,
-  IDisciplineOptions,
   IPlayerPassActiveOptions,
   ITeamsByClubOptions,
   PlayerPassOriginType,
-  PlayerPassPreviousTeamSourceType,
 } from "@/modules/players-passes";
-import { Dispatch, SetStateAction } from "react";
-import { RadioPreviousTeamSource } from "./RadioPreviousTeamSource";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
-  Button,
-  cn,
-  Disclosure,
-  DisclosureGroup,
   FieldError,
   Input,
   Label,
+  Radio,
+  RadioGroup,
   Separator,
   TextField,
 } from "@heroui/react";
@@ -27,6 +22,8 @@ import { SelectTeam } from "./SelectTeam";
 import {
   ArrowDataTransferDiagonalIcon,
   ArrowDataTransferHorizontalIcon,
+  GeometricShapes01Icon,
+  Home01Icon,
   UserCircleIcon,
 } from "@hugeicons/core-free-icons";
 
@@ -34,10 +31,6 @@ interface Props {
   activePassesOptions: IPlayerPassActiveOptions[];
   originType: PlayerPassOriginType;
   setOriginType: Dispatch<SetStateAction<PlayerPassOriginType>>;
-  previousTeamSource: PlayerPassPreviousTeamSourceType;
-  setPreviousTeamSource: Dispatch<
-    SetStateAction<PlayerPassPreviousTeamSourceType>
-  >;
   expandedKeys: Set<string | number>;
   setExpandedKeys: Dispatch<SetStateAction<Set<string | number>>>;
   currentPassId: string | null;
@@ -57,8 +50,6 @@ export const Origin = ({
   activePassesOptions,
   originType,
   setOriginType,
-  previousTeamSource,
-  setPreviousTeamSource,
   expandedKeys,
   setExpandedKeys,
   currentPassId,
@@ -74,11 +65,26 @@ export const Origin = ({
   errors,
   handleRemoveError,
 }: Props) => {
+  const [originTeam, setOriginTeam] = useState<string>("selected");
+
+  useEffect(() => {
+    setPreviousClubId(null);
+    setPreviousTeamId(null);
+    setExternalPreviousTeamName(null);
+  }, [originTeam]);
+
   const freeAgentOption = {
     value: "FREE_AGENT",
     icon: UserCircleIcon,
     label: "Agente Libre",
     description: "El jugador no pertenece a ningún club.",
+  } satisfies TTypeOriginPass;
+
+  const ownOption = {
+    value: "OWN",
+    icon: Home01Icon,
+    label: "Propio",
+    description: "El jugador es propio del club.",
   } satisfies TTypeOriginPass;
 
   const typeActivities: TTypeOriginPass[] = [
@@ -94,7 +100,7 @@ export const Origin = ({
       label: "Externo",
       description: "El jugador viene de un club externo.",
     },
-    ...(activePassesOptions.length === 0 ? [freeAgentOption] : []),
+    ...(activePassesOptions.length === 0 ? [freeAgentOption, ownOption] : []),
   ];
 
   return (
@@ -106,16 +112,7 @@ export const Origin = ({
         errors={errors}
         handleRemoveError={handleRemoveError}
       />
-      {originType === "EXTERNAL" && activePassesOptions.length === 0 && (
-        <RadioPreviousTeamSource
-          previousTeamSource={previousTeamSource}
-          setPreviousTeamSource={setPreviousTeamSource}
-          errors={errors}
-          handleRemoveError={handleRemoveError}
-        />
-      )}
-
-      {activePassesOptions.length > 0 && (
+      {activePassesOptions.length > 0 ? (
         <SelectCurrentPass
           isRequired={expandedKeys.has("1")}
           activePassesOptions={activePassesOptions}
@@ -124,33 +121,59 @@ export const Origin = ({
           errors={errors}
           handleRemoveError={handleRemoveError}
         />
+      ) : (
+        originType === "EXTERNAL" && (
+          <RadioGroup
+            name="plan-controlled"
+            value={originTeam}
+            onChange={setOriginTeam}
+          >
+            <Radio value="selected">
+              <Radio.Control>
+                <Radio.Indicator />
+              </Radio.Control>
+              <Radio.Content>
+                <Label>Seleccionar Equipo Registrado</Label>
+              </Radio.Content>
+            </Radio>
+            <Radio value="manual">
+              <Radio.Control>
+                <Radio.Indicator />
+              </Radio.Control>
+              <Radio.Content>
+                <Label>Ingresar Equipo Manualmente</Label>
+              </Radio.Content>
+            </Radio>
+          </RadioGroup>
+        )
       )}
 
-      {activePassesOptions.length === 0 && previousTeamSource === "SYSTEM" && (
-        <>
-          <SelectClub
-            isRequired={expandedKeys.has("2")}
-            label="CLUB ANTERIOR"
-            clubOptions={clubsOptions}
-            clubId={previousClubId}
-            setClubId={setPreviousClubId}
-            errors={errors}
-            handleRemoveError={handleRemoveError}
-          />
-          <SelectTeam
-            isRequired={expandedKeys.has("2")}
-            label="EQUIPO ANTERIOR"
-            teamsOptions={previousTeamsOptions}
-            currentTeamId={previousTeamId}
-            setCurrentTeamId={setPreviousTeamId}
-            errors={errors}
-            handleRemoveError={handleRemoveError}
-          />
-        </>
-      )}
-
-      {originType === "EXTERNAL" && previousTeamSource === "EXTERNAL" && (
-        <>
+      {originType !== "FREE_AGENT" &&
+        originType !== "OWN" &&
+        activePassesOptions.length === 0 &&
+        (originTeam === "selected" || originType === "INTERNAL" ? (
+          <>
+            <SelectClub
+              isRequired={expandedKeys.has("2")}
+              label="CLUB ANTERIOR"
+              clubOptions={clubsOptions}
+              clubId={previousClubId}
+              setClubId={setPreviousClubId}
+              errors={errors}
+              handleRemoveError={handleRemoveError}
+            />
+            <SelectTeam
+              isRequired={expandedKeys.has("2")}
+              isDisabled={previousClubId === null || previousClubId === ""}
+              label="EQUIPO ANTERIOR"
+              teamsOptions={previousTeamsOptions}
+              currentTeamId={previousTeamId}
+              setCurrentTeamId={setPreviousTeamId}
+              errors={errors}
+              handleRemoveError={handleRemoveError}
+            />
+          </>
+        ) : (
           <TextField
             isRequired
             className="w-full"
@@ -176,8 +199,7 @@ export const Origin = ({
               }
             />
           </TextField>
-        </>
-      )}
+        ))}
     </div>
   );
 };

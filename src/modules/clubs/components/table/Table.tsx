@@ -14,10 +14,10 @@ import { EditModalActionTable } from "./EditModalActionTable";
 
 interface Props {
   clubs: IClub[];
-  disciplinesOptions: IDisciplineOptions[];
+  disciplineId: string;
 }
 
-export const TableClubs = ({ clubs, disciplinesOptions }: Props) => {
+export const TableClubs = ({ clubs, disciplineId }: Props) => {
   const [isClient, setIsClient] = useState(false);
 
   // Evitamos la hidratación fallida
@@ -55,10 +55,6 @@ export const TableClubs = ({ clubs, disciplinesOptions }: Props) => {
               <SortableColumnHeader id="name">CLUB</SortableColumnHeader>
             </Table.Column>
 
-            <Table.Column allowsSorting id="discipline">
-              DISCIPLINA
-            </Table.Column>
-
             <Table.Column className="text-center">ACCIONES</Table.Column>
           </Table.Header>
           <Table.Body>
@@ -66,17 +62,6 @@ export const TableClubs = ({ clubs, disciplinesOptions }: Props) => {
               <Table.Row key={club.id} id={club.id}>
                 <Table.Cell>{club.id}</Table.Cell>
                 <Table.Cell>{club.name}</Table.Cell>
-                <Table.Cell>
-                  <Chip variant="primary" color="default">
-                    <div className="flex items-center gap-1">
-                      <HugeiconsIcon
-                        icon={iconMap[club.discipline.icon]}
-                        size={16}
-                      />
-                      {club.discipline.name}
-                    </div>
-                  </Chip>
-                </Table.Cell>
 
                 <Table.Cell>
                   <div className="flex items-center justify-center gap-1">
@@ -86,7 +71,7 @@ export const TableClubs = ({ clubs, disciplinesOptions }: Props) => {
                     </Button>
                     <EditModalActionTable
                       club={club}
-                      disciplinesOptions={disciplinesOptions}
+                      disciplineId={disciplineId}
                     />
                     <DeleteModal club={club} isIcon={true} />
                   </div>

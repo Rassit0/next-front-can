@@ -4,8 +4,9 @@ import { useRouter } from "next/navigation";
 
 interface Props {
   cancelHref: string;
+  formId: string;
 }
-export const ButtonsSubmit = ({ cancelHref }: Props) => {
+export const ButtonsSubmit = ({ cancelHref, formId }: Props) => {
   const router = useRouter();
   return (
     <div className="flex gap-2">
@@ -16,7 +17,7 @@ export const ButtonsSubmit = ({ cancelHref }: Props) => {
       >
         Cancelar
       </Button>
-      <Button type="submit" form="form-team-offering">
+      <Button type="submit" form={formId}>
         Guardar
       </Button>
     </div>

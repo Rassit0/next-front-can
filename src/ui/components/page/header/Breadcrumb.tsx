@@ -14,13 +14,13 @@ export const Breadcrumb = ({ breadcrumb, isLast, urlBase }: Props) => {
   return breadcrumb?.href ? (
     <Link
       href={urlBase ? `${urlBase}/${breadcrumb.href}` : breadcrumb.href}
-      className={isLast ? "text-foreground font-bold" : "text-foreground/50"}
+      className={`${isLast ? "text-foreground font-bold" : "text-foreground/50"}`}
     >
       {breadcrumb.label}
     </Link>
   ) : (
     <span
-      className={isLast ? "text-foreground font-bold" : "text-foreground/50"}
+      className={`${isLast ? "text-foreground font-bold" : "text-foreground/50"}`}
     >
       {breadcrumb?.label}
     </span>

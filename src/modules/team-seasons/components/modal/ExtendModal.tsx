@@ -97,7 +97,7 @@ export const ExtendModal = ({ isOpen, onOpenChange, teamSeason }: Props) => {
             <AlertDialog.Heading className="flex flex-col">
               <span>Extender Temporada</span>
               <span className="text-muted">
-                Estás por extender el ciclo de {teamSeason.name}
+                Estás por extender el ciclo de {teamSeason.season.name}
               </span>
             </AlertDialog.Heading>
           </AlertDialog.Header>

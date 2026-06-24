@@ -9,9 +9,9 @@ export type PlayerPassStatus =
   | "INACTIVE"
   | "CATEGORY_EXPIRED"
   | "REJECTED";
-export type PlayerPassOriginType = "INTERNAL" | "EXTERNAL" | "FREE_AGENT";
-export type PlayerPassPreviousTeamSourceType =
-  | "SYSTEM"
+export type PlayerPassOriginType =
+  | "OWN"
+  | "INTERNAL"
   | "EXTERNAL"
   | "FREE_AGENT";
 
@@ -23,7 +23,6 @@ export interface IPlayerPass {
   previousTeam: null | ITeam;
   externalNextTeamName: string | null; // Si se cierra el pase indicar a que equipo se va, opcional para cuando es pase externo
   currentTeam: ITeam;
-  previousTeamSource: PlayerPassPreviousTeamSourceType;
   originType: PlayerPassOriginType;
   startDate: Date;
   endDate: Date | null;

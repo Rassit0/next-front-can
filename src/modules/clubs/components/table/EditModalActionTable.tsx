@@ -12,7 +12,7 @@ import { ButtonFloating } from "@/ui";
 
 interface Props {
   club: IClub;
-  disciplinesOptions: IDisciplineOptions[];
+  disciplineId: string;
   isIcon?: boolean;
   showButton?: boolean;
   isOpen?: boolean;
@@ -25,7 +25,7 @@ export const EditModalActionTable = ({
   showButton = true,
   isOpen,
   onOpenChange,
-  disciplinesOptions,
+  disciplineId,
 }: Props) => {
   const state = useOverlayState({ isOpen, onOpenChange });
   const [isLoading, setIsLoading] = useState(false);
@@ -54,9 +54,9 @@ export const EditModalActionTable = ({
             </Modal.Header>
             <Modal.Body className="p-6">
               <FormClub
-                formId="edit-category-form"
+                formId="edit-club-form"
                 club={club}
-                disciplinesOptions={disciplinesOptions}
+                disciplineId={disciplineId}
                 onSubmited={() => state.close()}
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
@@ -70,11 +70,7 @@ export const EditModalActionTable = ({
               >
                 Cancelar
               </Button>
-              <Button
-                type="submit"
-                form="edit-category-form"
-                isPending={isLoading}
-              >
+              <Button type="submit" form="edit-club-form" isPending={isLoading}>
                 {isLoading && (
                   <ProgressCircle isIndeterminate aria-label="Loading">
                     <ProgressCircle.Track>

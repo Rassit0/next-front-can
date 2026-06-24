@@ -7,6 +7,7 @@ import { Dispatch, SetStateAction } from "react";
 
 interface Props {
   isRequired?: boolean;
+  isDisabled?: boolean;
   label: string;
   teamsOptions: ITeamsByClubOptions[];
   currentTeamId: string | null;
@@ -17,6 +18,7 @@ interface Props {
 
 export const SelectTeam = ({
   isRequired = true,
+  isDisabled = false,
   label,
   teamsOptions,
   currentTeamId,
@@ -28,6 +30,7 @@ export const SelectTeam = ({
     <ComboBox
       variant="secondary"
       isRequired={isRequired}
+      isDisabled={isDisabled}
       isInvalid={!!errors.currentTeamId || undefined}
       className="w-full"
       name="currentTeamId"

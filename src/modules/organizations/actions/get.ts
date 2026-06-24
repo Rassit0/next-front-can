@@ -1,3 +1,4 @@
+"use server";
 import { api } from "@/utils/api";
 import { ServiceResponse } from "@/types/api";
 import { handleServerAction } from "@/utils";
@@ -10,7 +11,7 @@ interface SearchParams {
   callbackUrl?: string;
 }
 
-export const getOrganizations = async ({
+export const getInstitutions = async ({
   search,
   per_page = "5",
   page = "1",
@@ -21,10 +22,10 @@ export const getOrganizations = async ({
     if (per_page) params.set("per_page", per_page);
     if (page) params.set("page", page);
     const res = await api.get<IOrganizationsResponse>(
-      `organizations?${params.toString()}`,
+      `institutions?${params.toString()}`,
       {
         next: {
-          tags: ["organizations"],
+          tags: ["institutions"],
           revalidate: 3600,
         },
       },
@@ -42,7 +43,7 @@ export const getOrganizations = async ({
         ...res,
         data,
       },
-      message: res.message || "Organizaciones obtenidas exitosamente",
+      message: res.message || "Instituciones obtenidas exitosamente",
     };
   });
 };

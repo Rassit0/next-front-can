@@ -12,6 +12,7 @@ interface SearchParams {
   page?: string;
   status?: "ACTIVE" | "INACTIVE" | "all";
   playerId?: string;
+  disciplineId?: string;
 }
 
 export const getPlayerPasses = async ({
@@ -20,6 +21,7 @@ export const getPlayerPasses = async ({
   page = "1",
   status = "all",
   playerId,
+  disciplineId,
 }: SearchParams): Promise<ServiceResponse<IPlayersPassesResponse>> => {
   return handleServerAction(async () => {
     const params = new URLSearchParams();
@@ -28,6 +30,7 @@ export const getPlayerPasses = async ({
     if (page) params.set("page", page);
     if (status) params.set("status", status);
     if (playerId) params.set("playerId", playerId);
+    if (disciplineId) params.set("disciplineId", disciplineId);
 
     console.log("url", `player-passes?${params.toString()}`);
     const res = await api.get<IPlayersPassesResponse>(
@@ -35,8 +38,8 @@ export const getPlayerPasses = async ({
       {
         // 2do argumento: options (aquí va el caché)
         next: {
-          tags: ["player-passes"],
-          revalidate: 3600,
+          // tags: ["player-passes"],
+          // revalidate: 3600,
         },
       },
     );

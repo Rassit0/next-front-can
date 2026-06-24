@@ -10,6 +10,7 @@ export * from "./components/pagination/PerPage";
 export * from "./components/page/error/ErrorPage";
 export * from "./components/table/SortableColumnHeader";
 export * from "./components/filters/TabsTypeFilter";
+export * from "./components/filters/TabsTypeFilterQueryProps";
 
 export * from "./components/button-redirection/ButtonAdd";
 export * from "./components/button-redirection/ButtonEdit";

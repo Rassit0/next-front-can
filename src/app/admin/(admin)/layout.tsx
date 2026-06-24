@@ -1,6 +1,6 @@
 import { itemsNavigation } from "@/config";
 import { getClubsOptions, SelectClub } from "@/modules/clubs";
-import { getOrganizationById, getOrganizations } from "@/modules/organizations";
+import { getOrganizationById, getInstitutions } from "@/modules/organizations";
 import { BottonNavBar, ErrorPage, Header, Sidebar } from "@/ui";
 import { iconMap } from "@/utils";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -10,18 +10,18 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const organizationsResponse = await getOrganizations({});
+  const institutionsResponse = await getInstitutions({});
 
-  if (organizationsResponse.error || !organizationsResponse.data) {
-    return <ErrorPage message={organizationsResponse.message} />;
+  if (institutionsResponse.error || !institutionsResponse.data) {
+    return <ErrorPage message={institutionsResponse.message} />;
   }
-  const organization = organizationsResponse.data.data[0];
+  const institution = institutionsResponse.data.data[0];
 
   return (
     <>
       {/* <!-- SideNavBar --> */}
       <Sidebar
-        organization={organization}
+        organization={institution}
         items={itemsNavigation}
         urlBase={`/admin`}
       />
@@ -32,7 +32,7 @@ export default async function AdminLayout({
           {/* <!-- TopNavBar --> */}
           <Header />
           {/* <!-- Dashboard Canvas --> */}
-          <main className="p-1 md:px-4 lg:px-8 md:py-1 lg:py-3 space-y-4 md:space-y-6">
+          <main className="page-content">
             {/* <!-- Header Section --> */}
             {children}
           </main>

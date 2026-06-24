@@ -63,7 +63,7 @@ export const DeleteModal = ({ isOpen, onOpenChange, teamSeason }: Props) => {
   return (
     <AlertDialog.Backdrop isOpen={state.isOpen} onOpenChange={state.setOpen}>
       <AlertDialog.Container>
-        <AlertDialog.Dialog className="sm:max-w-[400px]">
+        <AlertDialog.Dialog className="sm:max-w-100">
           <AlertDialog.CloseTrigger />
           <AlertDialog.Header>
             <AlertDialog.Icon status="danger" />
@@ -74,8 +74,8 @@ export const DeleteModal = ({ isOpen, onOpenChange, teamSeason }: Props) => {
           <AlertDialog.Body>
             <p>
               Se eliminará permanentemente la temporada{" "}
-              <strong>{teamSeason.name}</strong> y todos sus datos. Esta acción
-              no se puede deshacer.
+              <strong>{teamSeason.season.name}</strong> y todos sus datos. Esta
+              acción no se puede deshacer.
             </p>
           </AlertDialog.Body>
           <AlertDialog.Footer>

@@ -1,20 +1,19 @@
-import { StatusTeamSeason } from "./team-seasons.interface";
+import { StatusTeamSeason, Gender } from "./team-season.interface";
 
-export interface PostOfferingInterface {
-  teamId: string;
-  name: string;
-  startDate: Date;
-  endDate: Date;
+export interface IPostTeamSeason {
+  description: string | null;
   maxMembers: number;
   minMembers: number;
-  minYear: number;
-  maxYear: number;
-  monthlyFee: string; // precio de la mensualidad
+  teamId: string;
+  categoryId: string;
+  seasonId: string;
+  gender: Gender;
+  billingDay: number; // Dia de facturacion
   registrationFee: string; // Precio de la matricula
-  fullPaymentDiscountPercent: string; // Porcentaje de descuento por pago completo
+  monthlyFee: string; // precio de la mensualidad
+  debtToleranceMonths: number; // Cantidad de meses para la suspension del miembro
   lateFeeEnabled: boolean; // Habilitar recargo por mora
   lateFeePerDay: string; // Recargo por dia de mora
   graceDays: number; // Dias de gracia
-  suspensionAfterMonthsDue: number; // Cantidad de meses para la suspension del miembro
   status: StatusTeamSeason; // Estado de la oferta
 }

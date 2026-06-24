@@ -25,10 +25,10 @@ export const HeaderPage = ({
 }: Props) => {
   return (
     <section className="flex flex-wrap flex-row justify-between items-center gap-4">
-      <div className="flex flex-wrap">
+      <div className="flex justify-between flex-wrap">
         <div>
           <div className="flex flex-col">
-            <div className="flex items-center md:gap-2 text-outline text-[10px] md:mb-2 font-semibold tracking-wide uppercase">
+            <div className="hidden lg:flex items-center md:gap-2 text-outline text-[10px] md:mb-2 font-semibold tracking-wide uppercase">
               {breadcrumb?.map((item, index) => (
                 <div key={index} className="flex items-center md:gap-2">
                   <Breadcrumb
@@ -60,7 +60,7 @@ export const HeaderPage = ({
         </div>
         <div className="flex gap-2">{children}</div>
       </div>
-      {action}
+      <div>{action}</div>
     </section>
   );
 };

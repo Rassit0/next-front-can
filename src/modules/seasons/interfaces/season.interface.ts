@@ -4,14 +4,14 @@ export interface ISeasonsResponse {
   message: string;
 }
 
-export type ISeasonStatus = "DRAFT" | "ACTIVE" | "FINISHED" | "CANCELLED";
-
 export interface ISeason {
   id: string;
+  institutionId: string;
+  disciplineId: string;
   name: string;
+  description: string | null;
   startDate: Date;
   endDate: Date;
-  status: ISeasonStatus;
   createdAt: Date;
   updatedAt: Date;
 }

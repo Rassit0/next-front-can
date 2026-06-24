@@ -9,6 +9,7 @@ interface SearchParams {
   per_page?: string;
   page?: string;
   sortField?: string;
+  disciplineId?: string;
   orderBy?: "asc" | "desc";
   callbackUrl?: string;
 }
@@ -18,6 +19,7 @@ export const getClubs = async ({
   per_page = "5",
   page = "1",
   sortField = "name",
+  disciplineId,
   orderBy = "asc",
 }: SearchParams): Promise<ServiceResponse<IClubsResponse>> => {
   return handleServerAction(async () => {
@@ -27,11 +29,12 @@ export const getClubs = async ({
     if (page) params.set("page", page);
     if (sortField) params.set("sortField", sortField);
     if (orderBy) params.set("orderBy", orderBy);
+    if (disciplineId) params.set("disciplineId", disciplineId);
 
     const res = await api.get<IClubsResponse>(`clubs?${params.toString()}`, {
       next: {
-        tags: ["clubs"],
-        revalidate: 3600,
+        // tags: ["clubs"],
+        // revalidate: 3600,
       },
     });
 
@@ -47,7 +50,7 @@ export const getClubs = async ({
         ...res,
         data,
       },
-      message: res.message || "Organizaciones obtenidas exitosamente",
+      message: res.message || "Clubes obtenidos exitosamente",
     };
   });
 };

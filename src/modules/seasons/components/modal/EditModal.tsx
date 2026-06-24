@@ -11,6 +11,8 @@ import { useState } from "react";
 
 interface Props {
   season: ISeason;
+  institutionId: string;
+  disciplineId: string;
   isIcon?: boolean;
   showButton?: boolean;
   isOpen?: boolean;
@@ -19,6 +21,8 @@ interface Props {
 
 export const EditModal = ({
   season,
+  institutionId,
+  disciplineId,
   isIcon = false,
   showButton = true,
   isOpen,
@@ -57,6 +61,8 @@ export const EditModal = ({
             <Modal.Body className="p-6">
               <FormSeason
                 formId="edit-season-form"
+                institutionId={institutionId}
+                disciplineId={disciplineId}
                 season={season}
                 onSubmited={() => state.close()}
                 isLoading={isLoading}

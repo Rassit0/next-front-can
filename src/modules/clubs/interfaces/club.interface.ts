@@ -8,7 +8,7 @@ export interface IClub {
   id: string;
   name: string;
   organization: Organization;
-  discipline: Discipline;
+  // discipline: Discipline;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -1,9 +1,8 @@
 "use server";
 import { api } from "@/utils/api";
 import { ServiceResponse } from "@/types/api";
-import { ApiError } from "@/utils/errors/ApiError";
 import { updateTag } from "next/cache";
-import { IPlayer, PostPlayerPassInterface } from "@/modules/players-passes";
+import { IPlayerPass, PostPlayerPassInterface } from "@/modules/players-passes";
 import { handleServerAction } from "@/utils";
 
 interface Props {
@@ -12,7 +11,7 @@ interface Props {
 
 export const addPlayerPass = async ({
   data,
-}: Props): Promise<ServiceResponse<IPlayer>> => {
+}: Props): Promise<ServiceResponse<IPlayerPass>> => {
   return handleServerAction(async () => {
     console.log("data", data);
     const formData = new FormData();
@@ -25,13 +24,12 @@ export const addPlayerPass = async ({
         data.externalPreviousTeamName,
       );
     formData.append("currentTeamId", data.currentTeamId);
-    formData.append("previousTeamSource", data.previousTeamSource);
     formData.append("originType", data.originType);
     formData.append("startDate", data.startDate.toISOString());
     formData.append("status", data.status);
     if (data.notes) formData.append("notes", data.notes);
 
-    const res = await api.post<{ message: string; data: IPlayer }>(
+    const res = await api.post<{ message: string; data: IPlayerPass }>(
       `player-passes`,
       formData,
     );

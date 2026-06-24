@@ -3,19 +3,23 @@ import { api } from "@/utils/api";
 import { ServiceResponse } from "@/types/api";
 import { updateTag } from "next/cache";
 import { handleServerAction } from "@/utils";
-import { ISeason, ISeasonStatus } from "../interfaces/season.interface";
+import { ISeason } from "../interfaces/season.interface";
 
 export const addSeason = async (data: {
   name: string;
+  description?: string;
   startDate: Date;
   endDate: Date;
-  status: ISeasonStatus;
+  institutionId: string;
+  disciplineId: string;
 }): Promise<ServiceResponse<ISeason>> => {
   const body = {
     name: data.name,
+    description: data.description,
     startDate: data.startDate.toISOString(),
     endDate: data.endDate.toISOString(),
-    status: data.status,
+    institutionId: data.institutionId,
+    disciplineId: data.disciplineId,
   };
   return handleServerAction(async () => {
     const response = await api.post<{ message: string; data: ISeason }>(

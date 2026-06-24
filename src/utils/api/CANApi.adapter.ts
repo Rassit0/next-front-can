@@ -1,4 +1,4 @@
-import { ApiError } from "../errors/ApiError";
+import { ApiError } from "./errors/ApiError";
 
 export interface HttpAdapter {
   get<T>(endpoint: string, options?: RequestInit): Promise<T>;
@@ -30,6 +30,9 @@ export class CANApiAdapter implements HttpAdapter {
         );
       }
     }
+
+    console.log("endpoint", endpoint);
+
     const timeoutController = new AbortController();
 
     const timeout = setTimeout(() => {

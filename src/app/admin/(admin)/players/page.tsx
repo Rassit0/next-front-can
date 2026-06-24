@@ -16,14 +16,18 @@ interface Props {
     search?: string;
     per_page?: string;
     page?: string;
+    sortField?: string;
+    orderBy?: string;
   }>;
 }
 export default async function PlayersPage({ searchParams }: Props) {
-  const { search, page, per_page } = await searchParams;
+  const { search, page, per_page, sortField, orderBy } = await searchParams;
   const playersResponse = await getPlayers({
     search,
     page,
     per_page,
+    sortField,
+    orderBy,
   });
 
   if (playersResponse.error && playersResponse.statusCode === 401) {

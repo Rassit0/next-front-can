@@ -4,16 +4,16 @@ import {
   HeaderPageLouncher,
   ModuleGrid,
 } from "@/modules/module-louncher";
-import { getOrganizationById, getOrganizations } from "@/modules/organizations";
-import { BottonNavBar, ErrorPage, Header, Sidebar } from "@/ui";
+import { getInstitutions } from "@/modules/organizations";
+import { ErrorPage, Header } from "@/ui";
 
 export default async function AdminPage() {
-  const [organizationsResponse] = await Promise.all([getOrganizations({})]);
+  const [institutionsResponse] = await Promise.all([getInstitutions({})]);
 
-  if (organizationsResponse.error || !organizationsResponse.data) {
-    return <ErrorPage message={organizationsResponse.message} />;
+  if (institutionsResponse.error || !institutionsResponse.data) {
+    return <ErrorPage message={institutionsResponse.message} />;
   }
-  const organization = organizationsResponse.data.data[0];
+  const institution = institutionsResponse.data.data[0];
 
   return (
     <>
@@ -21,7 +21,7 @@ export default async function AdminPage() {
         {/* Container for ultra-wide screens */}
         {/* <!-- TopNavBar --> */}
         <Header
-          title={organization.name}
+          title={institution.name}
           // actions={<SelectClub clubs={clubsOptionsResponse.data.data} />}
         />
         {/* <!-- Dashboard Canvas --> */}

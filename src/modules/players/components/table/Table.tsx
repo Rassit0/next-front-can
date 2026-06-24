@@ -1,5 +1,5 @@
 "use client";
-import { Avatar, Button, Chip, Table } from "@heroui/react";
+import { Avatar, Button, Chip, Tab, Table, toast } from "@heroui/react";
 import { Copy01Icon, Delete01Icon, EyeIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ButtonManage, EditModal } from "@/modules/players";
@@ -45,8 +45,24 @@ export const TablePlayers = ({ players }: Props) => {
               <SortableColumnHeader id="id">ID</SortableColumnHeader>
             </Table.Column>
 
+            <Table.Column allowsSorting id="image">
+              IMAGEN
+            </Table.Column>
+
             <Table.Column allowsSorting id="name">
               <SortableColumnHeader id="name">JUGADOR</SortableColumnHeader>
+            </Table.Column>
+
+            <Table.Column allowsSorting id="lastName">
+              <SortableColumnHeader id="lastName">
+                Primer Apellido
+              </SortableColumnHeader>
+            </Table.Column>
+
+            <Table.Column allowsSorting id="secondLastName">
+              <SortableColumnHeader id="secondLastName">
+                Segundo Apellido
+              </SortableColumnHeader>
             </Table.Column>
 
             <Table.Column allowsSorting id="documentNumber">
@@ -60,6 +76,8 @@ export const TablePlayers = ({ players }: Props) => {
                 FECHA NACIMIENTO
               </SortableColumnHeader>
             </Table.Column>
+
+            <Table.Column>EDAD</Table.Column>
 
             <Table.Column allowsSorting id="phone">
               <SortableColumnHeader id="phone">TELÉFONO</SortableColumnHeader>
@@ -76,48 +94,41 @@ export const TablePlayers = ({ players }: Props) => {
               <Table.Row key={player.id} id={player.id}>
                 <Table.Cell className="font-medium">
                   <div className="flex items-center gap-2">
-                    {player.id.toString()}{" "}
-                    <Button isIconOnly size="sm" variant="ghost">
+                    {player.id}{" "}
+                    <Button
+                      isIconOnly
+                      size="sm"
+                      variant="ghost"
+                      onPress={() => {
+                        navigator.clipboard.writeText(player.id);
+                        toast.success("ID copiado");
+                      }}
+                    >
                       <HugeiconsIcon icon={Copy01Icon} />
                     </Button>
                   </div>
                 </Table.Cell>
                 <Table.Cell>
-                  <div className="flex items-center gap-3">
-                    <Avatar size="sm">
-                      <Avatar.Image src={player.person.imageUrl || undefined} />
-                      <Avatar.Fallback>
-                        {(
-                          player.person.name +
-                          " " +
-                          player.person.lastName +
-                          (player.person.secondLastName
-                            ? " " + player.person.secondLastName
-                            : "")
-                        )
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </Avatar.Fallback>
-                    </Avatar>
-                    <div className="flex flex-col">
-                      <span className="text-xs">
-                        {player.person.name +
-                          " " +
-                          player.person.lastName +
-                          (player.person.secondLastName
-                            ? " " + player.person.secondLastName
-                            : "")}
-                      </span>
-                      <span className="text-xs text-muted">
-                        {player.person.email}
-                      </span>
-                    </div>
-                  </div>
+                  <Avatar size="sm">
+                    <Avatar.Image src={player.person.imageUrl || undefined} />
+                    <Avatar.Fallback>
+                      {player.person.name.charAt(0)}
+                      {player.person.lastName.charAt(0)}
+                    </Avatar.Fallback>
+                  </Avatar>
                 </Table.Cell>
+                <Table.Cell>{player.person.name}</Table.Cell>
+                <Table.Cell>{player.person.lastName}</Table.Cell>
+                <Table.Cell>{player.person.secondLastName || "-"}</Table.Cell>
                 <Table.Cell>{player.person.documentNumber}</Table.Cell>
                 <Table.Cell>
                   {player.person.birthDate?.toLocaleDateString() || "-"}
+                </Table.Cell>
+                <Table.Cell>
+                  {player.person.birthDate
+                    ? new Date().getFullYear() -
+                      player.person.birthDate.getFullYear()
+                    : "-"}
                 </Table.Cell>
                 <Table.Cell>{player.person.phone || "-"}</Table.Cell>
                 <Table.Cell className="min-w-25">

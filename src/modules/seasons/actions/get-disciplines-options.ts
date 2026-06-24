@@ -1,7 +1,7 @@
 import { api } from "@/utils/api";
 import { ServiceResponse } from "@/types/api";
 import { handleServerAction } from "@/utils";
-import { IDisciplineOptionsResponse } from "../interfaces/options.club.interface";
+import { IDisciplineOptionsResponse } from "../interfaces/options.interface";
 
 export const getDisciplinesOptions = async (): Promise<
   ServiceResponse<IDisciplineOptionsResponse>

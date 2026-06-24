@@ -2,16 +2,13 @@
 import { api } from "@/utils/api";
 import { ServiceResponse } from "@/types/api";
 import { updateTag } from "next/cache";
-import { Gender, ITeam } from "@/modules/teams";
+import { ITeam } from "@/modules/teams";
 import { handleServerAction } from "@/utils";
 
 export const addTeam = async (data: {
   name: string;
-  minAge: number;
-  maxAge: number;
-  imageUrl?: string;
+  description: string | null;
   clubId: string;
-  gender: Gender;
 }): Promise<ServiceResponse<ITeam>> => {
   return handleServerAction(async () => {
     const response = await api.post<{ message: string; data: ITeam }>(

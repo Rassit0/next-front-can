@@ -13,15 +13,8 @@ import {
   toast,
   Select,
   TextArea,
-  Card,
-  Disclosure,
-  DisclosureGroup,
-  Button,
-  Separator,
-  cn,
   ProgressCircle,
 } from "@heroui/react";
-import { CameraAdd01Icon, UserIcon } from "@hugeicons/core-free-icons";
 import type { DateValue } from "@internationalized/date";
 import { getLocalTimeZone, parseDate } from "@internationalized/date";
 import {
@@ -31,10 +24,8 @@ import {
   PlayerPassStatus,
   PostPlayerPassInterface,
   addPlayerPass,
-  PlayerPassPreviousTeamSourceType,
   IPlayerPassActiveOptions,
   IDisciplineOptions,
-  useTeamOptions,
   IClubOptionsByDiscipline,
   getClubOptionsByDisciplineOptions,
   getTeamsByClubOptions,
@@ -42,15 +33,9 @@ import {
   getActivePassesByPlayerByDisciplineOptions,
 } from "@/modules/players-passes";
 import { useEffect, useState } from "react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { TypeOriginPass } from "./TypeOriginPass";
-import { RadioPreviousTeamSource } from "./RadioPreviousTeamSource";
-import { SelectCurrentPass } from "./SelectCurrentPass";
 import { SelectClub } from "./SelectClub";
 import { SelectTeam } from "./SelectTeam";
 import { SelectDiscipline } from "./SelectDiscipline";
-import { useClubOptions } from "../../hooks/use-club-options";
-import { ApiError } from "@/utils/errors/ApiError";
 import { Origin } from "./Origin";
 
 interface Props {
@@ -88,10 +73,7 @@ export const FormPlayerPass = ({
   const [originType, setOriginType] = useState<PlayerPassOriginType>(
     playerPass?.originType || "INTERNAL",
   );
-  const [previousTeamSource, setPreviousTeamSource] =
-    useState<PlayerPassPreviousTeamSourceType>(
-      playerPass?.previousTeamSource || "SYSTEM",
-    );
+
   const [startDate, setStartDate] = useState<DateValue | null>(
     playerPass?.startDate
       ? parseDate(
@@ -205,6 +187,7 @@ export const FormPlayerPass = ({
   };
 
   useEffect(() => {
+    setCurrentPassId(null);
     setPreviousClubId(null);
     setPreviousTeamId(null);
     setCurrentClubId(null);
@@ -225,12 +208,6 @@ export const FormPlayerPass = ({
   }, [currentPassId]);
 
   useEffect(() => {
-    if (originType === "INTERNAL") {
-      setCurrentClubId(previousClubId);
-    }
-  }, [previousClubId]);
-
-  useEffect(() => {
     setCurrentPassId(null);
     setPreviousClubId(null);
     setPreviousTeamId(null);
@@ -240,15 +217,12 @@ export const FormPlayerPass = ({
     setStatus("ACTIVE");
     setNotes(null);
     setExternalPreviousTeamName(null);
-  }, [expandedKeys, previousTeamSource]);
+  }, [expandedKeys]);
 
   useEffect(() => {
-    // setCurrentPassId(null);
-    setPreviousClubId(null);
-    setPreviousTeamId(null);
-  }, [originType]);
-
-  useEffect(() => {
+    if (originType === "INTERNAL") {
+      setCurrentClubId(previousClubId);
+    }
     if (currentPassId) {
       return;
     }
@@ -262,23 +236,13 @@ export const FormPlayerPass = ({
   }, [currentClubId]);
 
   useEffect(() => {
-    setPreviousTeamSource("SYSTEM");
-    if (originType === "FREE_AGENT") {
-      setPreviousTeamSource("FREE_AGENT");
-    }
     setCurrentClubId(null);
+    if (currentPassId) return;
     setCurrentTeamId(null);
+    setPreviousClubId(null);
     setPreviousTeamId(null);
     setExternalPreviousTeamName(null);
   }, [originType]);
-
-  useEffect(() => {
-    if (previousTeamSource === "SYSTEM") {
-      setPreviousTeamId(playerPass?.previousTeam?.id || null);
-    } else {
-      setExternalPreviousTeamName(playerPass?.externalPreviousTeamName || null);
-    }
-  }, [previousTeamSource]);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -301,7 +265,11 @@ export const FormPlayerPass = ({
     if (originType === "INTERNAL" && !previousTeamId) {
       newErrors.previousTeamId = "Debe seleccionar un equipo anterior";
     }
-    if (originType === "EXTERNAL" && !externalPreviousTeamName) {
+    if (
+      originType === "EXTERNAL" &&
+      !externalPreviousTeamName &&
+      !currentPassId
+    ) {
       newErrors.externalPreviousTeamName = "Debe ingresar un equipo anterior";
     }
     if (!currentTeamId) {
@@ -333,15 +301,9 @@ export const FormPlayerPass = ({
     let res;
     const data: PostPlayerPassInterface = {
       playerId: player.id,
-      previousTeamId:
-        originType === "INTERNAL" ? previousTeamId || undefined : undefined,
-      externalPreviousTeamName:
-        originType === "EXTERNAL"
-          ? externalPreviousTeamName || undefined
-          : undefined,
+      previousTeamId: previousTeamId || undefined,
+      externalPreviousTeamName: externalPreviousTeamName || undefined,
       currentTeamId: currentTeamId!,
-      previousTeamSource:
-        originType === "INTERNAL" ? "SYSTEM" : previousTeamSource,
       originType,
       startDate: startDate!.toDate(getLocalTimeZone()),
       status,
@@ -422,8 +384,6 @@ export const FormPlayerPass = ({
                   <Origin
                     expandedKeys={expandedKeys}
                     setExpandedKeys={setExpandedKeys}
-                    previousTeamSource={previousTeamSource}
-                    setPreviousTeamSource={setPreviousTeamSource}
                     activePassesOptions={passOptions}
                     currentPassId={currentPassId}
                     setCurrentPassId={setCurrentPassId}
@@ -445,7 +405,8 @@ export const FormPlayerPass = ({
 
               {(previousTeamId !== null ||
                 externalPreviousTeamName !== null ||
-                originType === "FREE_AGENT") && (
+                originType === "FREE_AGENT" ||
+                originType === "OWN") && (
                 <div className="col-span-full gap-y-2">
                   <div className="flex items-center justify-between">
                     <h2 className="text-xl font-bold">
@@ -456,14 +417,18 @@ export const FormPlayerPass = ({
                     <>
                       <SelectClub
                         label="CLUB DESTINO"
-                        isDisabled={originType === "INTERNAL"}
+                        // isDisabled={
+                        //   previousTeamId === null ||
+                        //   externalPreviousTeamName === null
+                        // }
                         clubOptions={clubsOptions.filter(
                           (club) =>
                             (originType === "INTERNAL" &&
                               club.id === previousClubId) ||
                             (originType === "EXTERNAL" &&
                               club.id !== previousClubId) ||
-                            originType === "FREE_AGENT",
+                            originType === "FREE_AGENT" ||
+                            originType === "OWN",
                         )}
                         clubId={currentClubId}
                         setClubId={setCurrentClubId}
@@ -482,7 +447,8 @@ export const FormPlayerPass = ({
                             (team) =>
                               (originType !== "FREE_AGENT" &&
                                 team.id !== previousTeamId) ||
-                              originType === "FREE_AGENT",
+                              originType === "FREE_AGENT" ||
+                              originType === "OWN",
                           )}
                           currentTeamId={currentTeamId}
                           setCurrentTeamId={setCurrentTeamId}

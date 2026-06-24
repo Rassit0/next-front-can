@@ -81,8 +81,8 @@ export const CancelModal = ({ isOpen, onOpenChange, teamSeason }: Props) => {
             <AlertDialog.Heading className="flex flex-col">
               <span>Cancelar Temporada</span>
               <span className="text-muted">
-                Estás por cancelar el ciclo de {teamSeason.name}: Esta acción es
-                irreversible
+                Estás por cancelar el ciclo de {teamSeason.season.name}: Esta
+                acción es irreversible
               </span>
             </AlertDialog.Heading>
           </AlertDialog.Header>

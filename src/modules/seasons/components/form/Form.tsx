@@ -18,6 +18,7 @@ import {
   TagGroup,
   Tag,
   Description,
+  TextArea,
 } from "@heroui/react";
 import React, { useState } from "react";
 import {
@@ -25,16 +26,13 @@ import {
   parseAbsolute,
   parseDate,
 } from "@internationalized/date";
-import {
-  addSeason,
-  editSeason,
-  ISeason,
-  ISeasonStatus,
-} from "@/modules/seasons";
+import { addSeason, editSeason, ISeason } from "@/modules/seasons";
 import clsx from "clsx";
 
 interface Props {
   season?: ISeason;
+  institutionId: string;
+  disciplineId: string;
   formId: string;
   onSubmited?: () => void;
   isLoading?: boolean;
@@ -42,12 +40,15 @@ interface Props {
 }
 export const FormSeason = ({
   season,
+  disciplineId,
+  institutionId,
   formId,
   onSubmited,
   isLoading,
   setIsLoading,
 }: Props) => {
-  const [name, setName] = useState(season?.name || "");
+  const [name, setName] = useState(season?.name || null);
+  const [description, setDescription] = useState(season?.description || null);
   const [startDate, setStartDate] = useState<DateValue | null>(
     season?.startDate
       ? parseDate(
@@ -61,9 +62,6 @@ export const FormSeason = ({
           `${season.endDate.getFullYear()}-${(season.endDate.getMonth() + 1).toString().padStart(2, "0")}-${season.endDate.getDate().toString().padStart(2, "0")}`,
         )
       : null,
-  );
-  const [status, setStatus] = useState<ISeasonStatus>(
-    season?.status || "DRAFT",
   );
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -89,10 +87,12 @@ export const FormSeason = ({
     setIsLoading?.(true);
     let res;
     const data = {
-      name,
+      name: name!,
+      description: description || undefined,
       startDate: startDate!.toDate(getLocalTimeZone()),
       endDate: endDate!.toDate(getLocalTimeZone()),
-      status,
+      institutionId,
+      disciplineId,
     };
     if (season) {
       res = await editSeason({ id: season.id, data });
@@ -143,9 +143,9 @@ export const FormSeason = ({
             <Label>Nombre</Label>
             <Input
               variant="secondary"
-              value={name}
+              value={name || ""}
               onChange={(e) => {
-                setName(e.target.value);
+                setName(e.target.value || null);
                 setErrors({});
               }}
               placeholder="Ingrese el nombre de la temporada"
@@ -252,54 +252,27 @@ export const FormSeason = ({
             </DatePicker.Popover>
           </DatePicker>
 
-          <TagGroup
-            selectionMode="single"
-            variant="surface"
-            selectedKeys={[status]}
-            onSelectionChange={(keys) =>
-              setStatus(Array.from(keys)[0] as ISeasonStatus)
-            }
+          <TextField
+            className="w-full"
+            name="description"
+            isInvalid={!!errors.description || undefined}
           >
-            <Label>Estado</Label>
-            <TagGroup.List>
-              <Tag
-                id="DRAFT"
-                className={clsx({
-                  "bg-warning-soft text-warning": status === "DRAFT",
-                })}
-              >
-                Borrador
-              </Tag>
-              <Tag
-                id="ACTIVE"
-                className={clsx({
-                  "bg-success-soft text-success": status === "ACTIVE",
-                })}
-              >
-                Activo
-              </Tag>
-              {season?.status !== "FINISHED" && (
-                <Tag
-                  id="FINISHED"
-                  className={clsx({
-                    "bg-primary-soft text-primary": status === "FINISHED",
-                  })}
-                >
-                  Finalizado
-                </Tag>
-              )}
-              {season?.status !== "CANCELLED" && (
-                <Tag
-                  id="CANCELLED"
-                  className={clsx({
-                    "bg-danger-soft text-danger": status === "CANCELLED",
-                  })}
-                >
-                  Cancelado
-                </Tag>
-              )}
-            </TagGroup.List>
-          </TagGroup>
+            <Label>Descripción</Label>
+            <TextArea
+              variant="secondary"
+              placeholder="Ingrese la descripción de la temporada"
+              rows={4}
+              value={description || ""}
+              onChange={(e) => {
+                setDescription(e.target.value || null);
+                setErrors({});
+              }}
+            />
+            {/* <Description>Maximum 500 characters</Description> */}
+            <FieldError
+              children={errors.description && <> {errors.description}</>}
+            />
+          </TextField>
         </div>
       </Form>
     </Surface>

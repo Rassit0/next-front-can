@@ -7,7 +7,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
-import { FormTeam, ITeam } from "@/modules/teams";
+import { AlertEditDialog, FormTeam, ITeam } from "@/modules/teams";
 
 interface Props {
   team: ITeam;
@@ -74,6 +74,11 @@ export const EditModal = ({
               >
                 Cancelar
               </Button>
+              {/* <AlertEditDialog
+                isLoading={isLoading}
+                team={team}
+                formId="edit-team-form"
+              /> */}
               <Button type="submit" form="edit-team-form" isPending={isLoading}>
                 {isLoading && (
                   <ProgressCircle isIndeterminate aria-label="Loading">

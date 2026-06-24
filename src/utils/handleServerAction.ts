@@ -1,5 +1,5 @@
 // utils/handleServerAction.ts
-import { ApiError } from "@/utils/errors/ApiError";
+import { ApiError } from "@/utils/api/errors/ApiError";
 import { ServiceResponse } from "@/types/api";
 
 export async function handleServerAction<T>(

@@ -2,16 +2,18 @@
 import { api } from "@/utils/api";
 import { ServiceResponse } from "@/types/api";
 import { updateTag } from "next/cache";
-import { ISeason, ISeasonStatus } from "../interfaces/season.interface";
+import { ISeason } from "../interfaces/season.interface";
 import { handleServerAction } from "@/utils";
 
 interface Props {
   id: string;
   data: {
     name: string;
+    description?: string;
     startDate: Date;
     endDate: Date;
-    status: ISeasonStatus;
+    institutionId: string;
+    disciplineId: string;
   };
 }
 
@@ -21,9 +23,11 @@ export const editSeason = async ({
 }: Props): Promise<ServiceResponse<ISeason>> => {
   const body = {
     name: data.name,
+    description: data.description,
     startDate: data.startDate.toISOString(),
     endDate: data.endDate.toISOString(),
-    status: data.status,
+    institutionId: data.institutionId,
+    disciplineId: data.disciplineId,
   };
   return handleServerAction(async () => {
     const response = await api.patch<{ message: string; data: ISeason }>(

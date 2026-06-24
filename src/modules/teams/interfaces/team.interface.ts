@@ -4,15 +4,11 @@ export interface ITeamsResponse {
   message: string;
 }
 
-export type Gender = "MALE" | "FEMALE" | "MIXED";
-
 export interface ITeam {
   id: string;
   name: string;
-  minAge: number;
-  maxAge: number;
+  description: string | null;
   club: Club;
-  gender: Gender;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -26,6 +22,7 @@ export interface Club {
 export interface Discipline {
   id: string;
   name: string;
+  icon: string;
 }
 
 export interface Meta {

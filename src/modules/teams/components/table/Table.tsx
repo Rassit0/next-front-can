@@ -8,13 +8,14 @@ import { EditModal } from "../modal/EditModal";
 import { SortableColumnHeader } from "@/ui";
 import { DeleteModal } from "../modal/DeleteModal";
 import { iconMap } from "@/utils";
-import { Gender, ITeam } from "@/modules/teams";
+import { ITeam } from "@/modules/teams";
 
 interface Props {
   teams: ITeam[];
+  urlBase: string;
 }
 
-export const TableTeams = ({ teams }: Props) => {
+export const TableTeams = ({ teams, urlBase }: Props) => {
   const [isClient, setIsClient] = useState(false);
 
   // Evitamos la hidratación fallida
@@ -26,17 +27,17 @@ export const TableTeams = ({ teams }: Props) => {
     return null; // O un esqueleto de carga (Skeleton)
   }
 
-  const genderClassMap: Record<Gender, string> = {
-    MALE: "bg-blue-500",
-    FEMALE: "bg-pink-500",
-    MIXED: "bg-yellow-500",
-  };
+  // const genderClassMap: Record<Gender, string> = {
+  //   MALE: "bg-blue-500",
+  //   FEMALE: "bg-pink-500",
+  //   MIXED: "bg-yellow-500",
+  // };
 
-  const genderTextMap: Record<Gender, string> = {
-    MALE: "Masculino",
-    FEMALE: "Femenino",
-    MIXED: "Mixto",
-  };
+  // const genderTextMap: Record<Gender, string> = {
+  //   MALE: "Masculino",
+  //   FEMALE: "Femenino",
+  //   MIXED: "Mixto",
+  // };
 
   return (
     <Table>
@@ -59,8 +60,8 @@ export const TableTeams = ({ teams }: Props) => {
               <SortableColumnHeader id="name">EQUIPO</SortableColumnHeader>
             </Table.Column>
 
-            <Table.Column allowsSorting id="gender">
-              <SortableColumnHeader id="gender">GÉNERO</SortableColumnHeader>
+            <Table.Column allowsSorting id="description">
+              DESCRIPCIÓN
             </Table.Column>
 
             <Table.Column className="text-center">ACCIONES</Table.Column>
@@ -70,20 +71,10 @@ export const TableTeams = ({ teams }: Props) => {
               <Table.Row key={team.id} id={team.id}>
                 <Table.Cell>{team.id}</Table.Cell>
                 <Table.Cell>{team.name}</Table.Cell>
-                <Table.Cell>
-                  <Chip
-                    variant="primary"
-                    className={genderClassMap[team.gender]}
-                  >
-                    <div className="flex items-center gap-1">
-                      {genderTextMap[team.gender]}
-                    </div>
-                  </Chip>
-                </Table.Cell>
-
+                <Table.Cell>{team.description}</Table.Cell>
                 <Table.Cell>
                   <div className="flex items-center justify-center gap-1">
-                    <ButtonGestion id={team.id} clubId={team.club.id} />
+                    <ButtonGestion teamId={team.id} urlBase={urlBase} />
                     <Button isIconOnly size="sm" variant="tertiary">
                       <HugeiconsIcon icon={EyeIcon} />
                     </Button>

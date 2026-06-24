@@ -2,18 +2,15 @@
 import { api } from "@/utils/api";
 import { ServiceResponse } from "@/types/api";
 import { updateTag } from "next/cache";
-import { Gender, ITeam } from "@/modules/teams";
+import { ITeam } from "@/modules/teams";
 import { handleServerAction } from "@/utils";
 
 interface Props {
   id: string;
   data: {
     name: string;
-    minAge: number;
-    maxAge: number;
-    imageUrl?: string;
+    description: string | null;
     clubId: string;
-    gender: Gender;
   };
 }
 

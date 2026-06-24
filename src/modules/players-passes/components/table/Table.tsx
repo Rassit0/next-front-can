@@ -26,12 +26,14 @@ export const TablePlayerPasses = ({ playerPasses }: Props) => {
     INTERNAL: "Interno",
     EXTERNAL: "Externo",
     FREE_AGENT: "Agente Libre",
+    OWN: "Propio",
   };
 
   const originTypeClassMap: Record<PlayerPassOriginType, string> = {
     INTERNAL: "bg-accent-soft text-accent",
-    EXTERNAL: "bg-default-soft text-default",
+    EXTERNAL: "bg-default-soft text-default-foreground",
     FREE_AGENT: "bg-success-soft text-success",
+    OWN: "bg-tertiary-soft text-tertiary",
   };
 
   const playerPassStatusMap: Record<PlayerPassStatus, string> = {
@@ -44,7 +46,7 @@ export const TablePlayerPasses = ({ playerPasses }: Props) => {
 
   const playerPassStatusClassMap: Record<PlayerPassStatus, string> = {
     ACTIVE: "bg-success-soft text-success",
-    INACTIVE: "bg-default-soft text-default",
+    INACTIVE: "bg-danger-soft text-danger",
     CATEGORY_EXPIRED: "bg-warning-soft text-warning",
     PENDING: "bg-warning-soft text-warning",
     REJECTED: "bg-danger-soft text-danger",
@@ -67,8 +69,14 @@ export const TablePlayerPasses = ({ playerPasses }: Props) => {
               <SortableColumnHeader id="id">ID</SortableColumnHeader>
             </Table.Column> */}
 
-            <Table.Column isRowHeader allowsSorting id="player">
+            {/* <Table.Column isRowHeader allowsSorting id="player">
               <SortableColumnHeader id="player">JUGADOR</SortableColumnHeader>
+            </Table.Column> */}
+
+            <Table.Column isRowHeader allowsSorting id="discipline">
+              <SortableColumnHeader id="discipline">
+                DISCIPLINA
+              </SortableColumnHeader>
             </Table.Column>
 
             <Table.Column allowsSorting id="previousTeam">
@@ -113,7 +121,7 @@ export const TablePlayerPasses = ({ playerPasses }: Props) => {
                 </Button>
               </div>
             </Table.Cell> */}
-                  <Table.Cell>
+                  {/* <Table.Cell>
                     <div className="flex items-center gap-3">
                       <Avatar size="sm">
                         <Avatar.Image
@@ -147,17 +155,24 @@ export const TablePlayerPasses = ({ playerPasses }: Props) => {
                         </span>
                       </div>
                     </div>
+                  </Table.Cell> */}
+                  <Table.Cell>
+                    {playerPass.currentTeam.club.discipline.name}
                   </Table.Cell>
                   {/* Origen */}
                   <Table.Cell>
+                    {playerPass.previousTeam?.club.name}-
                     {playerPass.previousTeam?.name ||
                       playerPass.externalPreviousTeamName ||
                       "-"}
                   </Table.Cell>
                   {/* Destino */}
-                  <Table.Cell>{playerPass.currentTeam.name}</Table.Cell>
+                  <Table.Cell>
+                    {playerPass.currentTeam.club.name}-
+                    {playerPass.currentTeam.name}
+                  </Table.Cell>
                   {/* Tipo de Origne */}
-                  <Table.Cell className="min-w-25">
+                  <Table.Cell>
                     <Chip
                       size="sm"
                       variant="soft"
@@ -172,7 +187,7 @@ export const TablePlayerPasses = ({ playerPasses }: Props) => {
                   <Table.Cell>
                     {playerPass.endDate?.toLocaleDateString() || "-"}
                   </Table.Cell>
-                  <Table.Cell className="min-w-25">
+                  <Table.Cell>
                     <Chip
                       size="sm"
                       variant="soft"

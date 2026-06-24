@@ -19,7 +19,7 @@ import {
 import { useAsyncList } from "@react-stately/data";
 import { cn } from "tailwind-variants";
 
-import { ApiError } from "@/utils/errors/ApiError";
+import { ApiError } from "@/utils/api/errors/ApiError";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   ICategoryOptions,

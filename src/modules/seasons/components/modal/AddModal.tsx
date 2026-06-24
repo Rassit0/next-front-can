@@ -8,8 +8,14 @@ import { FormSeason } from "@/modules/seasons";
 
 interface Props {
   isIcon?: boolean;
+  institutionId: string;
+  disciplineId: string;
 }
-export const AddModal = ({ isIcon = false }: Props) => {
+export const AddModal = ({
+  isIcon = false,
+  institutionId,
+  disciplineId,
+}: Props) => {
   const state = useOverlayState();
   const [loading, setLoading] = useState(false);
 
@@ -47,6 +53,8 @@ export const AddModal = ({ isIcon = false }: Props) => {
             <Modal.Body className="p-6">
               <FormSeason
                 formId="add-season-form"
+                institutionId={institutionId}
+                disciplineId={disciplineId}
                 onSubmited={() => state.close()}
                 isLoading={loading}
                 setIsLoading={setLoading}

@@ -2,7 +2,7 @@
 import { IDiscipline } from "@/modules/disciplines";
 import { api } from "@/utils/api";
 import { ServiceResponse } from "@/types/api";
-import { ApiError } from "@/utils/errors/ApiError";
+import { ApiError } from "@/utils/api/errors/ApiError";
 import { updateTag } from "next/cache";
 
 interface Props {

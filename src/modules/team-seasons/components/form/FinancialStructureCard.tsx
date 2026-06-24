@@ -7,7 +7,7 @@ import {
   NumberField,
   TextField,
 } from "@heroui/react";
-import { Money03Icon } from "@hugeicons/core-free-icons";
+import { Money03Icon, UnavailableIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Dispatch, SetStateAction } from "react";
 
@@ -16,8 +16,8 @@ interface Props {
   setRegistrationFee: Dispatch<SetStateAction<string | null>>;
   monthlyFee: string | null;
   setMonthlyFee: Dispatch<SetStateAction<string | null>>;
-  fullPaymentDiscountPercent: string | null;
-  setFullPaymentDiscountPercent: Dispatch<SetStateAction<string | null>>;
+  billingDay: number | null;
+  setBillingDay: Dispatch<SetStateAction<number | null>>;
   errors: Record<string, string>;
   handleRemoveError: (fieldName: string) => void;
 }
@@ -26,8 +26,8 @@ export const FinancialStructureCard = ({
   setRegistrationFee,
   monthlyFee,
   setMonthlyFee,
-  fullPaymentDiscountPercent,
-  setFullPaymentDiscountPercent,
+  billingDay,
+  setBillingDay,
   errors,
   handleRemoveError,
 }: Props) => {
@@ -100,64 +100,37 @@ export const FinancialStructureCard = ({
             children={errors.monthlyFee && <> {errors.monthlyFee}</>}
           />
         </TextField>
+
         <NumberField
           // isInvalid
           isRequired
-          formatOptions={{ style: "percent" }}
+          className="col-span-full"
+          // formatOptions={{ style: "percent" }}
           variant="secondary"
-          maxValue={100}
+          // maxValue={100}
           minValue={0}
-          name="percentage"
-          step={0.01}
-          value={
-            fullPaymentDiscountPercent ? +fullPaymentDiscountPercent : undefined
-          }
+          name="billingDay"
+          step={1}
+          value={billingDay !== null ? +billingDay : undefined}
           onChange={(v) => {
-            setFullPaymentDiscountPercent(isNaN(v) ? null : v.toString());
-            handleRemoveError("fullPaymentDiscountPercent");
+            setBillingDay(isNaN(v) ? null : v);
+            handleRemoveError("billingDay");
           }}
         >
-          <Label>Porcentaje Descuento Pago Total</Label>
+          <Label className="flex items-center gap-2 text-sm font-label font-bold">
+            <HugeiconsIcon icon={UnavailableIcon} />
+            Día de Facturación
+          </Label>
           <NumberField.Group>
             <NumberField.DecrementButton />
             <NumberField.Input />
             <NumberField.IncrementButton />
           </NumberField.Group>
           <FieldError
-            children={
-              errors.fullPaymentDiscountPercent && (
-                <> {errors.fullPaymentDiscountPercent}</>
-              )
-            }
+            children={errors.billingDay && <> {errors.billingDay}</>}
           />
-          <Description>
-            Porcentaje de descuento a aplicar a la mensualidad por pago total.
-            <br />
-            Mensualidad a pagar:{" "}
-            {monthlyFee && fullPaymentDiscountPercent
-              ? (
-                  +monthlyFee -
-                  +monthlyFee * +fullPaymentDiscountPercent
-                ).toFixed(2)
-              : monthlyFee || 0}
-          </Description>
+          <Description>Día del mes en que se genera la factura</Description>
         </NumberField>
-        {/* <div className="bg-tertiary-fixed/30 p-6 rounded-xl space-y-3">
-          <div className="flex justify-between items-center">
-            <span className="font-medium text-sm text-on-tertiary-container">
-              Descuento Pago Total
-            </span>
-            <span className="font-headline font-black text-tertiary text-lg">
-              15%
-            </span>
-          </div>
-          <div className="w-full bg-white/50 h-2 rounded-full overflow-hidden">
-            <div className="bg-tertiary h-full w-[15%]"></div>
-          </div>
-          <p className="text-[10px] text-on-surface-variant italic">
-            Aplicable para pagos realizados antes del inicio de temporada.
-          </p>
-        </div> */}
       </div>
     </Card>
   );

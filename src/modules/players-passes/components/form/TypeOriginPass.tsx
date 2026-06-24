@@ -11,6 +11,7 @@ import {
   ArrowDataTransferDiagonalIcon,
   ArrowDataTransferHorizontalIcon,
   GeometricShapes01Icon,
+  Home01Icon,
   UserCircleIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -26,6 +27,12 @@ export type TTypeOriginPass = {
 };
 
 const defaultTipeActivities: TTypeOriginPass[] = [
+  {
+    value: "OWN",
+    icon: Home01Icon,
+    label: "Propio",
+    description: "El jugador es propio del club.",
+  },
   {
     value: "INTERNAL",
     icon: ArrowDataTransferHorizontalIcon,
@@ -74,7 +81,7 @@ export const TypeOriginPass = ({
       }}
     >
       {/* <Label className="font-headline text-xl font-bold">Tipo de pase</Label> */}
-      <div className="grid gap-x-4 sm:grid-cols-3">
+      <div className="grid gap-x-2 md:grid-cols-4">
         {tipeActivities.map((originType) => (
           <Radio
             key={originType.value}

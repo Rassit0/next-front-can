@@ -11,9 +11,10 @@ import {
   ComboBox,
   Select,
   ListBox,
+  TextArea,
 } from "@heroui/react";
 import React, { useCallback, useState } from "react";
-import { addTeam, editTeam, Gender, ITeam } from "@/modules/teams";
+import { addTeam, editTeam, ITeam } from "@/modules/teams";
 
 interface Props {
   team?: ITeam;
@@ -31,11 +32,8 @@ export const FormTeam = ({
   isLoading,
   setIsLoading,
 }: Props) => {
-  const [name, setName] = useState(team?.name || "");
-  const [maxAge, setMaxAge] = useState<number | null>(team?.maxAge || null);
-  const [minAge, setMinAge] = useState<number | null>(team?.minAge || null);
-  const [gender, setGender] = useState<Gender | null>(team?.gender || null);
-
+  const [name, setName] = useState(team?.name || null);
+  const [description, setDescription] = useState(team?.description || null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const handleRemoveError = useCallback((fieldName: string) => {
     setErrors((prev) => {
@@ -51,18 +49,6 @@ export const FormTeam = ({
     if (!name) {
       newErrors.name = "Debe ingresar un nombre";
     }
-    if (!minAge) {
-      newErrors.minAge = "Debe ingresar un año minimo";
-    }
-    if (!maxAge) {
-      newErrors.maxAge = "Debe ingresar un año maximo";
-    }
-    if (minAge && maxAge && minAge > maxAge) {
-      newErrors.maxAge = "El año maximo debe ser mayor al año minimo";
-    }
-    if (!gender) {
-      newErrors.gender = "Debe ingresar un genero";
-    }
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) {
       return;
@@ -70,11 +56,9 @@ export const FormTeam = ({
     setIsLoading?.(true);
     let res;
     const data = {
-      name,
-      minAge: minAge!,
-      maxAge: maxAge!,
+      name: name!,
+      description,
       clubId,
-      gender: gender!,
     };
     if (team) {
       res = await editTeam({ id: team.id, data });
@@ -125,9 +109,9 @@ export const FormTeam = ({
           <Label>Nombre</Label>
           <Input
             variant="secondary"
-            value={name}
+            value={name || ""}
             onChange={(e) => {
-              setName(e.target.value);
+              setName(e.target.value || null);
               handleRemoveError("name");
             }}
             placeholder="Ingrese el nombre del rol"
@@ -136,113 +120,23 @@ export const FormTeam = ({
         </TextField>
 
         <TextField
-          isRequired
           className="w-full"
-          name="maxAge"
+          name="description"
           type="text"
-          isInvalid={!!errors.maxAge || undefined}
-        >
-          <Label>Edad Max.</Label>
-          <Input
-            variant="secondary"
-            min={2}
-            placeholder="12"
-            type="number"
-            value={maxAge || ""}
-            onChange={(e) => {
-              setMaxAge(Number(e.target.value));
-              handleRemoveError("maxAge");
-            }}
-          />
-          <FieldError children={errors.maxAge && <> {errors.maxAge}</>} />
-        </TextField>
-        <TextField
-          isRequired
-          className="w-full"
-          name="minAge"
-          type="text"
-          isInvalid={!!errors.minAge || undefined}
-        >
-          <Label>Edad Min.</Label>
-          <Input
-            variant="secondary"
-            min={2}
-            placeholder="12"
-            type="number"
-            value={minAge || ""}
-            onChange={(e) => {
-              setMinAge(Number(e.target.value));
-              handleRemoveError("minAge");
-            }}
-          />
-          <FieldError children={errors.minAge && <> {errors.minAge}</>} />
-        </TextField>
-
-        <Select
-          className="w-full"
-          name="gender"
-          placeholder="Seleccione un genero"
-          variant="secondary"
-          isInvalid={!!errors.gender || undefined}
-          value={gender}
+          isInvalid={!!errors.description || undefined}
+          value={description || ""}
           onChange={(e) => {
-            setGender((e?.toString() as Gender) || null);
-            handleRemoveError("gender");
+            setDescription(e || null);
+            handleRemoveError("description");
           }}
-        >
-          <Label>Genero</Label>
-          <Select.Trigger>
-            <Select.Value />
-            <Select.Indicator />
-          </Select.Trigger>
-          <Select.Popover>
-            <ListBox>
-              <ListBox.Item id="MALE" textValue="MALE">
-                MASCULINO
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-              <ListBox.Item id="FEMALE" textValue="FEMALE">
-                FEMENINO
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-              <ListBox.Item id="MIXED" textValue="MIXED">
-                MIXTO
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-            </ListBox>
-          </Select.Popover>
-          <FieldError children={errors.gender && <> {errors.gender}</>} />
-        </Select>
-
-        {/* <ComboBox
           variant="secondary"
-          isRequired
-          className="w-full"
-          name="disciplineId"
-          selectedKey={disciplineId}
-          onSelectionChange={(key) => setDisciplineId(key?.toString() || "")}
         >
-          <Label>Disciplina</Label>
-          <ComboBox.InputGroup>
-            <Input placeholder="Buscar disciplina..." />
-            <ComboBox.Trigger />
-          </ComboBox.InputGroup>
-          <ComboBox.Popover>
-            <ListBox>
-              {disciplinesOptions.map((discipline) => (
-                <ListBox.Item
-                  key={discipline.id}
-                  id={discipline.id}
-                  textValue={discipline.name}
-                >
-                  {discipline.name}
-                  <ListBox.ItemIndicator />
-                </ListBox.Item>
-              ))}
-            </ListBox>
-          </ComboBox.Popover>
-          <FieldError />
-        </ComboBox> */}
+          <Label>Descripción</Label>
+          <TextArea placeholder="Ingrese la descripción" />
+          <FieldError
+            children={errors.description && <> {errors.description}</>}
+          />
+        </TextField>
       </Form>
     </Surface>
   );

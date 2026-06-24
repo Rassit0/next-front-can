@@ -6,8 +6,16 @@ import {
   TabsTypeFilter,
 } from "@/ui";
 import { redirect } from "next/navigation";
-import { AddModal, getClubs, getDisciplinesOptions } from "@/modules/clubs";
+import {
+  AddModal,
+  getClubs,
+  getDisciplinesOptions,
+  SelectDisciplineOptions,
+} from "@/modules/clubs";
 import { TableClubs } from "@/modules/clubs/components/table/Table";
+import { Card } from "@heroui/react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Structure04FreeIcons } from "@hugeicons/core-free-icons";
 
 interface Props {
   searchParams: Promise<{
@@ -61,25 +69,22 @@ export default async function ClubsPage({ searchParams }: Props) {
 
   return (
     <>
-      <HeaderPage
-        title="Gestión de Clubes"
-        description="Administra los clubes deportivos"
-        action={
-          <AddModal disciplinesOptions={disciplinesOptionsResponse.data.data} />
-        }
-      />
-      {/* <!-- Search and Filter Bar (Tonal Architecture) --> */}
-      <SectionFilters />
-      {/* <!-- Main Member Table --> */}
-      <TableClubs
-        clubs={clubsResponse.data.data}
-        disciplinesOptions={disciplinesOptionsResponse.data.data}
-      />
-      <PaginationSection
-        totalPages={clubsResponse.data.meta.totalPages}
-        itemsPerPage={clubsResponse.data.meta.itemsPerPage}
-        totalItems={clubsResponse.data.meta.totalItems}
-      />
+      <Card>
+        <Card.Header>
+          <div className="flex items-center gap-2">
+            <HugeiconsIcon icon={Structure04FreeIcons} />
+            <Card.Title className="text-xl font-bold">
+              Seleccione una Disciplina
+            </Card.Title>
+          </div>
+        </Card.Header>
+        <Card.Content>
+          <SelectDisciplineOptions
+            disciplineOptions={disciplinesOptionsResponse.data.data}
+            urlBase="/admin/clubs"
+          />
+        </Card.Content>
+      </Card>
     </>
   );
 }

@@ -7,9 +7,9 @@ import { ButtonFloating } from "@/ui";
 import { FormClub, IDisciplineOptions } from "@/modules/clubs";
 
 interface Props {
-  disciplinesOptions: IDisciplineOptions[];
+  disciplineId: string;
 }
-export const AddModal = ({ disciplinesOptions }: Props) => {
+export const AddModal = ({ disciplineId }: Props) => {
   const state = useOverlayState();
   const [loading, setLoading] = useState(false);
 
@@ -46,7 +46,7 @@ export const AddModal = ({ disciplinesOptions }: Props) => {
             </Modal.Header>
             <Modal.Body className="p-6">
               <FormClub
-                disciplinesOptions={disciplinesOptions}
+                disciplineId={disciplineId}
                 formId="add-club-form"
                 onSubmited={() => state.close()}
                 isLoading={loading}
@@ -65,7 +65,7 @@ export const AddModal = ({ disciplinesOptions }: Props) => {
                 type="submit"
                 form="add-club-form"
                 // isDisabled={loading}
-                // isPending={true}
+                isPending={loading}
               >
                 Guardar
               </Button>

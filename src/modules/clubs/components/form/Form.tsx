@@ -16,7 +16,7 @@ import { addClub, editClub, IClub, IDisciplineOptions } from "@/modules/clubs";
 
 interface Props {
   club?: IClub;
-  disciplinesOptions: IDisciplineOptions[];
+  disciplineId: string;
   formId: string;
   onSubmited?: () => void;
   isLoading?: boolean;
@@ -24,14 +24,13 @@ interface Props {
 }
 export const FormClub = ({
   club,
-  disciplinesOptions,
+  disciplineId,
   formId,
   onSubmited,
   isLoading,
   setIsLoading,
 }: Props) => {
   const [name, setName] = useState(club?.name || "");
-  const [disciplineId, setDisciplineId] = useState(club?.discipline.id || "");
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -66,14 +65,7 @@ export const FormClub = ({
 
       if (res.errors) {
         // Convertimos el objeto { type: ["msg"] } en una lista de strings limpia
-        errorDescription = Object.entries(res.errors)
-          .map(([field, messages]) => {
-            const msgList = Array.isArray(messages)
-              ? messages.join(", ")
-              : messages;
-            return `${field}: ${msgList}`;
-          })
-          .join("\n"); // Los separamos por saltos de línea para el toast
+        errorDescription = "Error de Validación"; // Los separamos por saltos de línea para el toast
       }
 
       // 2. Pasamos la descripción formateada al componente de notificaciones
@@ -112,36 +104,6 @@ export const FormClub = ({
           />
           <FieldError children={errors.name && <> {errors.name}</>} />
         </TextField>
-
-        <ComboBox
-          variant="secondary"
-          isRequired
-          className="w-full"
-          name="disciplineId"
-          selectedKey={disciplineId}
-          onSelectionChange={(key) => setDisciplineId(key?.toString() || "")}
-        >
-          <Label>Disciplina</Label>
-          <ComboBox.InputGroup>
-            <Input placeholder="Buscar disciplina..." />
-            <ComboBox.Trigger />
-          </ComboBox.InputGroup>
-          <ComboBox.Popover>
-            <ListBox>
-              {disciplinesOptions.map((discipline) => (
-                <ListBox.Item
-                  key={discipline.id}
-                  id={discipline.id}
-                  textValue={discipline.name}
-                >
-                  {discipline.name}
-                  <ListBox.ItemIndicator />
-                </ListBox.Item>
-              ))}
-            </ListBox>
-          </ComboBox.Popover>
-          <FieldError />
-        </ComboBox>
       </Form>
     </Surface>
   );

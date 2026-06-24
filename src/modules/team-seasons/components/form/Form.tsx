@@ -6,50 +6,47 @@ import { DelayPoliciesCard } from "./DelayPoliciesCard";
 import { FinancialStructureCard } from "./FinancialStructureCard";
 import { ITeam } from "@/modules/teams";
 import { useCallback, useRef, useState } from "react";
-import {
-  addTeamSeason,
-  editTeamSeason,
-  ITeamSeason,
-  PostOfferingInterface,
-  STATUS_TEXT_MAP,
-  StatusTeamSeason,
-} from "@/modules/team-seasons";
+
 import { Button, Form, toast } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import {
-  DateValue,
-  getLocalTimeZone,
-  parseDate,
-} from "@internationalized/date";
+  addTeamSeason,
+  editTeamSeason,
+  Gender,
+  ICategoryOption,
+  ISeasonOption,
+  ITeamSeason,
+  StatusTeamSeason,
+  IPostTeamSeason,
+} from "@/modules/team-seasons";
+import { STATUS_TEXT_MAP } from "../../constants/team-seasons.constants";
 
 interface Props {
+  formId: string;
   team: ITeam;
   teamSeason?: ITeamSeason;
+  categoriesOptions: ICategoryOption[];
+  seasonsOptions: ISeasonOption[];
   urlRedirect: string;
 }
 
-export const FormTeamOffering = ({ team, teamSeason, urlRedirect }: Props) => {
+export const FormTeamSeason = ({
+  formId,
+  team,
+  teamSeason,
+  categoriesOptions,
+  seasonsOptions,
+  urlRedirect,
+}: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const formRef = useRef<HTMLFormElement | null>(null);
 
   // form params
-  const [name, setName] = useState<string | null>(teamSeason?.name || null);
-  const [startDate, setStartDate] = useState<DateValue | null>(
-    teamSeason?.startDate
-      ? parseDate(
-          `${teamSeason.startDate.getFullYear()}-${(teamSeason.startDate.getMonth() + 1).toString().padStart(2, "0")}-${teamSeason.startDate.getDate().toString().padStart(2, "0")}`,
-        )
-      : null,
-  );
-  const [endDate, setEndDate] = useState<DateValue | null>(
-    teamSeason?.endDate
-      ? parseDate(
-          `${teamSeason.endDate.getFullYear()}-${(teamSeason.endDate.getMonth() + 1).toString().padStart(2, "0")}-${teamSeason.endDate.getDate().toString().padStart(2, "0")}`,
-        )
-      : null,
+  const [description, setDescription] = useState<string | null>(
+    teamSeason?.description || null,
   );
   const [maxMembers, setMaxMembers] = useState<number | null>(
     teamSeason?.maxMembers || null,
@@ -57,21 +54,29 @@ export const FormTeamOffering = ({ team, teamSeason, urlRedirect }: Props) => {
   const [minMembers, setMinMembers] = useState<number | null>(
     teamSeason?.minMembers || null,
   );
-  const [minYear, setMinYear] = useState<number | null>(
-    teamSeason?.minYear || null,
+  const [categoryId, setCategoryId] = useState<string | null>(
+    teamSeason?.category.id || null,
   );
-  const [maxYear, setMaxYear] = useState<number | null>(
-    teamSeason?.maxYear || null,
+  const [seasonId, setSeasonId] = useState<string | null>(
+    teamSeason?.season.id || null,
   );
-  const [monthlyFee, setMonthlyFee] = useState<string | null>(
-    teamSeason?.monthlyFee || null,
+  const [gender, setGender] = useState<Gender | null>(
+    teamSeason?.gender || null,
+  );
+  const [billingDay, setBillingDay] = useState<number | null>(
+    teamSeason?.billingDay || null,
   );
   const [registrationFee, setRegistrationFee] = useState<string | null>(
     teamSeason?.registrationFee || null,
   );
-  const [fullPaymentDiscountPercent, setFullPaymentDiscountPercent] = useState<
-    string | null
-  >(teamSeason?.fullPaymentDiscountPercent || null);
+  const [monthlyFee, setMonthlyFee] = useState<string | null>(
+    teamSeason?.monthlyFee || null,
+  );
+  const [debtToleranceMonths, setDebtToleranceMonths] = useState<number | null>(
+    teamSeason?.debtToleranceMonths !== undefined
+      ? teamSeason?.debtToleranceMonths
+      : null,
+  );
   const [lateFeeEnabled, setLateFeeEnabled] = useState<boolean>(
     teamSeason?.lateFeeEnabled === true ? true : false,
   );
@@ -80,13 +85,6 @@ export const FormTeamOffering = ({ team, teamSeason, urlRedirect }: Props) => {
   );
   const [graceDays, setGraceDays] = useState<number | null>(
     teamSeason?.graceDays !== undefined ? teamSeason?.graceDays : null,
-  );
-  const [suspensionAfterMonthsDue, setSuspensionAfterMonthsDue] = useState<
-    number | null
-  >(
-    teamSeason?.suspensionAfterMonthsDue !== undefined
-      ? teamSeason?.suspensionAfterMonthsDue
-      : null,
   );
   const [status, setStatus] = useState<StatusTeamSeason>(
     teamSeason?.status || "DRAFT",
@@ -104,38 +102,29 @@ export const FormTeamOffering = ({ team, teamSeason, urlRedirect }: Props) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log("submit", team.id);
     // setErrors({});
     const newErrors: Record<string, string> = {};
-    if (name === null) {
-      newErrors.name = "Debe ingresar un nombre";
-    }
-    if (startDate === null) {
-      newErrors.startDate = "Debe ingresar una fecha de inicio";
-    }
-    if (endDate === null) {
-      newErrors.seasonId = "Debe ingresar una fecha de fin";
-    }
     if (maxMembers === null) {
       newErrors.maxMembers = "Debe ingresar el número máximo de miembros";
     }
     if (minMembers === null) {
       newErrors.minMembers = "Debe ingresar el número mínimo de miembros";
     }
-    if (minYear === null) {
-      newErrors.minYear = "Debe ingresar el año mínimo";
+    if (categoryId === null) {
+      newErrors.categoryId = "Debe ingresar la categoría";
     }
-    if (maxYear === null) {
-      newErrors.maxYear = "Debe ingresar el año máximo";
+    if (seasonId === null) {
+      newErrors.seasonId = "Debe ingresar la temporada";
+    }
+    if (gender === null) {
+      newErrors.gender = "Debe ingresar el género";
     }
     if (monthlyFee === null) {
       newErrors.monthlyFee = "Debe ingresar el valor de la cuota mensual";
     }
     if (registrationFee === null) {
       newErrors.registrationFee = "Debe ingresar el valor de la inscripción";
-    }
-    if (fullPaymentDiscountPercent === null) {
-      newErrors.fullPaymentDiscountPercent =
-        "Debe ingresar el porcentaje de descuento por pago completo";
     }
     if (lateFeePerDay === null) {
       newErrors.lateFeePerDay = "Debe ingresar el valor de la multa por día";
@@ -144,9 +133,12 @@ export const FormTeamOffering = ({ team, teamSeason, urlRedirect }: Props) => {
     if (graceDays === null) {
       newErrors.graceDays = "Debe ingresar el número de días de gracia";
     }
-    if (suspensionAfterMonthsDue === null) {
-      newErrors.suspensionAfterMonthsDue =
-        "Debe ingresar el número de meses de mora para la suspensión";
+    if (debtToleranceMonths === null) {
+      newErrors.debtToleranceMonths =
+        "Debe ingresar el número de meses de tolerancia de deuda para la suspensión";
+    }
+    if (billingDay === null) {
+      newErrors.billingDay = "Debe ingresar el día de facturación";
     }
     if (status === null) {
       newErrors.status = "Debe ingresar el estado";
@@ -158,22 +150,21 @@ export const FormTeamOffering = ({ team, teamSeason, urlRedirect }: Props) => {
     }
     setIsLoading?.(true);
     let res;
-    const data: PostOfferingInterface = {
-      teamId: team.id,
-      name: name!,
-      startDate: startDate!.toDate(getLocalTimeZone()),
-      endDate: endDate!.toDate(getLocalTimeZone()),
+    const data: IPostTeamSeason = {
+      description: description!,
       maxMembers: maxMembers!,
       minMembers: minMembers!,
-      minYear: minYear!,
-      maxYear: maxYear!,
-      monthlyFee: monthlyFee!,
+      teamId: team.id,
+      categoryId: categoryId!,
+      seasonId: seasonId!,
+      gender: gender!,
+      billingDay: billingDay!,
       registrationFee: registrationFee!,
-      fullPaymentDiscountPercent: fullPaymentDiscountPercent!,
+      monthlyFee: monthlyFee!,
+      debtToleranceMonths: debtToleranceMonths!,
       lateFeeEnabled,
-      lateFeePerDay: lateFeePerDay!,
-      graceDays: graceDays!,
-      suspensionAfterMonthsDue: suspensionAfterMonthsDue!,
+      lateFeePerDay: lateFeeEnabled ? lateFeePerDay! : "0",
+      graceDays: lateFeeEnabled ? graceDays! : 0,
       status,
     };
     if (teamSeason) {
@@ -215,7 +206,7 @@ export const FormTeamOffering = ({ team, teamSeason, urlRedirect }: Props) => {
   return (
     <>
       <Form
-        id="form-team-offering"
+        id={formId}
         onSubmit={handleSubmit}
         className="grid grid-cols-1 lg:grid-cols-12 gap-6"
       >
@@ -223,16 +214,41 @@ export const FormTeamOffering = ({ team, teamSeason, urlRedirect }: Props) => {
         <div className="lg:col-span-7 space-y-6">
           {/* <!-- Basic Info Card --> */}
           <BasicInfoCard
-            name={name}
-            setName={setName}
-            startDate={startDate}
-            setStartDate={setStartDate}
-            endDate={endDate}
-            setEndDate={setEndDate}
-            maxYear={maxYear}
-            setMaxYearId={setMaxYear}
-            minYear={minYear}
-            setMinYearId={setMinYear}
+            categoriesOptions={categoriesOptions}
+            seasonsOptions={seasonsOptions}
+            categoryId={categoryId}
+            setCategoryId={setCategoryId}
+            seasonId={seasonId}
+            setSeasonId={setSeasonId}
+            gender={gender}
+            setGender={setGender}
+            description={description}
+            setDescription={setDescription}
+            errors={errors}
+            handleRemoveError={handleRemoveError}
+          />
+          <DelayPoliciesCard
+            lateFeePerDay={lateFeePerDay}
+            setLateFeePerDay={setLateFeePerDay}
+            graceDays={graceDays}
+            setGraceDays={setGraceDays}
+            debtToleranceMonths={debtToleranceMonths}
+            setDebtToleranceMonths={setDebtToleranceMonths}
+            lateFeeEnabled={lateFeeEnabled}
+            setLateFeeEnabled={setLateFeeEnabled}
+            errors={errors}
+            handleRemoveError={handleRemoveError}
+          />
+        </div>
+        {/* <!-- Section 2: Estructura Financiera --> */}
+        <div className="lg:col-span-5 space-y-6">
+          <FinancialStructureCard
+            registrationFee={registrationFee}
+            setRegistrationFee={setRegistrationFee}
+            monthlyFee={monthlyFee}
+            setMonthlyFee={setMonthlyFee}
+            billingDay={billingDay}
+            setBillingDay={setBillingDay}
             errors={errors}
             handleRemoveError={handleRemoveError}
           />
@@ -246,34 +262,8 @@ export const FormTeamOffering = ({ team, teamSeason, urlRedirect }: Props) => {
             handleRemoveError={handleRemoveError}
           />
         </div>
-        {/* <!-- Section 2: Estructura Financiera --> */}
-        <div className="lg:col-span-5 space-y-6">
-          <FinancialStructureCard
-            registrationFee={registrationFee}
-            setRegistrationFee={setRegistrationFee}
-            monthlyFee={monthlyFee}
-            setMonthlyFee={setMonthlyFee}
-            fullPaymentDiscountPercent={fullPaymentDiscountPercent}
-            setFullPaymentDiscountPercent={setFullPaymentDiscountPercent}
-            errors={errors}
-            handleRemoveError={handleRemoveError}
-          />
-        </div>
         {/* <!-- Section 3: Políticas de Mora (Full Width Bottom) --> */}
-        <div className="lg:col-span-12">
-          <DelayPoliciesCard
-            lateFeePerDay={lateFeePerDay}
-            setLateFeePerDay={setLateFeePerDay}
-            graceDays={graceDays}
-            setGraceDays={setGraceDays}
-            suspensionAfterMonthsDue={suspensionAfterMonthsDue}
-            setSuspensionAfterMonthsDue={setSuspensionAfterMonthsDue}
-            lateFeeEnabled={lateFeeEnabled}
-            setLateFeeEnabled={setLateFeeEnabled}
-            errors={errors}
-            handleRemoveError={handleRemoveError}
-          />
-        </div>
+        <div className="lg:col-span-12"></div>
         {/* <!-- Section 4: Estado Final (Floating Sticky-ish bottom or separate block) --> */}
         <div className="lg:col-span-12 flex justify-end items-center gap-8 p-8 bg-surface-container-low rounded-full">
           <div className="flex items-center gap-4">

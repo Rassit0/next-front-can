@@ -11,7 +11,14 @@ import {
   getPlayers,
   TablePlayers,
 } from "@/modules/players";
-import { ErrorPage, HeaderPage, PaginationSection, SectionFilters } from "@/ui";
+import {
+  ErrorPage,
+  HeaderPage,
+  PaginationSection,
+  SectionFilters,
+  TabsTypeFilter,
+  TabsTypeFilterQueryProps,
+} from "@/ui";
 import {
   Alert01Icon,
   Basketball01Icon,
@@ -30,14 +37,13 @@ interface Props {
     search?: string;
     per_page?: string;
     page?: string;
+    disciplineId?: string;
   }>;
   params: Promise<{ playerId: string }>;
 }
 export default async function PassesPage({ searchParams, params }: Props) {
-  const [{ search, page, per_page }, { playerId }] = await Promise.all([
-    searchParams,
-    params,
-  ]);
+  const [{ search, page, per_page, disciplineId }, { playerId }] =
+    await Promise.all([searchParams, params]);
   const [playerPassesResponse, playerResponse, disciplineOptionsResponse] =
     await Promise.all([
       getPlayerPasses({
@@ -45,6 +51,7 @@ export default async function PassesPage({ searchParams, params }: Props) {
         page,
         per_page,
         playerId,
+        disciplineId: disciplineId === "all" ? undefined : disciplineId,
       }),
       getPlayerById({ id: playerId }),
       getDisciplinesOptions(),
@@ -90,8 +97,12 @@ export default async function PassesPage({ searchParams, params }: Props) {
         <HeaderPage
           title={
             <Badge.Anchor className="flex items-center gap-2">
-              <HugeiconsIcon icon={LicenseIcon} className="text-accent" />
-              <div className="flex gap-1">
+              <HugeiconsIcon
+                icon={LicenseIcon}
+                className="hidden sm:block text-accent"
+                size={32}
+              />
+              <div className="flex flex-col lg:flex-row gap-1">
                 <p className="text-3xl font-black font-headline text-default-foreground">
                   Kardex -{" "}
                   <span className="text-accent">
@@ -100,14 +111,13 @@ export default async function PassesPage({ searchParams, params }: Props) {
                     {playerResponse.data.person.secondLastName}
                   </span>
                 </p>
-                <Badge
+                <Chip
                   size="sm"
                   variant="soft"
-                  className={genderClassMap[playerResponse.data.person.gender]}
-                  placement="bottom-right"
+                  className={`h-6 max-w-fit ${genderClassMap[playerResponse.data.person.gender]}`}
                 >
                   {genderMap[playerResponse.data.person.gender]}
-                </Badge>
+                </Chip>
               </div>
             </Badge.Anchor>
           }
@@ -159,6 +169,17 @@ export default async function PassesPage({ searchParams, params }: Props) {
           </div>
         </div> */}
         <SectionFilters />
+        <TabsTypeFilterQueryProps
+          queryProp="disciplineId"
+          queryPropValueDefault="all"
+          props={[
+            { value: "all", title: "Todos" },
+            ...disciplineOptionsResponse.data.data.map((discipline) => ({
+              value: discipline.id,
+              title: discipline.name,
+            })),
+          ]}
+        />
         {/* <!-- Main Member Table --> */}
         <TablePlayerPasses playerPasses={playerPassesResponse.data.data} />
         {/* <!-- Pagination --> */}
