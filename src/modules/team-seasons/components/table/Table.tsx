@@ -4,7 +4,6 @@ import { EyeIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useEffect, useState } from "react";
 import { ButtonGestion } from "./ButtonGestion";
-import { EditModal } from "../modal/EditModal";
 import { SortableColumnHeader } from "@/ui";
 import { DeleteModal } from "../modal/DeleteModal";
 import { iconMap } from "@/utils";

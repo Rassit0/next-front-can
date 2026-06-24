@@ -15,6 +15,8 @@ export const CardAdd = () => {
         formId="form-season-add"
         isLoading={isLoading}
         setIsLoading={setIsLoading}
+        institutionId=""
+        disciplineId=""
       />
       <Button
         type="submit"

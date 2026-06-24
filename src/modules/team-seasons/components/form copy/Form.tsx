@@ -98,10 +98,11 @@ export const FormTeamSeason = ({
       gender: gender!,
     };
     if (teamSeason) {
-      res = await editTeamSeason({ id: teamSeason.id, data });
+      // res = await editTeamSeason({ id: teamSeason.id, data });
     } else {
-      res = await addTeamSeason(data);
+      // res = await addTeamSeason(data);
     }
+    return;
     setIsLoading?.(false);
     if (res.error) {
       let errorDescription = res.message;

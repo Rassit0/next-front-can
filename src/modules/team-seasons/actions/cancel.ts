@@ -3,7 +3,7 @@ import { api } from "@/utils/api";
 import { ServiceResponse } from "@/types/api";
 import { updateTag } from "next/cache";
 import { handleServerAction } from "@/utils";
-import { ITeamSeason } from "../interfaces/team-seasons.interface";
+import { ITeamSeason } from "@/modules/team-seasons";
 
 export const cancelTeamSeason = async (
   id: string,
@@ -21,8 +21,8 @@ export const cancelTeamSeason = async (
       error: false,
       data: {
         ...response.data,
-        startDate: new Date(response.data.startDate),
-        endDate: new Date(response.data.endDate),
+        startDate: new Date(response.data.season.startDate),
+        endDate: new Date(response.data.season.endDate),
         createdAt: new Date(response.data.createdAt),
         updatedAt: new Date(response.data.updatedAt),
       },

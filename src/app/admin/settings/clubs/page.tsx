@@ -64,17 +64,11 @@ export default async function ClubsPage({ searchParams }: Props) {
       <HeaderPage
         title="Gestión de Clubes"
         description="Administra los clubes deportivos"
-        action={
-          <AddModal disciplinesOptions={disciplinesOptionsResponse.data.data} />
-        }
       />
       {/* <!-- Search and Filter Bar (Tonal Architecture) --> */}
       <SectionFilters />
       {/* <!-- Main Member Table --> */}
-      <TableClubs
-        clubs={clubsResponse.data.data}
-        disciplinesOptions={disciplinesOptionsResponse.data.data}
-      />
+
       <PaginationSection
         totalPages={clubsResponse.data.meta.totalPages}
         itemsPerPage={clubsResponse.data.meta.itemsPerPage}

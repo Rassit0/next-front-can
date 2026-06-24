@@ -1,5 +1,5 @@
 import { itemsNavigation } from "@/config";
-import { getOrganizationById, getOrganizations } from "@/modules/organizations";
+import { getInstitutions } from "@/modules/organizations";
 import { BottonNavBar, ErrorPage, Header, Sidebar } from "@/ui";
 
 export default async function AdminLayout({
@@ -7,7 +7,7 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const organizationsResponse = await getOrganizations({});
+  const organizationsResponse = await getInstitutions({});
 
   if (organizationsResponse.error || !organizationsResponse.data) {
     return <ErrorPage message={organizationsResponse.message} />;
