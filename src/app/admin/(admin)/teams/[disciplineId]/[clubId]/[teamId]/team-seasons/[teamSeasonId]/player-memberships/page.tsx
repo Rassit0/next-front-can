@@ -1,19 +1,25 @@
 import { ErrorPage, HeaderPage, PaginationSection, SectionFilters } from "@/ui";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
+import Link from "next/link";
+import { getPaymentPlans } from "@/modules/payment-plans";
+import { getPlayers } from "@/modules/players";
+import { getTeamSeasonById } from "@/modules/team-seasons";
 import {
-  AddModal,
-  getPaymentPlans,
-  TablePaymentPlans,
-} from "@/modules/payment-plans";
-import { AddMembershipDrawer, getTeamSeasonById } from "@/modules/team-seasons";
-import { parseDate } from "@internationalized/date";
-import { Card } from "@heroui/react";
+  EnrollMembershipDrawer,
+  getPlayerMemberships,
+  MetricsCards,
+  TableMemberships,
+} from "@/modules/player-memberships";
+import { Button, Card } from "@heroui/react";
+import { Wallet01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 
 interface Props {
   searchParams: Promise<{
     search?: string;
     per_page?: string;
     page?: string;
+    status?: string;
   }>;
   params: Promise<{
     disciplineId: string;
@@ -22,81 +28,98 @@ interface Props {
     teamSeasonId: string;
   }>;
 }
+
 export default async function PlayerMembershipsPage({
   searchParams,
   params,
 }: Props) {
-  const { search, page, per_page } = await searchParams;
+  const { search, page, per_page, status } = await searchParams;
   const { disciplineId, clubId, teamId, teamSeasonId } = await params;
-  const [paymentPlansResponse, teamSeasonResponse] = await Promise.all([
-    getPaymentPlans({
-      search,
-      page,
-      per_page,
-      teamSeasonId: teamSeasonId,
-    }),
-    getTeamSeasonById({ id: teamSeasonId }),
-  ]);
 
-  // 1. Manejo de error específico (Ej: 401 no autorizado)
-  if (paymentPlansResponse.error && paymentPlansResponse.statusCode === 401) {
+  const [membershipsResponse, teamSeasonResponse, paymentPlansResponse, playersResponse] =
+    await Promise.all([
+      getPlayerMemberships({ search, page, per_page, teamSeasonId, status }),
+      getTeamSeasonById({ id: teamSeasonId }),
+      getPaymentPlans({ per_page: "100", teamSeasonId }),
+      getPlayers({ per_page: "100" }),
+    ]);
+
+  if (membershipsResponse.error && membershipsResponse.statusCode === 401) {
     redirect("/login");
   }
-
-  // 2. Manejo de errores generales (400, 500, etc.)
-  if (paymentPlansResponse.error) {
-    return <ErrorPage message={paymentPlansResponse.message} />;
-  }
-
   if (teamSeasonResponse.error) {
     return <ErrorPage message={teamSeasonResponse.message} />;
   }
+  if (membershipsResponse.error) {
+    return <ErrorPage message={membershipsResponse.message} />;
+  }
+
+  const teamSeason = teamSeasonResponse.data;
+  const memberships = membershipsResponse.data.data;
+  const meta = membershipsResponse.data.meta;
+  const paymentPlans = paymentPlansResponse.error
+    ? []
+    : paymentPlansResponse.data.data;
+  const players = playersResponse.error ? [] : playersResponse.data.data;
 
   return (
     <>
-      {/* <!-- Header --> */}
       <HeaderPage
-        title={`${teamSeasonResponse.data.team.name} - ${teamSeasonResponse.data.season.name}`}
-        description="Administra los miembros de la temporada"
-        // action={
-        //   <div className="w-full">
-        //     <AddMembershipDrawer teamSeasonId={teamSeasonId} size="md" />
-        //   </div>
-        // }
+        title={`${teamSeason.team.name} · ${teamSeason.season.name}`}
+        description="Gestiona las membresías de la temporada y sus cargos iniciales"
+        action={
+          <Link
+            href={`/admin/teams/${disciplineId}/${clubId}/${teamId}/team-seasons/${teamSeasonId}/payments`}
+          >
+            <Button variant="secondary">
+              <HugeiconsIcon icon={Wallet01Icon} size={18} />
+              Ver pagos
+            </Button>
+          </Link>
+        }
         breadcrumb={[
           { label: "Gestión Equipos", href: `/` },
           {
-            label: `Gestión de Temporadas - ${teamSeasonResponse.data.team.name}`,
+            label: `Gestión de Temporadas - ${teamSeason.team.name}`,
             href: `/admin/teams/${disciplineId}/${clubId}/${teamId}/team-seasons`,
           },
           {
-            label: `Gestión de Planes de Pago - ${teamSeasonResponse.data.team.name} - ${teamSeasonResponse.data.season.name}`,
+            label: `Membresías - ${teamSeason.team.name} - ${teamSeason.season.name}`,
           },
         ]}
       />
-      <Card>
-        <HeaderPage
-          title={`Miembros`}
-          // description="Administra las membresías de la temporada"
-          action={
-            <div className="w-full">
-              <AddMembershipDrawer teamSeasonId={teamSeasonId} size="md" />
-            </div>
-          }
+
+      <div className="flex flex-col gap-4">
+        <MetricsCards
+          memberships={memberships}
+          teamSeason={teamSeason}
+          totalItems={meta.totalItems}
         />
-        {/* <!-- Search and Filter Bar (Tonal Architecture) --> */}
-        <SectionFilters />
-        {/* <!-- Main Member Table --> */}
-        <TablePaymentPlans
-          paymentPlans={paymentPlansResponse.data.data}
-          teamSeasonId={teamSeasonId}
-        />
-        <PaginationSection
-          totalPages={paymentPlansResponse.data.meta.totalPages}
-          itemsPerPage={paymentPlansResponse.data.meta.itemsPerPage}
-          totalItems={paymentPlansResponse.data.meta.totalItems}
-        />
-      </Card>
+
+        <Card>
+          <HeaderPage
+            title="Atletas inscritos"
+            description="Asigna membresías y revisa los cargos iniciales generados"
+            action={
+              <div className="w-full">
+                <EnrollMembershipDrawer
+                  teamSeason={teamSeason}
+                  paymentPlans={paymentPlans}
+                  players={players}
+                  size="md"
+                />
+              </div>
+            }
+          />
+          <SectionFilters />
+          <TableMemberships memberships={memberships} teamSeason={teamSeason} />
+          <PaginationSection
+            totalPages={meta.totalPages}
+            itemsPerPage={meta.itemsPerPage}
+            totalItems={meta.totalItems}
+          />
+        </Card>
+      </div>
     </>
   );
 }
