@@ -34,25 +34,33 @@ export const TableMemberships = ({ memberships, teamSeason }: Props) => {
     <Table>
       <Table.ScrollContainer>
         <Table.Content aria-label="Membresías de atletas" className="min-w-200">
-          <Table.Header>
+          <Table.Header className="bg-surface-secondary">
             <Table.Column isRowHeader allowsSorting id="player">
-              <SortableColumnHeader id="player">ATLETA</SortableColumnHeader>
+              <SortableColumnHeader id="player">
+                <span className="text-xs font-semibold uppercase tracking-wide">Atleta</span>
+              </SortableColumnHeader>
             </Table.Column>
             <Table.Column allowsSorting id="paymentPlan">
               <SortableColumnHeader id="paymentPlan">
-                PLAN DE PAGO
+                <span className="text-xs font-semibold uppercase tracking-wide">Plan de Pago</span>
               </SortableColumnHeader>
             </Table.Column>
             <Table.Column id="initialCharges" className="text-right">
-              CARGOS INICIALES
+              <span className="text-xs font-semibold uppercase tracking-wide">Cargos Iniciales</span>
             </Table.Column>
             <Table.Column allowsSorting id="startedAt">
-              <SortableColumnHeader id="startedAt">INICIO</SortableColumnHeader>
+              <SortableColumnHeader id="startedAt">
+                <span className="text-xs font-semibold uppercase tracking-wide">Inicio</span>
+              </SortableColumnHeader>
             </Table.Column>
             <Table.Column allowsSorting id="status">
-              <SortableColumnHeader id="status">ESTADO</SortableColumnHeader>
+              <SortableColumnHeader id="status">
+                <span className="text-xs font-semibold uppercase tracking-wide">Estado</span>
+              </SortableColumnHeader>
             </Table.Column>
-            <Table.Column className="text-center">ACCIONES</Table.Column>
+            <Table.Column className="text-center">
+              <span className="text-xs font-semibold uppercase tracking-wide">Acciones</span>
+            </Table.Column>
           </Table.Header>
           <Table.Body
             renderEmptyState={() => (
@@ -68,8 +76,12 @@ export const TableMemberships = ({ memberships, teamSeason }: Props) => {
                 membership.paymentPlan,
               );
               return (
-                <Table.Row key={membership.id} id={membership.id}>
-                  <Table.Cell>
+                <Table.Row
+                  key={membership.id}
+                  id={membership.id}
+                  className="border-b border-border last:border-b-0 hover:bg-surface-secondary/40"
+                >
+                  <Table.Cell className="py-3">
                     <div className="flex items-center gap-3">
                       <Avatar size="sm">
                         <Avatar.Image
@@ -77,39 +89,43 @@ export const TableMemberships = ({ memberships, teamSeason }: Props) => {
                           src={person?.imageUrl ?? undefined}
                           loading="lazy"
                         />
-                        <Avatar.Fallback>
+                        <Avatar.Fallback className="bg-accent-soft text-accent">
                           {person
                             ? initials(person.name, person.lastName)
                             : "AT"}
                         </Avatar.Fallback>
                       </Avatar>
-                      <div className="flex flex-col">
-                        <span className="font-semibold text-foreground">
+                      <div className="flex flex-col min-w-0">
+                        <span className="font-medium text-foreground truncate">
                           {person
                             ? `${person.name} ${person.lastName}`
                             : "Atleta"}
                         </span>
                         {person ? (
-                          <span className="text-[11px] text-muted">
+                          <span className="text-xs text-muted truncate">
                             {person.documentType} {person.documentNumber}
                           </span>
                         ) : null}
                       </div>
                     </div>
                   </Table.Cell>
-                  <Table.Cell>
-                    {membership.paymentPlan?.name ?? "—"}
+                  <Table.Cell className="py-3">
+                    <span className="font-medium text-foreground">
+                      {membership.paymentPlan?.name ?? "—"}
+                    </span>
                   </Table.Cell>
-                  <Table.Cell className="text-right font-semibold tabular-nums">
-                    {formatCurrency(charges.total, charges.currency)}
+                  <Table.Cell className="py-3 text-right">
+                    <span className="font-semibold tabular-nums text-accent">
+                      {formatCurrency(charges.total, charges.currency)}
+                    </span>
                   </Table.Cell>
-                  <Table.Cell>
+                  <Table.Cell className="py-3 text-sm">
                     {membership.startedAt.toLocaleDateString("es-BO")}
                   </Table.Cell>
-                  <Table.Cell>
+                  <Table.Cell className="py-3">
                     <StatusChip status={membership.status} />
                   </Table.Cell>
-                  <Table.Cell>
+                  <Table.Cell className="py-3">
                     <div className="flex items-center justify-center">
                       <MembershipActions membership={membership} />
                     </div>

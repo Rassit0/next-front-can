@@ -77,41 +77,44 @@ export const MetricsCards = ({
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {cards.map((card, index) => (
         <motion.div
           key={card.label}
-          initial={{ opacity: 0, y: 14 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, delay: index * 0.07 }}
+          transition={{ duration: 0.3, delay: index * 0.05, ease: "easeOut" }}
+          className="h-full"
         >
-          <Card className="card-hover h-full p-4">
-            <div className="flex items-start justify-between gap-2">
-              <div>
-                <p className="text-xs font-medium text-muted">{card.label}</p>
-                <p className="mt-1 text-2xl font-extrabold tracking-tight text-foreground">
+          <Card className="card-hover h-full p-5 shadow-[0px_4px_12px_rgba(0,0,0,0.06)] border border-border">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted">
+                  {card.label}
+                </p>
+                <p className="mt-2 text-3xl font-extrabold tracking-tight text-foreground">
                   {card.value}
                 </p>
               </div>
               <span
-                className={`flex size-10 items-center justify-center rounded-xl ${card.bg} ${card.tone}`}
+                className={`flex-shrink-0 flex size-12 items-center justify-center rounded-lg ${card.bg} ${card.tone} shadow-sm`}
               >
-                <HugeiconsIcon icon={card.icon} size={20} />
+                <HugeiconsIcon icon={card.icon} size={22} />
               </span>
             </div>
             {typeof card.progress === "number" ? (
-              <div className="mt-3">
+              <div className="mt-4">
                 <ProgressBar value={card.progress} className="w-full">
-                  <ProgressBar.Track>
+                  <ProgressBar.Track className="bg-surface-secondary">
                     <ProgressBar.Fill />
                   </ProgressBar.Track>
                 </ProgressBar>
-                <p className="mt-1 text-[11px] text-muted">
-                  {card.progress}% de ocupación
+                <p className="mt-2 text-xs font-medium text-muted">
+                  {card.progress}% ocupación
                 </p>
               </div>
             ) : (
-              <p className="mt-3 text-[11px] text-muted">{card.hint}</p>
+              <p className="mt-4 text-xs text-muted">{card.hint}</p>
             )}
           </Card>
         </motion.div>

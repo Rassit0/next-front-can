@@ -89,14 +89,14 @@ export default async function PlayerMembershipsPage({
         ]}
       />
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-6 page-content">
         <MetricsCards
           memberships={memberships}
           teamSeason={teamSeason}
           totalItems={meta.totalItems}
         />
 
-        <Card>
+        <Card className="shadow-[0px_4px_12px_rgba(0,0,0,0.06)] border border-border">
           <HeaderPage
             title="Atletas inscritos"
             description="Asigna membresías y revisa los cargos iniciales generados"

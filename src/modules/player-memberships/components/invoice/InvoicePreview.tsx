@@ -45,7 +45,7 @@ export const InvoicePreview = ({
   return (
     <Surface
       variant="secondary"
-      className="relative overflow-hidden rounded-2xl border border-border p-5"
+      className="relative overflow-hidden rounded-xl border border-border p-5 shadow-sm bg-surface-secondary"
     >
       {/* Header */}
       <div className="flex items-center justify-between gap-2">

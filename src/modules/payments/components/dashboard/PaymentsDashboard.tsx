@@ -101,29 +101,30 @@ export const PaymentsDashboard = ({ memberships, teamSeason }: Props) => {
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+    <div className="flex flex-col gap-6">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {cards.map((card, index) => (
           <motion.div
             key={card.label}
-            initial={{ opacity: 0, y: 14 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, delay: index * 0.07 }}
+            transition={{ duration: 0.3, delay: index * 0.05, ease: "easeOut" }}
+            className="h-full"
           >
-            <Card className="card-hover h-full p-4">
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <p className="text-xs font-medium text-muted">
+            <Card className="card-hover h-full p-5 shadow-[0px_4px_12px_rgba(0,0,0,0.06)] border border-border">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-muted">
                     {card.label}
                   </p>
-                  <p className="mt-1 text-2xl font-extrabold tracking-tight text-foreground">
+                  <p className="mt-2 text-3xl font-extrabold tracking-tight text-foreground">
                     {card.value}
                   </p>
                 </div>
                 <span
-                  className={`flex size-10 items-center justify-center rounded-xl ${card.bg} ${card.tone}`}
+                  className={`flex-shrink-0 flex size-12 items-center justify-center rounded-lg ${card.bg} ${card.tone} shadow-sm`}
                 >
-                  <HugeiconsIcon icon={card.icon} size={20} />
+                  <HugeiconsIcon icon={card.icon} size={22} />
                 </span>
               </div>
             </Card>
@@ -131,19 +132,26 @@ export const PaymentsDashboard = ({ memberships, teamSeason }: Props) => {
         ))}
       </div>
 
-      <Card className="p-4">
+      <Card className="p-6 shadow-[0px_4px_12px_rgba(0,0,0,0.06)] border border-border">
         <Tabs
           selectedKey={activeTab}
           onSelectionChange={(key) => setActiveTab(String(key))}
+          className="w-full"
         >
-          <Tabs.List>
-            <Tabs.Tab id="pending">Pendientes ({pending.length})</Tabs.Tab>
-            <Tabs.Tab id="paid">Realizados ({paid.length})</Tabs.Tab>
-            <Tabs.Tab id="all">Todos ({payments.length})</Tabs.Tab>
+          <Tabs.List className="gap-1">
+            <Tabs.Tab id="pending" className="text-xs font-semibold">
+              Pendientes <span className="ml-1.5 px-2 py-0.5 rounded-full bg-warning/10 text-warning text-[10px] font-bold">{pending.length}</span>
+            </Tabs.Tab>
+            <Tabs.Tab id="paid" className="text-xs font-semibold">
+              Realizados <span className="ml-1.5 px-2 py-0.5 rounded-full bg-success/10 text-success text-[10px] font-bold">{paid.length}</span>
+            </Tabs.Tab>
+            <Tabs.Tab id="all" className="text-xs font-semibold">
+              Todos <span className="ml-1.5 px-2 py-0.5 rounded-full bg-default/20 text-muted text-[10px] font-bold">{payments.length}</span>
+            </Tabs.Tab>
           </Tabs.List>
 
           {["pending", "paid", "all"].map((key) => (
-            <Tabs.Panel key={key} id={key} className="pt-4">
+            <Tabs.Panel key={key} id={key} className="pt-6">
               <motion.div
                 key={key}
                 initial={{ opacity: 0, y: 8 }}

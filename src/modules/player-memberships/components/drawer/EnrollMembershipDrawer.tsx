@@ -104,7 +104,7 @@ export const EnrollMembershipDrawer = ({
     <>
       <Button
         size={size}
-        className="w-full bg-pink-500 text-white font-extrabold text-md pulse-pink shadow-lg shadow-pink-500/20 hover:scale-[1.02] hover:cursor-pointer active:scale-95 transition-all"
+        className="w-full bg-accent text-accent-foreground font-semibold text-sm shadow-md shadow-accent/20 hover:shadow-lg hover:scale-[1.01] active:scale-95 transition-all"
         onPress={() => state.open()}
       >
         <HugeiconsIcon icon={UserAdd01Icon} size={18} />
@@ -115,15 +115,19 @@ export const EnrollMembershipDrawer = ({
         <Drawer.Content placement="right">
           <Drawer.Dialog className="w-full sm:max-w-md">
             <Drawer.CloseTrigger />
-            <Drawer.Header>
-              <Drawer.Heading>Inscribir atleta</Drawer.Heading>
-              <p className="mt-1 text-sm text-muted">
-                {teamSeason.team.name} · {teamSeason.season.name}
-              </p>
+            <Drawer.Header className="border-b border-border">
+              <div>
+                <Drawer.Heading className="text-lg font-bold">
+                  Inscribir atleta
+                </Drawer.Heading>
+                <p className="mt-1 text-xs font-medium text-muted">
+                  {teamSeason.team.name} · {teamSeason.season.name}
+                </p>
+              </div>
             </Drawer.Header>
 
-            <Drawer.Body>
-              <Surface variant="transparent" className="flex flex-col gap-4">
+            <Drawer.Body className="gap-5">
+              <Surface variant="transparent" className="flex flex-col gap-5">
                 {/* Player picker */}
                 <ComboBox
                   className="w-full"
@@ -135,7 +139,7 @@ export const EnrollMembershipDrawer = ({
                   }
                   isDisabled={noPlayers}
                 >
-                  <Label>Atleta</Label>
+                  <Label className="text-sm font-semibold">Atleta</Label>
                   <ComboBox.InputGroup>
                     <Input
                       variant="secondary"
@@ -181,7 +185,7 @@ export const EnrollMembershipDrawer = ({
                   }
                   isDisabled={noPlans}
                 >
-                  <Label>Plan de pago</Label>
+                  <Label className="text-sm font-semibold">Plan de pago</Label>
                   <ComboBox.InputGroup>
                     <Input
                       variant="secondary"
@@ -216,7 +220,7 @@ export const EnrollMembershipDrawer = ({
 
                 {/* Start date */}
                 <TextField className="w-full" name="startedAt">
-                  <Label>Fecha de inicio</Label>
+                  <Label className="text-sm font-semibold">Fecha de inicio</Label>
                   <Input
                     variant="secondary"
                     type="date"
@@ -234,12 +238,13 @@ export const EnrollMembershipDrawer = ({
               </Surface>
             </Drawer.Body>
 
-            <Drawer.Footer>
+            <Drawer.Footer className="border-t border-border">
               <Button
                 slot="close"
                 variant="secondary"
                 isDisabled={loading}
                 onPress={() => reset()}
+                className="font-medium"
               >
                 Cancelar
               </Button>
@@ -247,9 +252,10 @@ export const EnrollMembershipDrawer = ({
                 onPress={handleSubmit}
                 isPending={loading}
                 isDisabled={loading || noPlans || noPlayers}
+                className="font-semibold"
               >
                 <HugeiconsIcon icon={Add01Icon} size={18} />
-                Confirmar inscripción
+                Confirmar
               </Button>
             </Drawer.Footer>
           </Drawer.Dialog>
