@@ -2,8 +2,7 @@
 
 import { Card, Button } from "@heroui/react";
 import { motion } from "framer-motion";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { UserAdd01Icon, Users01Icon, CheckCircle2Icon, AlertCircleIcon } from "@hugeicons/core-free-icons";
+
 import { useState } from "react";
 import { ITeamSeason } from "@/modules/team-seasons";
 import { IPaymentPlan } from "@/modules/payment-plans";
@@ -36,8 +35,8 @@ const MetricCard = ({ label, value, icon, color }: any) => (
             {value}
           </p>
         </div>
-        <div className={`flex size-12 items-center justify-center rounded-lg bg-${color}/10 shadow-sm`}>
-          <HugeiconsIcon icon={icon} size={22} className={`text-${color}`} />
+        <div className={`flex size-12 items-center justify-center rounded-lg bg-${color}/10 shadow-sm text-${color}`}>
+          •
         </div>
       </div>
     </Card>
@@ -79,10 +78,8 @@ export const Dashboard = ({
             </p>
           </div>
           <Button
-            color="primary"
+            className="bg-accent text-accent-foreground font-semibold"
             size="lg"
-            startContent={<HugeiconsIcon icon={UserAdd01Icon} size={18} />}
-            onPress={onOpen}
             isDisabled={isLoading}
           >
             Asignar Miembro
@@ -106,19 +103,26 @@ export const Dashboard = ({
           <MetricCard
             label="Total de Miembros"
             value={assignments.length}
-            icon={Users01Icon}
-            color="accent"
+            color="primary"
           />
           <MetricCard
             label="Miembros Activos"
             value={activeCount}
-            icon={CheckCircle2Icon}
             color="success"
           />
           <MetricCard
             label="Suspendidos"
             value={suspendedCount}
-            icon={AlertCircleIcon}
+            color="warning"
+          />
+          <MetricCard
+            label="Miembros Activos"
+            value={activeCount}
+            color="success"
+          />
+          <MetricCard
+            label="Suspendidos"
+            value={suspendedCount}
             color="warning"
           />
         </motion.div>

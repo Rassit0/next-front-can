@@ -3,7 +3,7 @@
 import { Button, Dropdown, Spinner } from "@heroui/react";
 import { useState } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { MoreVerticalIcon, PauseCircleIcon, CheckCircle, LogoutIcon, PlayCircleIcon } from "@hugeicons/core-free-icons";
+import { MoreVerticalIcon, PauseCircleIcon, LogoutIcon, PlayCircleIcon } from "@hugeicons/core-free-icons";
 import { IMemberTeamSeasonAssignment } from "@/modules/membresias/types";
 import {
   suspendMemberAssignment,
@@ -73,7 +73,7 @@ export const AssignmentActions = ({
     {
       key: "complete",
       label: "Completar",
-      icon: CheckCircle,
+      icon: PlayCircleIcon,
       color: "success" as const,
       visible: assignment.status === "active",
     },
