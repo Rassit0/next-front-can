@@ -1,5 +1,7 @@
 import { ErrorPage, HeaderPage, PaginationSection, SectionFilters } from "@/ui";
 import { notFound, redirect } from "next/navigation";
+import Link from "next/link";
+import { Tabs } from "@heroui/react";
 import {
   AddModal,
   getPaymentPlans,
@@ -51,6 +53,8 @@ export default async function PaymentPlansPage({
     return <ErrorPage message={teamSeasonResponse.message} />;
   }
 
+  const basePath = `/admin/teams/${disciplineId}/${clubId}/${teamId}/team-seasons/${teamSeasonId}`;
+
   return (
     <>
       {/* <!-- Header --> */}
@@ -69,6 +73,26 @@ export default async function PaymentPlansPage({
           },
         ]}
       />
+
+      {/* Navigation Tabs */}
+      <div className="flex gap-2 border-b border-border pb-4">
+        <Link href={`${basePath}/payment-plans`}>
+          <div className="px-4 py-2 rounded-t-lg font-medium text-foreground border-b-2 border-accent bg-accent-soft">
+            Planes de Pago
+          </div>
+        </Link>
+        <Link href={`${basePath}/membresias`}>
+          <div className="px-4 py-2 rounded-t-lg font-medium text-muted hover:text-foreground hover:bg-surface transition">
+            Membresías
+          </div>
+        </Link>
+        <Link href={`${basePath}/pagos`}>
+          <div className="px-4 py-2 rounded-t-lg font-medium text-muted hover:text-foreground hover:bg-surface transition">
+            Pagos
+          </div>
+        </Link>
+      </div>
+
       {/* <!-- Search and Filter Bar (Tonal Architecture) --> */}
       <SectionFilters />
       {/* <!-- Main Member Table --> */}

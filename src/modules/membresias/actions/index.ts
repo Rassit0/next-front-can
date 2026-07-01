@@ -60,6 +60,9 @@ export const getMemberTeamSeasonAssignments = async (
   });
 };
 
+// Alias para compatibilidad con nomenclatura de páginas
+export const getMembershipsForTeamSeason = getMemberTeamSeasonAssignments;
+
 export const assignMemberToTeamSeason = async (
   payload: IAssignMemberPayload,
 ): Promise<ServiceResponse<IMemberTeamSeasonAssignment>> => {
@@ -69,12 +72,12 @@ export const assignMemberToTeamSeason = async (
       payload,
     );
 
-    const assignment = parseAssignment(res.data);
+    const assignment = parseAssignment(res as unknown as IMemberTeamSeasonAssignment);
 
     return {
       error: false,
       data: assignment,
-      message: res.message || "Miembro asignado exitosamente",
+      message: "Miembro asignado exitosamente",
     };
   });
 };
@@ -88,7 +91,7 @@ export const suspendMemberAssignment = async (
       {},
     );
 
-    const assignment = parseAssignment(res.data);
+    const assignment = parseAssignment(res as unknown as IMemberTeamSeasonAssignment);
 
     return {
       error: false,
@@ -107,7 +110,7 @@ export const reactivateMemberAssignment = async (
       {},
     );
 
-    const assignment = parseAssignment(res.data);
+    const assignment = parseAssignment(res as unknown as IMemberTeamSeasonAssignment);
 
     return {
       error: false,
@@ -126,7 +129,7 @@ export const completeMemberAssignment = async (
       {},
     );
 
-    const assignment = parseAssignment(res.data);
+    const assignment = parseAssignment(res as unknown as IMemberTeamSeasonAssignment);
 
     return {
       error: false,
@@ -145,7 +148,7 @@ export const withdrawMemberAssignment = async (
       {},
     );
 
-    const assignment = parseAssignment(res.data);
+    const assignment = parseAssignment(res as unknown as IMemberTeamSeasonAssignment);
 
     return {
       error: false,

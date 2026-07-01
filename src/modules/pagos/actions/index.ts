@@ -19,6 +19,14 @@ interface GetPaymentsParams {
   endDate?: string;
 }
 
+interface GetPaymentsForTeamSeasonParams {
+  teamSeasonId: string;
+  status?: string;
+  page?: string;
+  per_page?: string;
+  search?: string;
+}
+
 const parsePayment = (payment: IPaymentRecord): IPaymentRecord => ({
   ...payment,
   processedAt: payment.processedAt ? new Date(payment.processedAt) : null,
@@ -138,6 +146,37 @@ export const getPaymentMetrics = async (
       error: false,
       data: res,
       message: "Métricas obtenidas exitosamente",
+    };
+  });
+};
+
+export const getPaymentsForTeamSeason = async (
+  params: GetPaymentsForTeamSeasonParams,
+): Promise<ServiceResponse<IPaymentRecordResponse>> => {
+  return handleServerAction(async () => {
+    const queryParams = new URLSearchParams();
+    queryParams.set("teamSeasonId", params.teamSeasonId);
+    if (params.status) queryParams.set("status", params.status);
+    if (params.page) queryParams.set("page", params.page);
+    if (params.per_page) queryParams.set("per_page", params.per_page);
+    if (params.search) queryParams.set("search", params.search);
+
+    const res = await api.get<IPaymentRecordResponse>(
+      `/payments?${queryParams.toString()}`,
+      {
+        next: {
+          tags: ["payment-records"],
+          revalidate: 1800,
+        },
+      },
+    );
+
+    const data = (res.data || []).map(parsePayment);
+
+    return {
+      error: false,
+      data: { ...res, data },
+      message: res.message || "Registros de pago obtenidos exitosamente",
     };
   });
 };

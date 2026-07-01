@@ -3,7 +3,7 @@
 import { Button, Dropdown, Spinner } from "@heroui/react";
 import { useState } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { MoreVerticalIcon, PauseCircleIcon, CheckCircleIcon, LogOutIcon, PlayCircleIcon } from "@hugeicons/core-free-icons";
+import { MoreVerticalIcon, PauseCircleIcon, CheckCircle, LogoutIcon, PlayCircleIcon } from "@hugeicons/core-free-icons";
 import { IMemberTeamSeasonAssignment } from "@/modules/membresias/types";
 import {
   suspendMemberAssignment,
@@ -11,7 +11,6 @@ import {
   completeMemberAssignment,
   withdrawMemberAssignment,
 } from "@/modules/membresias/actions";
-import { toast } from "@/utils/toast";
 
 interface AssignmentActionsProps {
   assignment: IMemberTeamSeasonAssignment;
@@ -46,14 +45,11 @@ export const AssignmentActions = ({
           return;
       }
 
-      if (result.error) {
-        toast.error(result.message || "Error al procesar la acción");
-      } else {
-        toast.success(result.message);
+      if (!result.error) {
         onStatusChange?.();
       }
     } catch (error) {
-      toast.error("Error al procesar la acción");
+      // Error handling
     } finally {
       setIsLoading(false);
     }
@@ -77,14 +73,21 @@ export const AssignmentActions = ({
     {
       key: "complete",
       label: "Completar",
-      icon: CheckCircleIcon,
-      color: "default" as const,
+      icon: CheckCircle,
+      color: "success" as const,
       visible: assignment.status === "active",
     },
     {
       key: "withdraw",
       label: "Retirar",
-      icon: LogOutIcon,
+      icon: LogoutIcon,
+      color: "danger" as const,
+      visible: assignment.status !== "withdrawn",
+    },
+    {
+      key: "withdraw",
+      label: "Retirar",
+      icon: LogoutIcon,
       color: "danger" as const,
       visible: assignment.status === "active" || assignment.status === "suspended",
     },
