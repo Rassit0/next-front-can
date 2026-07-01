@@ -1,8 +1,6 @@
 "use client";
 
 import { Button } from "@heroui/react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { UserAdd01Icon } from "@hugeicons/core-free-icons";
 
 interface AssignmentModalProps {
   teamSeasonId: string;
@@ -15,10 +13,8 @@ export const AssignmentModal = ({
 }: AssignmentModalProps) => {
   return (
     <Button
-      color="primary"
       size="md"
-      className="font-semibold"
-      startContent={<HugeiconsIcon icon={UserAdd01Icon} size={18} />}
+      className="font-semibold bg-accent text-accent-foreground"
     >
       Asignar Membresía
     </Button>

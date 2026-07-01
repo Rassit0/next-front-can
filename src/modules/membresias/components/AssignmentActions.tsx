@@ -82,13 +82,6 @@ export const AssignmentActions = ({
       label: "Retirar",
       icon: LogoutIcon,
       color: "danger" as const,
-      visible: assignment.status !== "withdrawn",
-    },
-    {
-      key: "withdraw",
-      label: "Retirar",
-      icon: LogoutIcon,
-      color: "danger" as const,
       visible: assignment.status === "active" || assignment.status === "suspended",
     },
   ];
@@ -99,9 +92,9 @@ export const AssignmentActions = ({
     return (
       <Button
         isIconOnly
-        variant="light"
+        variant="ghost"
         size="sm"
-        disabled
+        isDisabled
         className="text-muted"
       >
         —
@@ -113,7 +106,7 @@ export const AssignmentActions = ({
     <Dropdown>
       <Button
         isIconOnly
-        variant="light"
+        variant="ghost"
         size="sm"
         isDisabled={isLoading}
         className="data-[hover=true]:bg-default/40"
@@ -124,20 +117,17 @@ export const AssignmentActions = ({
           <HugeiconsIcon icon={MoreVerticalIcon} size={18} />
         )}
       </Button>
-      <Dropdown.Menu
-        aria-label="Acciones de asignación"
-        disabledKeys={isLoading ? availableActions.map((a) => a.key) : []}
-      >
+      <Dropdown.Menu aria-label="Acciones de asignación">
         {availableActions.map((action) => (
           <Dropdown.Item
             key={action.key}
-            className={`text-${action.color}`}
-            startContent={
-              <HugeiconsIcon icon={action.icon} size={16} />
-            }
+            textValue={action.label}
             onPress={() => handleAction(action.key)}
           >
-            {action.label}
+            <div className="flex items-center gap-2">
+              <HugeiconsIcon icon={action.icon} size={16} />
+              <span>{action.label}</span>
+            </div>
           </Dropdown.Item>
         ))}
       </Dropdown.Menu>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Table, Avatar, Tooltip } from "@heroui/react";
+import { Table, Avatar } from "@heroui/react";
 import { motion } from "framer-motion";
 import { SortableColumnHeader } from "@/ui";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -126,8 +126,7 @@ export const AssignmentTable = ({
                     </span>
                   </Table.Cell>
                   <Table.Cell className="py-3">
-                    <Tooltip
-                      content={`${statusConfig.label} desde ${formatDate(
+                    <div title={`${statusConfig.label} desde ${formatDate(
                         assignment[
                           {
                             active: "enrolledAt",
@@ -136,9 +135,7 @@ export const AssignmentTable = ({
                             withdrawn: "withdrawnAt",
                           }[assignment.status] as keyof IMemberTeamSeasonAssignment
                         ] as Date
-                      )}`}
-                    >
-                      <div className={`flex w-fit items-center gap-1.5 rounded-lg ${statusConfig.bgColor} px-2.5 py-1.5`}>
+                      )}`} className={`flex w-fit items-center gap-1.5 rounded-lg ${statusConfig.bgColor} px-2.5 py-1.5`}>
                         <HugeiconsIcon
                           icon={statusConfig.icon}
                           size={14}
@@ -147,8 +144,7 @@ export const AssignmentTable = ({
                         <span className={`text-xs font-semibold ${statusConfig.textColor}`}>
                           {statusConfig.label}
                         </span>
-                      </div>
-                    </Tooltip>
+                    </div>
                   </Table.Cell>
                   <Table.Cell className="py-3">
                     <div className="flex items-center justify-center">

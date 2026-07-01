@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, Button, useDisclosure } from "@heroui/react";
+import { Card, Button } from "@heroui/react";
 import { motion } from "framer-motion";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { UserAdd01Icon, Users01Icon, CheckCircle2Icon, AlertCircleIcon } from "@hugeicons/core-free-icons";
@@ -52,7 +52,6 @@ export const Dashboard = ({
   onRefresh,
   isLoading,
 }: DashboardProps) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [refreshing, setRefreshing] = useState(false);
 
   const activeCount = assignments.filter((a) => a.status === "active").length;
